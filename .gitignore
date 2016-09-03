@@ -1,0 +1,10 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Java template
+*.class
+.idea/
+/out/
+.idea_modules/
+target/
+pom.xml
+BusinessMappingGraphDrivenWebApp.iml
+Functionele Analyse.md
