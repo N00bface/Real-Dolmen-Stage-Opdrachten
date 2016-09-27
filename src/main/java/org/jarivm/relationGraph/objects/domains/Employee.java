@@ -57,6 +57,20 @@ public class Employee {
     private String name;
     private String surname;
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    private String role;
+
     private Date dateOfBirth;
     private Date dateOfAssigment;
 
@@ -69,9 +83,14 @@ public class Employee {
         this.surname = surname;
     }
 
+    public Employee(String name, String surname, String role){
+        this.name = name;
+        this.surname = surname;
+        this.role = role;
+    }
 
-
-
-
-
+    @Override
+    public String toString() {
+        return "[id="+id+" ,name="+name+" ,surname="+surname+ " ,role="+role+"]";
+    }
 }

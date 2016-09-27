@@ -13,6 +13,7 @@ import java.util.Set;
  */
 @NodeEntity
 public class Project {
+
     @GraphId
     private Long id;
 
@@ -27,6 +28,14 @@ public class Project {
 
     @Relationship(type = "ISSUED", direction = Relationship.INCOMING)
     private Client client;
+
+    public Project(String name) {
+        this.name = name;
+    }
+
+    public Project() {
+
+    }
 
     public Long getId() {
         return id;

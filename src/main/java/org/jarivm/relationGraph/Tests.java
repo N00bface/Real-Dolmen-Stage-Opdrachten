@@ -1,44 +1,50 @@
 package org.jarivm.relationGraph;
 
 import org.apache.commons.collections4.set.ListOrderedSet;
-import org.jarivm.relationGraph.objects.domains.Client;
 import org.jarivm.relationGraph.objects.domains.Employee;
 import org.jarivm.relationGraph.objects.domains.Project;
-import org.jarivm.relationGraph.objects.domains.Sector;
+import org.jarivm.relationGraph.objects.repositories.EmployeeRepository;
+import org.jarivm.relationGraph.utilities.NodeProperties;
+import org.junit.After;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.neo4j.ogm.cypher.Filter;
-import org.neo4j.ogm.session.Session;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Set;
+import java.util.Iterator;
 
 
 /**
  * @author Jari Van Melckebeke
  * @since 02.09.16
  */
+@FixMethodOrder(MethodSorters.JVM)
 public class Tests extends Application {
     @Autowired
-    private Session session;
+    private Facade facade;
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     @Before
-    public void tests() throws Exception {
-        session = getSession();
-        session.clear();
+    public void setUp() throws Exception {
+        facade = new Facade();
     }
 
-    /**
-     * test function
-     */
+    @After
+    public void tearDown() throws Exception {
+        facade.tearDown();
+    }
+
+/*
     @Test
     public void persistedEmployeeShouldBeRetrievableFromGraphDB() {
         Employee employee = new Employee("john", "adams");
         //System.out.println(session.getTransaction().status());
-        if (!findEmployeeByProperty("name", employee.getName()).iterator().hasNext()) {
-            session.save(employee);
+        if (!facade.findEmployeeByProperty("name", employee.getName()).iterator().hasNext()) {
+            facade.commit(employee);
 
-            Employee foundHim = findEmployeeByProperty("name", employee.getName()).iterator().next();
+            Employee foundHim = facade.findEmployeeByProperty("name", employee.getName()).iterator().next();
             assert foundHim.getId().equals(employee.getId());
             assert foundHim.getName().equals(employee.getName());
         }
@@ -59,28 +65,67 @@ public class Tests extends Application {
         project.setTeam(set);
         sector.setName("game");
         client.setSector(sector);
-        session.save(sector);
-        session.save(employee);
-        session.save(client);
-        session.save(project);
+        facade.commit(sector);
+        facade.commit(employee);
+        facade.commit(client);
+        facade.commit(project);
 
-        Client foundHim = findClientByProperty("name", client.getName()).iterator().next();
+        Client foundHim = facade.findClientByProperty("name", client.getName()).iterator().next();
         assert foundHim.getId().equals(client.getId());
         assert foundHim.getName().equals(client.getName());
     }
 
+
     @Test
-    public void checkSession() {
-        assert session != null;
+    public void projectShouldBeInsertableAlone() {
+        Project project = new Project();
+        project.setName("random");
+        project.setLanguage("Java");
+        facade.commit(project);
+
+        Project foundHim = facade.findProjectByProperty("name", project.getName()).iterator().next();
+        assert foundHim.getId().equals(project.getId());
     }
 
+    @Test
+    public void clientShouldBeInsertableAlone() {
+        Client client = new Client();
+        client.setName("Colruyt");
 
-    private Iterable<Employee> findEmployeeByProperty(String propertyName, String propertyValue) {
-        return session.loadAll(Employee.class, new Filter(propertyName, propertyValue));
+        facade.commit(client);
+
+        Client foundHim = facade.findClientByProperty("name", client.getName()).iterator().next();
+        assert foundHim.getId().equals(client.getId());
+    }*/
+
+    @Test
+    public void createdNodesShoudBeEditable() {
+        Iterator<Employee> employees = facade.findEmployeeByProperty("name", "john").iterator();
+        Project project = facade.findProjectByProperty("name", "random").iterator().next();
+        while (employees.hasNext()) {
+            Employee e = employees.next();
+            if (project.getTeam() == null)
+                project.setTeam(new ListOrderedSet<Employee>());
+            project.getTeam().add(e);
+        }
+        facade.commit(project);
     }
 
-    private Iterable<Client> findClientByProperty(String propertyName, String propertyValue) {
-        return session.loadAll(Client.class, new Filter(propertyName, propertyValue));
+    @Test
+    public void teamMatesShouldBeViewable() {
+        Project p = facade.findProjectByProperty("name", "Matsoft").iterator().next();
+        Iterable<Employee> e = facade.getTeamMates(p);
+        System.out.println(e.iterator());
+        for (Employee em : e) {
+            System.out.println(em);
+        }
+    }
+
+    @Test
+    public void relationShouldBeRetrievableBetweenEmployees() throws Exception {
+        NodeProperties properties = new NodeProperties();
+        Iterable<Employee> employees = facade.findEmployeeByProperty("name", "john");
+        System.out.println(properties.getRelation(employees));
     }
 
 

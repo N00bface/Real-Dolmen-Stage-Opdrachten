@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @ComponentScan(basePackages = {"org.jarivm.relationGraph"})
 @Configuration
-@EnableNeo4jRepositories(basePackages = "org.jarivm.relationGraph.objects.repositories")
+@EnableNeo4jRepositories(basePackages = "org.jarivm.relationGraph.objects.repositories.EmployeeRepository")
 public class Application extends Neo4jConfiguration {
 
     public static final String URL = System.getenv("NEO4J_URL") != null ? System.getenv("NEO4J_URL") : "http://localhost:7474";
@@ -27,13 +27,12 @@ public class Application extends Neo4jConfiguration {
                 .driverConfiguration()
                 .setDriverClassName("org.neo4j.ogm.drivers.http.driver.HttpDriver")
                 .setURI(URL)
-                .setCredentials("neo4j", "tanzania");
+        .setCredentials("neo4j", "tanzania");
         return config;
     }
 
     @Override
     public SessionFactory getSessionFactory() {
-        System.out.println("done");
         return new SessionFactory(getConfiguration(), "org.jarivm.relationGraph.objects.domains");
     }
 }

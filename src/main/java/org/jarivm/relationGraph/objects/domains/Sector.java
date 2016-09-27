@@ -9,6 +9,14 @@ import org.neo4j.ogm.annotation.NodeEntity;
  */
 @NodeEntity
 public class Sector {
+    public Sector(String name) {
+        this.name = name;
+    }
+
+    public Sector() {
+
+    }
+
     @GraphId
     private Long id;
 
