@@ -1,6 +1,5 @@
 package org.jarivm.relationGraph;
 
-import org.apache.commons.collections4.set.ListOrderedSet;
 import org.jarivm.relationGraph.objects.domains.Client;
 import org.jarivm.relationGraph.objects.domains.Employee;
 import org.jarivm.relationGraph.objects.domains.Project;
@@ -12,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -51,7 +51,7 @@ public class TestDataInput extends Application {
                     Client c = facade.findClientByProperty("name", objects[4]).iterator().next();
                     Project p = new Project(objects[0]);
                     Employee e = new Employee(objects[1], objects[2], objects[3]);
-                    Set<Employee> set = new ListOrderedSet<Employee>();
+                    Set<Employee> set = new HashSet<Employee>();
                     set.add(e);
                     p.setTeam(set);
                     p.setClient(c);
@@ -65,7 +65,7 @@ public class TestDataInput extends Application {
                         c.setSector(s);
                         Project p = new Project(objects[0]);
                         Employee e = new Employee(objects[1], objects[2], objects[3]);
-                        Set<Employee> set = new ListOrderedSet<Employee>();
+                        Set<Employee> set = new HashSet<Employee>();
                         set.add(e);
                         p.setTeam(set);
                         p.setClient(c);
@@ -78,7 +78,7 @@ public class TestDataInput extends Application {
                         c.setSector(s);
                         Project p = new Project(objects[0]);
                         Employee e = new Employee(objects[1], objects[2], objects[3]);
-                        Set<Employee> set = new ListOrderedSet<Employee>();
+                        Set<Employee> set = new HashSet<Employee>();
                         set.add(e);
                         p.setTeam(set);
                         p.setClient(c);

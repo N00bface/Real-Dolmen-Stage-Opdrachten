@@ -7,8 +7,6 @@ import org.jarivm.relationGraph.objects.domains.Sector;
 import org.neo4j.ogm.cypher.Filter;
 import org.neo4j.ogm.session.Session;
 import org.neo4j.ogm.transaction.Transaction;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.neo4j.annotation.Query;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +16,6 @@ import java.util.HashMap;
  * @since 24.09.16
  */
 public class Facade extends Application {
-    @Autowired
     Session session;
     Transaction tx;
 
@@ -98,7 +95,6 @@ public class Facade extends Application {
         return projects;
     }
 
-    @Query("MATCH a=(:Employee)-[:WORKED_ON]->(p:Project) WHERE id(p)={0} RETURN a")
     Iterable<Employee> getTeamMates(Project client) {
         HashMap<String, Long> map = new HashMap<String, Long>();
         map.put("clientId", client.getId());

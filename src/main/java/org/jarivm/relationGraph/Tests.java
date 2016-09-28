@@ -1,17 +1,19 @@
 package org.jarivm.relationGraph;
 
-import org.apache.commons.collections4.set.ListOrderedSet;
 import org.jarivm.relationGraph.objects.domains.Employee;
 import org.jarivm.relationGraph.objects.domains.Project;
 import org.jarivm.relationGraph.objects.repositories.EmployeeRepository;
 import org.jarivm.relationGraph.utilities.NodeProperties;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runners.MethodSorters;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
+import java.util.HashSet;
 import java.util.Iterator;
 
 
@@ -19,9 +21,9 @@ import java.util.Iterator;
  * @author Jari Van Melckebeke
  * @since 02.09.16
  */
-@FixMethodOrder(MethodSorters.JVM)
-public class Tests extends Application {
-    @Autowired
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = org.jarivm.relationGraph.Application.class, loader = AnnotationConfigContextLoader.class)
+public class Tests {
     private Facade facade;
     @Autowired
     private EmployeeRepository employeeRepository;
@@ -105,7 +107,7 @@ public class Tests extends Application {
         while (employees.hasNext()) {
             Employee e = employees.next();
             if (project.getTeam() == null)
-                project.setTeam(new ListOrderedSet<Employee>());
+                project.setTeam(new HashSet<Employee>());
             project.getTeam().add(e);
         }
         facade.commit(project);
