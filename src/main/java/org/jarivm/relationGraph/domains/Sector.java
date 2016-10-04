@@ -1,4 +1,4 @@
-package org.jarivm.relationGraph.objects.domains;
+package org.jarivm.relationGraph.domains;
 
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.NodeEntity;

@@ -1,17 +1,18 @@
 package org.jarivm.relationGraph;
 
-import org.jarivm.relationGraph.objects.domains.Client;
-import org.jarivm.relationGraph.objects.domains.Employee;
-import org.jarivm.relationGraph.objects.domains.Project;
-import org.jarivm.relationGraph.objects.domains.Sector;
+import org.jarivm.relationGraph.domains.Client;
+import org.jarivm.relationGraph.domains.Employee;
+import org.jarivm.relationGraph.domains.Project;
+import org.jarivm.relationGraph.domains.Sector;
 import org.neo4j.ogm.cypher.Filter;
 import org.neo4j.ogm.session.Session;
 import org.neo4j.ogm.transaction.Transaction;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
+ * this class is responsible for transactions to (and some from) the database
+ *
  * @author Jari Van Melckebeke
  * @since 24.09.16
  */
@@ -19,85 +20,92 @@ public class Facade extends Application {
     Session session;
     Transaction tx;
 
-    public Facade(Session session) throws Exception {
+    /**
+     * basic constructor if there's a session
+     *
+     * @param session the session parameter, used to control transactions to and from
+     */
+    Facade(Session session) throws Exception {
         this.session = session;
         if (this.session == null)
             this.session = getSession();
         tx = session.beginTransaction();
     }
 
+    /**
+     * basic constructor
+     */
     public Facade() throws Exception {
         this.session = getSession();
         tx = session.beginTransaction();
     }
 
-    public void commit(Client client) {
-        session.save(client);
+    /**
+     * saves the passed object to the database
+     *
+     * @param object the object that has to be saved to the database
+     * @param <T>    all types that have graph elements
+     */
+    <T> void commit(T object) {
+        System.out.println("committing: " + object);
+        session.save(object);
+        tx.commit();
+        tx.close();
+        tx = session.beginTransaction();
     }
 
-    public void commit(Employee employee) {
-        session.save(employee);
-    }
-
-    public void commit(Project project) {
-        session.save(project);
-    }
-
-    public void commit(Sector sector) {
-        session.save(sector);
-    }
-
+    /**
+     * ends the transaction, has to be used on the end of the program
+     */
     public void tearDown() {
-        System.out.println(tx.status());
         tx.commit();
         tx.close();
     }
 
-    public Iterable<Project> findProjectByProperty(String propertyName, String propertyValue) {
-        return session.loadAll(Project.class, new Filter(propertyName, propertyValue));
+    /**
+     * find an object of type T in the database by propertyValue
+     *
+     * @param c             the object's class that has to be searched
+     * @param propertyName  the content that has to be compared, for example 'name'
+     * @param propertyValue the propertyName his value
+     * @param <T>           the object that has to be searched for
+     * @return an iterable with the matched objects
+     */
+    <T> Iterable<T> findObjectByProperty(Class<T> c, String propertyName, String propertyValue) {
+        return session.loadAll(c, new Filter(propertyName, propertyValue));
     }
 
-    public Iterable<Employee> findEmployeeByProperty(String propertyName, String propertyValue) {
-        return session.loadAll(Employee.class, new Filter(propertyName, propertyValue));
+    /**
+     * finds all nodes with the given class (label)
+     *
+     * @param s the class
+     * @return all nodes with class 's'
+     */
+    <T> Iterable<T> findAll(Class<T> s) {
+        return session.loadAll(s);
     }
 
-    public Iterable<Client> findClientByProperty(String propertyName, String propertyValue) {
-        return session.loadAll(Client.class, new Filter(propertyName, propertyValue));
+    /**
+     * returns employees that worked on a given project
+     *
+     * @param project the project where the employees were working on
+     * @return an iterable of Employee with the matched worked value
+     */
+    Iterable<Employee> getTeamMates(Project project) {
+        HashMap<String, Long> map = new HashMap<String, Long>();
+        map.put("projectId", project.getId());
+        return session.query(Employee.class, "MATCH a=(n:Employee)-[:WORKED_ON]->(m:Project) WHERE id(m)={projectId} return a", map);
     }
 
-    public Iterable<Sector> findSectorByProperty(String propertyName, String propertyValue) {
-        return session.loadAll(Sector.class, new Filter(propertyName, propertyValue));
-    }
-
-    public Iterable<Sector> findAllSectors() {
-        return session.loadAll(Sector.class);
-    }
-
-    public Iterable<Client> findAllClientsInSector(Sector sector) {
-        Iterable<Client> clients = session.loadAll(Client.class);
-        ArrayList<Client> ret = new ArrayList<Client>();
-        for (Client c : clients) {
-            if (c.getSector() == sector) {
-                ret.add(c);
-            }
-        }
-        return ret;
-    }
-
-    public Iterable<Project> findAllProjectsByClient(Client client) {
-        Iterable<Client> clients = findAllClientsInSector(client.getSector());
-        Iterable<Project> projectIt = session.loadAll(Project.class);
-        ArrayList<Project> projects = new ArrayList<Project>();
-        for (Project p : projectIt) {
-            if (p.getClient() == client)
-                projects.add(p);
-        }
-        return projects;
-    }
-
-    Iterable<Employee> getTeamMates(Project client) {
+    Iterable<Project> getProjects(Client client) {
         HashMap<String, Long> map = new HashMap<String, Long>();
         map.put("clientId", client.getId());
-        return session.query(Employee.class, "MATCH a=(:Employee)-[:WORKED_ON]->(p:Project) WHERE id(p)={clientId} RETURN a", map);
+        return session.query(Project.class, "match (n:Client)-[:ISSUED]->(b:Project) WHERE id(n)={ClientId} return b", map);
+    }
+
+    Iterable<Client> getClients(Sector sector) {
+        HashMap<String, Long> map = new HashMap<String, Long>();
+        map.put("sectorId", sector.getId());
+        return session.query(Client.class, "match (n:Client)-[:ISSUED]->(b:Project) WHERE id(n)={sectorId} return a", map);
     }
 }
