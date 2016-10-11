@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="../solarizedTheme/css/main.css" rel="stylesheet"/>
+    <title>table overview</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<h1>graph table</h1>
+<h2>clients</h2>
+<table>
+    <tr>
+        <th>sector</th>
+        <th>name</th>
+        <th>experience</th>
+        <th>projects</th>
+    </tr>
+    <tr th:each="c : ${graphClient}">
+        <td th:text="${c.sector}"></td>
+        <td th:text="${c.client}"></td>
+        <td th:text="${c.experience}"></td>
+        <td th:each="p : ${c.projects}">
+            <span><a th:text="${p.name}" th:href="'#'+${p.name}"></a></span>
+        </td>
+    </tr>
+</table>
+<h2>projects</h2>
+<div th:each="proj: ${graphProject}">
+    <div th:id="${proj.name}" class="card">
+        <table>
+            <tr>
+                <th>name</th>
+                <td th:text="${proj.name}"></td>
+            </tr>
+            <tr>
+                <th>cost</th>
+                <td th:text="${proj.cost}"></td>
+            </tr>
+            <tr>
+                <th>language</th>
+                <td th:text="${proj.language}"></td>
+            </tr>
+            <tr>
+                <th>number of conflicts</th>
+                <td th:text="${proj.nConflicts}"></td>
+            </tr>
+            <tr>
+                <th>score</th>
+                <td th:text="${proj.score}"></td>
+            </tr>
+            <tr>
+                <th>version</th>
+                <td th:text="${proj.version}"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>

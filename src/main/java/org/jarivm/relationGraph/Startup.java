@@ -1,21 +1,19 @@
 package org.jarivm.relationGraph;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.annotation.Import;
-import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @author Jari Van Melckebeke
  * @since 02.10.16
  */
+@Configuration
+@ComponentScan
+@EnableAutoConfiguration
 @SpringBootApplication
-@EnableNeo4jRepositories
-@EnableTransactionManagement
-@Import(Application.class)
-@EntityScan(basePackages = "org.jarivm.relationGraph")
 public class Startup {
 
     public static void main(String[] args) {

@@ -15,11 +15,22 @@ import java.util.Map;
  * @since 02.10.16
  */
 public interface ProjectRepository extends GraphRepository<Client> {
-    Project findByName(@Param("0") String name);
+    @Query("MATCH (n:Project)<-[WORKED_ON]-(a:Employee) WHERE n.name = {name} return n.name as name, n.cost as cost, " +
+            "n.language as language, n.nConflicts as nConflicts, n.scoreFromClietn as score," +
+            "collect({name:a.name ,surname:a.surname ,role:a.role , dateOfBirth:a.dateOfBirth ,experience:a.experience, email:a.email, age:a.age}) as projects")
+    List<Map<String, Project>> findByName(@Param(value = "name") String name);
+
+    @Query("MATCH (n:Project)<-[WORKED_ON]-(a:Employee) WHERE id(n)={id} return n.name as name, n.cost as cost, " +
+            "n.language as language, n.nConflicts as nConflicts, n.scoreFromClietn as score," +
+            "collect({name:a.name ,surname:a.surname ,role:a.role , dateOfBirth:a.dateOfBirth ,experience:a.experience, " +
+            "email:a.email, age:a.age}) as projects")
+    List<Map<String, Project>> findById(@Param(value = "id") Long id);
 
     Collection<Project> findByNameContaining(@Param("0") String name);
 
-    @Query("MATCH (m:Project)<-[WORKED_ON]-(a:Employee) RETURN m.name as project, collect([a.name, a.surname, a.role]) as team LIMIT {l}")
+    @Query("MATCH (m:Project)<-[WORKED_ON]-(a:Employee) RETURN m.name as name, m.cost as cost, m.language as language," +
+            "m.nConflicts as nConflicts, m.scoreFromClient as score, m.version as version," +
+            " collect({id: id(a)}) as team LIMIT {l}")
     List<Map<String, Project>> graph(@Param("l") int l);
 
 }
