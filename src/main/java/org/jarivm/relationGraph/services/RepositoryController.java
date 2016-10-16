@@ -6,6 +6,7 @@ import org.jarivm.relationGraph.repositories.EmployeeRepository;
 import org.jarivm.relationGraph.repositories.ProjectRepository;
 import org.jarivm.relationGraph.repositories.SectorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;

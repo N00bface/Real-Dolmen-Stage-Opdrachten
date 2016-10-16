@@ -1,19 +1,19 @@
 package org.jarivm.relationGraph;
 
 import org.neo4j.ogm.session.SessionFactory;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.neo4j.config.Neo4jConfiguration;
 import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
  * @author Jari Van Melckebeke
  * @since 23.09.16
  */
 @Configuration
-@EnableWebMvc
 @EnableNeo4jRepositories
 @EnableTransactionManagement
 public class Application extends Neo4jConfiguration {

@@ -18,22 +18,24 @@ public class WorkedOn {
 
     }
 
-    public WorkedOn(Employee employee, Project project, Date startDate, Date endDate, boolean onTime, String role, double score, long projectNr) {
+    public WorkedOn(Employee employee, Project project, boolean onTime, String role, double score, long projectNr) {
         this.employee = employee;
         this.project = project;
-        this.startDate = startDate;
-        this.endDate = endDate;
         this.onTime = onTime;
         this.role = role;
         this.score = score;
         this.projectNr = projectNr;
     }
 
-    public WorkedOn(Employee employee, Project project, Date startDate, String role) {
+    public WorkedOn(Employee employee, Project project, String role) {
         this.employee = employee;
         this.project = project;
-        this.startDate = startDate;
         this.role = role;
+    }
+
+    public WorkedOn(Employee employee, Project project) {
+        this.employee = employee;
+        this.project = project;
     }
 
     @GraphId
@@ -44,10 +46,6 @@ public class WorkedOn {
     @EndNode
     private Project project;
 
-    @DateString(value = "yyyy-MM-dd")
-    private Date startDate;
-    @DateString(value = "yyyy-MM-dd")
-    private Date endDate;
     private boolean onTime;
     private String role;
     private double score;
@@ -67,22 +65,6 @@ public class WorkedOn {
 
     public void setProject(Project project) {
         this.project = project;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
     }
 
     public boolean isOnTime() {
@@ -122,8 +104,6 @@ public class WorkedOn {
         return "WorkedOn{" +
                 "employee=" + employee +
                 ", project=" + project +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
                 ", onTime=" + onTime +
                 ", role='" + role + '\'' +
                 ", score=" + score +

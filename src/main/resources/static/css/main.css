@@ -1,0 +1,11 @@
+.card {
+    display: inline-flex;
+    margin: 0;
+    width: auto;
+    padding: 0;
+    border: solid black 0.1em;
+}
+
+.fit_table {
+    width: 100%;
+}

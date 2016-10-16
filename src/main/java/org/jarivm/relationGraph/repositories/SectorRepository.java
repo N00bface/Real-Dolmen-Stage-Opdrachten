@@ -5,6 +5,7 @@ import org.jarivm.relationGraph.domains.Sector;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.GraphRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.Map;
  * @author Jari Van Melckebeke
  * @since 02.10.16
  */
+@Repository
 public interface SectorRepository extends GraphRepository<Sector> {
     Project findByName(@Param("0") String name);
 

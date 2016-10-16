@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link href="../solarizedTheme/css/main.css" rel="stylesheet"/>
+    <link th:href="@{/css/main.css}" rel="stylesheet" href="../../css/main.css" />
     <title>table overview</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
@@ -26,8 +26,8 @@
     </tr>
 </table>
 <h2>projects</h2>
-<div th:each="proj: ${graphProject}">
-    <div th:id="${proj.name}" class="card">
+<div th:each="proj: ${graphProject}" class="card">
+    <div th:id="${proj.name}">
         <table>
             <tr>
                 <th>name</th>
@@ -36,14 +36,6 @@
             <tr>
                 <th>cost</th>
                 <td th:text="${proj.cost}"></td>
-            </tr>
-            <tr>
-                <th>language</th>
-                <td th:text="${proj.language}"></td>
-            </tr>
-            <tr>
-                <th>number of conflicts</th>
-                <td th:text="${proj.nConflicts}"></td>
             </tr>
             <tr>
                 <th>score</th>

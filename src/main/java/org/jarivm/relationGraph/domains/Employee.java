@@ -56,14 +56,6 @@ public class Employee {
         this.id = id;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
     public Long getExperience() {
         return experience;
     }
@@ -101,7 +93,6 @@ public class Employee {
 
     private String name;
     private String surname;
-    private String role;
     private String email;
 
     private Long experience;
@@ -123,19 +114,12 @@ public class Employee {
         this.surname = surname;
     }
 
-    public Employee(String name, String surname, String role) {
-        this.name = name;
-        this.surname = surname;
-        this.role = role;
-    }
-
     //structure: first_name, last_name,email, Gender, start_date_of_work, Age, experience,
     // total_efficiency, start_date_project,end_date_project, on_time, role_on_project,
     // n_of_project, deathline, name_of_project, version, cost, client_experience, client_name
-    public Employee(String name, String surname, String email, Date dateOfBirth, Long age, Date dateOfAssigment, String role) {
+    public Employee(String name, String surname, String email, Date dateOfBirth, Long age, Date dateOfAssigment) {
         this.name = name;
         this.surname = surname;
-        this.role = role;
         this.email = email;
         this.age = age;
         this.dateOfBirth = dateOfBirth;
@@ -148,7 +132,6 @@ public class Employee {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
-                ", role='" + role + '\'' +
                 ", experience=" + experience +
                 ", age=" + age +
                 ", dateOfBirth=" + dateOfBirth +

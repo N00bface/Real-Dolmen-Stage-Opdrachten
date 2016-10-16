@@ -7,6 +7,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.stereotype.Service;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -19,8 +21,10 @@ import java.util.Iterator;
  * @since 02.09.16
  */
 @RunWith(SpringJUnit4ClassRunner.class)
+@ActiveProfiles(profiles = "test")
+@Service
 @ContextConfiguration(classes = org.jarivm.relationGraph.Application.class, loader = AnnotationConfigContextLoader.class)
-public class Tests {
+public class Tests{
     private Facade facade;
 
     @Before
@@ -50,7 +54,7 @@ public class Tests {
         Project project = facade.findAll(Project.class).iterator().next();
         for (int i = 0; i < 5; i++) {
             Employee e = employees.next();
-            WorkedOn workedOn = new WorkedOn(e, project, e.getDateOfAssigment(), e.getRole());
+            WorkedOn workedOn = new WorkedOn(e, project);
             facade.commit(workedOn);
         }
     }

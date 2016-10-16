@@ -1,0 +1,5 @@
+"first_name","last_name","email","gender","start_date_of_work","age","experience","total_efficiency","start_date_project","end_date_project","on_time","role_on_project","n_of_project","deathline","name_of_project","version","cost","client_experience","client_name"
+"Jari","Van Melckebeke","vmjari@outlook.com","m",01/09/16,15,1,70,01/09/16,"31/08/16",TRUE,"Lead developer",1,"31/08/16","T.E.R.E.S.A.","0.0.1",0,10,"noobcorp"
+"Amber","Waegeman","a.waegeman@telenet.be","v",01/09/16,16,1,70,01/09/16,"31/08/16",TRUE,"Web design",1,"31/08/16","DroneOS","0.0.1",50,5,"Colruyt"
+"Bram","De Pinnewaert","bram.depinnewaert@gmail.com","m",01/09/16,15,1,70,01/09/16,"31/08/16",TRUE,"level designer",1,"31/08/16","LiveSimulator","0.1.2",1005,1,"Real Dolmen"
+"Jari","Van Melckebeke","vmjari@outlook.com","m",01/09/16,15,1,70,01/09/16,"31/08/16",TRUE,"stagair",2,"31/08/16","Stageopdracht",0.1,0,1,"Real Dolmen"

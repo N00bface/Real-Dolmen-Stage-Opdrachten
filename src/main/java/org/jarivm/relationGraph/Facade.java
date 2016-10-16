@@ -47,7 +47,9 @@ public class Facade extends Application {
      * @param <T>    all types that have graph elements
      */
     <T> void commit(T object) {
-        System.out.println("committing: " + object);
+        System.out.println("status: " + tx.status());
+        if (tx.status().name().equals("CLOSED"))
+            tx = session.beginTransaction();
         session.save(object);
         tx.commit();
         tx.close();
@@ -72,6 +74,8 @@ public class Facade extends Application {
      * @return an iterable with the matched objects
      */
     <T> Iterable<T> findObjectByProperty(Class<T> c, String propertyName, String propertyValue) {
+        if (session.countEntitiesOfType(c) == 0)
+            return null;
         return session.loadAll(c, new Filter(propertyName, propertyValue));
     }
 
