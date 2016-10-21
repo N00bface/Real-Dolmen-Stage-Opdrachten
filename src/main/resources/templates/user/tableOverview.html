@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link th:href="@{/css/main.css}" rel="stylesheet" href="../../css/main.css" />
+    <link th:href="@{/css/main.css}" rel="stylesheet" href="../../css/main.css"/>
     <title>table overview</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
@@ -12,7 +12,7 @@
 <table>
     <tr>
         <th>sector</th>
-        <th>name</th>
+        <th>last_name</th>
         <th>experience</th>
         <th>projects</th>
     </tr>
@@ -30,7 +30,7 @@
     <div th:id="${proj.name}">
         <table>
             <tr>
-                <th>name</th>
+                <th>last_name</th>
                 <td th:text="${proj.name}"></td>
             </tr>
             <tr>

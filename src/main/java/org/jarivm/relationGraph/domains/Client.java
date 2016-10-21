@@ -2,16 +2,20 @@ package org.jarivm.relationGraph.domains;
 
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Property;
 import org.neo4j.ogm.annotation.Relationship;
 import org.neo4j.ogm.annotation.typeconversion.DateString;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
 
 /**
  * @author Jari Van Melckebeke
  * @since 20.09.16
  */
-@NodeEntity
+@NodeEntity(label = "Employee")
+@Component
 public class Client {
     @GraphId
     private Long id;

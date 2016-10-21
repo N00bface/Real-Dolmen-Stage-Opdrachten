@@ -16,7 +16,7 @@ import java.util.Map;
  * @since 02.10.16
  */
 @Repository
-public interface ProjectRepository extends GraphRepository<Client> {
+public interface ProjectRepository extends GraphRepository<Project> {
     @Query("MATCH (n:Project)<-[WORKED_ON]-(a:Employee) WHERE n.name = {name} return n.name as name, n.cost as cost, " +
             "n.language as language, n.nConflicts as nConflicts, n.scoreFromClient as score," +
             "collect({name:a.name ,surname:a.surname ,role:a.role , dateOfBirth:a.dateOfBirth ,experience:a.experience, email:a.email, age:a.age}) as projects")

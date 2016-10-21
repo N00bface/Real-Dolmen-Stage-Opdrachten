@@ -1,20 +1,36 @@
 ANALYSE: Business mapping through graph driven web app
 ======================================================
 
-Functionele Analyse
--------------------
+todo-list
+---------
 
-de gebruiker moet in staat zijn om..
 
-* ..qua bewerkingen.. 
-    * ..een nieuwe klant aan te maken, met daarbij zijn/haar sector en project(en)
-    * ..een klant aan te passen
-    * ..een klant te verwijderen
-* ..qua visuele interactie..
-    * ..het procentueel aandeel per sector per project kunnen zien
-    * ..de relaties tussen klanten en sectoren te kunnen zien &rarr; gebruik van nodes en edges
-    * ..de views dynamisch kunnen veranderen
-    
+editen/deleten/aanmaken van:
+1) sector
+2) client
+3) project
+4) employee
+
+css en js implementeren
+
+aanmaken v conflicen &rarr; edit employees die ermee te maken hebben
+
+employees 'matchen' adhv team &rarr; efficientie
+
+inlog voor client &rarr; score voor project
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |-> score voor project
+- version tracker / bugtracking &larr; GitHub integration
+- aanmaken nieuwe voorstellen + planning
+- 'chat' tussen client en project (leader)
+
+inlog Employee
+- aangifte stand project
+- zien momentele / vroegere teams
+- issue tracker
+- mail systeem ?
+
+(eventueel) Jenkins ?
+
 ---
 
 Technische Analyse

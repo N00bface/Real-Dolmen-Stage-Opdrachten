@@ -26,4 +26,7 @@ public interface ClientRepository extends GraphRepository<Client> {
     @Query("MATCH (s:Sector)-[]->(m:Client)-[ISSUED]->(a:Project) RETURN s.name as sector, m.name as client, m.experience as experience," +
             "collect({id:a.id, name:a.name}) as projects ORDER BY s.name LIMIT {l}")
     List<Map<String, Client>> graph(@Param("l") int l);
+
+    @Query("MATCH (n:Client) return n")
+    Iterable<Client> findAll();
 }

@@ -11,8 +11,8 @@
 <table class="fit_table">
     <tr>
         <th>ranking</th>
-        <th>name</th>
-        <th>surname</th>
+        <th>last_name</th>
+        <th>first_name</th>
         <th>role</th>
         <th>date of assignment</th>
         <th>experience</th>
@@ -22,8 +22,8 @@
     </tr>
     <tr th:each="e, rank : ${graphEmployee}">
         <td th:text="${rank.count}" align="center"></td>
-        <td th:text="${e.name}" align="center"></td>
         <td th:text="${e.surname}" align="center"></td>
+        <td th:text="${e.name}" align="center"></td>
         <td align="center">
             <span th:each="r,c : ${e.roles}">
                 <span th:if="${c.count} &lt; ${#lists.size(e.roles)}" th:text="${r}+ ', '"></span>

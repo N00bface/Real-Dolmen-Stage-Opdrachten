@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>New Entity</title>
+</head>
+<body>
+<h1>new Project</h1>
+<form action="#" method="post" th:action="@{/user/create/createNewProject}" th:object="${projectToken}">
+    name:&nbsp;
+    <input type="text" th:field="${projectToken.name}"/><br/>
+    cost:&nbsp;€
+    <input type="number" min="0" step="0.1" th:field="${projectToken.cost}"/><br/>
+    start date:&nbsp;
+    <input type="date" th:field="${projectToken.dateStarted}"/><br/>
+    version:&nbsp;
+    <input type="text" th:field="${projectToken.version}"/><br/>
+    client:
+    <select th:object="${projectToken.client}">
+        <option th:each="s : ${clients}" th:text="${s.name}" th:value="${s}"></option>
+    </select><br/>
+    team:
+    <div th:each="e,stat : ${employees}">
+        <input type="checkbox" th:field="${projectToken.workedOn[__${stat.index}__].employee}" th:value="${e}"
+               th:text="${e.surname} + ' ' + ${e.name}"
+               th:selected="${projectToken.workedOn[__${stat.index}__].employee}"/>
+    </div>
+
+    <input type="submit" value="Create"/>
+</form>
+</body>
+</html>

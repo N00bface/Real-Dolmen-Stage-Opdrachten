@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +18,8 @@ import java.util.Map;
  */
 @Repository
 public interface SectorRepository extends GraphRepository<Sector> {
-    Project findByName(@Param("0") String name);
+    @Query("MATCH (m:Sector) WHERE m.name={name} return m limit 1")
+    LinkedHashMap<String, Object> findByName(@Param("name") String name);
 
     Collection<Project> findByNameContaining(@Param("0") String name);
 

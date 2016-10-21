@@ -41,9 +41,9 @@ public class Tests{
     @Test
     public void persistedEmployeeShouldBeRetrievableFromGraphDB() {
         Employee employee = new Employee("John", "Adams");
-        if (!facade.findObjectByProperty(Employee.class, "name", employee.getName()).iterator().hasNext()) {
+        if (!facade.findObjectByProperty(Employee.class, "name", employee.getSurname()).iterator().hasNext()) {
             facade.commit(employee);
-            Employee foundHim = facade.findObjectByProperty(Employee.class, "name", employee.getName()).iterator().next();
+            Employee foundHim = facade.findObjectByProperty(Employee.class, "name", employee.getSurname()).iterator().next();
             assert foundHim.getId().equals(employee.getId());
         }
     }

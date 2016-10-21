@@ -2,12 +2,14 @@ package org.jarivm.relationGraph.domains;
 
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.NodeEntity;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Jari Van Melckebeke
  * @since 20.09.16
  */
 @NodeEntity
+@Component
 public class Sector {
     public Sector(String name) {
         this.name = name;

@@ -1,22 +1,32 @@
 package org.jarivm.relationGraph.services;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.jarivm.relationGraph.Application;
+import org.jarivm.relationGraph.domains.Client;
+import org.jarivm.relationGraph.domains.Sector;
 import org.jarivm.relationGraph.repositories.ClientRepository;
 import org.jarivm.relationGraph.repositories.EmployeeRepository;
 import org.jarivm.relationGraph.repositories.ProjectRepository;
 import org.jarivm.relationGraph.repositories.SectorRepository;
+import org.neo4j.ogm.session.Neo4jSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.validation.Valid;
+import java.util.LinkedHashMap;
 
 /**
  * @author Jari Van Melckebeke
  * @since 02.10.16
  */
 @Controller
-public class RepositoryController extends Application {
+public class RepositoryController {
     @Autowired
     ProjectRepository projectRepository;
     @Autowired
@@ -26,44 +36,30 @@ public class RepositoryController extends Application {
     @Autowired
     EmployeeRepository employeeRepository;
 
-    private boolean authenticated = false;
+    @RequestMapping("/auth")
+    public String auth(Model model) {
+        model.addAttribute("name", "jari");
+        return "access";
+    }
+
+    @RequestMapping("/")
+    public String root() {
+        return "redirect:/index";
+    }
+
+    @RequestMapping("/index")
+    public String index() {
+        return "index";
+    }
 
     @RequestMapping("/login")
-    public String login(Model model) {
-        model.addAttribute("authToken", new AuthToken());
+    public String login() {
         return "login";
     }
 
-    @RequestMapping("/auth")
-    public String auth(AuthToken token, Model model) {
-        if (token.getLoginName().equals("jari") && token.getLoginPass().equals("root")) {
-            model.addAttribute("name", "jari");
-            authenticated = true;
-            //todo: connect with some sort of mySQL database
-            return "access";
-        }
-        model.addAttribute("tried", true);
-        return "login";
-    }
-
-    @RequestMapping("/tableOverview")
-    public String graph(Model model) {
-        if (authenticated) {
-            model.addAttribute("graphClient", clientRepository.graph(150));
-            model.addAttribute("graphProject", projectRepository.graph(150));
-            return "tableOverview";
-        }
-        model.addAttribute("authToken", new AuthToken());
-        return "login";
-    }
-
-    @RequestMapping("/employeeByScore")
-    public String employeeByScore(Model model) {
-        if (authenticated) {
-            model.addAttribute("graphEmployee", employeeRepository.employeesOfAllTime(150));
-            return "employeeByScore";
-        }
-        model.addAttribute("authToken", new AuthToken());
+    @RequestMapping("/login-error")
+    public String loginError(Model model) {
+        model.addAttribute("loginError", true);
         return "login";
     }
 }

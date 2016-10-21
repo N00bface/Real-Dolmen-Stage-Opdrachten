@@ -1,0 +1,846 @@
+{
+  "results": [
+    {
+      "columns": [
+        "p"
+      ],
+      "data": [
+        {
+          "row": [
+            [
+              {
+                "gender": "m",
+                "surname": "Van Melckebeke",
+                "name": "Jari",
+                "experience": "1",
+                "email": "vmjari@outlook.com",
+                "age": "15"
+              }
+            ]
+          ],
+          "meta": [
+            [
+              {
+                "id": 206,
+                "type": "node",
+                "deleted": false
+              }
+            ]
+          ],
+          "graph": {
+            "nodes": [
+              {
+                "id": "206",
+                "labels": [
+                  "Employee"
+                ],
+                "properties": {
+                  "gender": "m",
+                  "surname": "Van Melckebeke",
+                  "name": "Jari",
+                  "experience": "1",
+                  "email": "vmjari@outlook.com",
+                  "age": "15"
+                }
+              }
+            ],
+            "relationships": []
+          }
+        },
+        {
+          "row": [
+            [
+              {
+                "gender": "m",
+                "surname": "Van Melckebeke",
+                "name": "Jari",
+                "experience": "1",
+                "email": "vmjari@outlook.com",
+                "age": "15"
+              },
+              {
+                "role": "stagair",
+                "nOfProject": "2"
+              },
+              {
+                "efficiency": "75",
+                "cost": "0",
+                "onTime": "TRUE",
+                "name": "Stageopdracht",
+                "version": "0.1"
+              }
+            ]
+          ],
+          "meta": [
+            [
+              {
+                "id": 206,
+                "type": "node",
+                "deleted": false
+              },
+              {
+                "id": 187,
+                "type": "relationship",
+                "deleted": false
+              },
+              {
+                "id": 216,
+                "type": "node",
+                "deleted": false
+              }
+            ]
+          ],
+          "graph": {
+            "nodes": [
+              {
+                "id": "216",
+                "labels": [
+                  "Project"
+                ],
+                "properties": {
+                  "efficiency": "75",
+                  "cost": "0",
+                  "onTime": "TRUE",
+                  "name": "Stageopdracht",
+                  "version": "0.1"
+                }
+              },
+              {
+                "id": "206",
+                "labels": [
+                  "Employee"
+                ],
+                "properties": {
+                  "gender": "m",
+                  "surname": "Van Melckebeke",
+                  "name": "Jari",
+                  "experience": "1",
+                  "email": "vmjari@outlook.com",
+                  "age": "15"
+                }
+              }
+            ],
+            "relationships": [
+              {
+                "id": "187",
+                "type": "WorkedOn",
+                "startNode": "206",
+                "endNode": "216",
+                "properties": {
+                  "role": "stagair",
+                  "nOfProject": "2"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "row": [
+            [
+              {
+                "gender": "m",
+                "surname": "Van Melckebeke",
+                "name": "Jari",
+                "experience": "1",
+                "email": "vmjari@outlook.com",
+                "age": "15"
+              },
+              {
+                "role": "Lead developer",
+                "nOfProject": "1"
+              },
+              {
+                "efficiency": "75",
+                "cost": "0",
+                "onTime": "TRUE",
+                "name": "T.E.R.E.S.A.",
+                "version": "0.0.1"
+              }
+            ]
+          ],
+          "meta": [
+            [
+              {
+                "id": 206,
+                "type": "node",
+                "deleted": false
+              },
+              {
+                "id": 178,
+                "type": "relationship",
+                "deleted": false
+              },
+              {
+                "id": 207,
+                "type": "node",
+                "deleted": false
+              }
+            ]
+          ],
+          "graph": {
+            "nodes": [
+              {
+                "id": "206",
+                "labels": [
+                  "Employee"
+                ],
+                "properties": {
+                  "gender": "m",
+                  "surname": "Van Melckebeke",
+                  "name": "Jari",
+                  "experience": "1",
+                  "email": "vmjari@outlook.com",
+                  "age": "15"
+                }
+              },
+              {
+                "id": "207",
+                "labels": [
+                  "Project"
+                ],
+                "properties": {
+                  "efficiency": "75",
+                  "cost": "0",
+                  "onTime": "TRUE",
+                  "name": "T.E.R.E.S.A.",
+                  "version": "0.0.1"
+                }
+              }
+            ],
+            "relationships": [
+              {
+                "id": "178",
+                "type": "WorkedOn",
+                "startNode": "206",
+                "endNode": "207",
+                "properties": {
+                  "role": "Lead developer",
+                  "nOfProject": "1"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "row": [
+            [
+              {
+                "gender": "v",
+                "surname": "Waegeman",
+                "name": "Amber",
+                "experience": "1",
+                "email": "a.waegeman@telenet.be",
+                "age": "16"
+              }
+            ]
+          ],
+          "meta": [
+            [
+              {
+                "id": 210,
+                "type": "node",
+                "deleted": false
+              }
+            ]
+          ],
+          "graph": {
+            "nodes": [
+              {
+                "id": "210",
+                "labels": [
+                  "Employee"
+                ],
+                "properties": {
+                  "gender": "v",
+                  "surname": "Waegeman",
+                  "name": "Amber",
+                  "experience": "1",
+                  "email": "a.waegeman@telenet.be",
+                  "age": "16"
+                }
+              }
+            ],
+            "relationships": []
+          }
+        },
+        {
+          "row": [
+            [
+              {
+                "gender": "v",
+                "surname": "Waegeman",
+                "name": "Amber",
+                "experience": "1",
+                "email": "a.waegeman@telenet.be",
+                "age": "16"
+              },
+              {
+                "role": "Web design",
+                "nOfProject": "1"
+              },
+              {
+                "efficiency": "70",
+                "cost": "50",
+                "onTime": "TRUE",
+                "name": "DroneOS",
+                "version": "0.0.1"
+              }
+            ]
+          ],
+          "meta": [
+            [
+              {
+                "id": 210,
+                "type": "node",
+                "deleted": false
+              },
+              {
+                "id": 181,
+                "type": "relationship",
+                "deleted": false
+              },
+              {
+                "id": 211,
+                "type": "node",
+                "deleted": false
+              }
+            ]
+          ],
+          "graph": {
+            "nodes": [
+              {
+                "id": "210",
+                "labels": [
+                  "Employee"
+                ],
+                "properties": {
+                  "gender": "v",
+                  "surname": "Waegeman",
+                  "name": "Amber",
+                  "experience": "1",
+                  "email": "a.waegeman@telenet.be",
+                  "age": "16"
+                }
+              },
+              {
+                "id": "211",
+                "labels": [
+                  "Project"
+                ],
+                "properties": {
+                  "efficiency": "70",
+                  "cost": "50",
+                  "onTime": "TRUE",
+                  "name": "DroneOS",
+                  "version": "0.0.1"
+                }
+              }
+            ],
+            "relationships": [
+              {
+                "id": "181",
+                "type": "WorkedOn",
+                "startNode": "210",
+                "endNode": "211",
+                "properties": {
+                  "role": "Web design",
+                  "nOfProject": "1"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "row": [
+            [
+              {
+                "gender": "m",
+                "surname": "De Pinnewaert",
+                "name": "Bram",
+                "experience": "1",
+                "email": "bram.depinnewaert@gmail.com",
+                "age": "15"
+              }
+            ]
+          ],
+          "meta": [
+            [
+              {
+                "id": 213,
+                "type": "node",
+                "deleted": false
+              }
+            ]
+          ],
+          "graph": {
+            "nodes": [
+              {
+                "id": "213",
+                "labels": [
+                  "Employee"
+                ],
+                "properties": {
+                  "gender": "m",
+                  "surname": "De Pinnewaert",
+                  "name": "Bram",
+                  "experience": "1",
+                  "email": "bram.depinnewaert@gmail.com",
+                  "age": "15"
+                }
+              }
+            ],
+            "relationships": []
+          }
+        },
+        {
+          "row": [
+            [
+              {
+                "gender": "m",
+                "surname": "De Pinnewaert",
+                "name": "Bram",
+                "experience": "1",
+                "email": "bram.depinnewaert@gmail.com",
+                "age": "15"
+              },
+              {
+                "role": "level designer",
+                "nOfProject": "1"
+              },
+              {
+                "efficiency": "70",
+                "cost": "1005",
+                "onTime": "TRUE",
+                "name": "LiveSimulator",
+                "version": "0.1.2"
+              }
+            ]
+          ],
+          "meta": [
+            [
+              {
+                "id": 213,
+                "type": "node",
+                "deleted": false
+              },
+              {
+                "id": 184,
+                "type": "relationship",
+                "deleted": false
+              },
+              {
+                "id": 214,
+                "type": "node",
+                "deleted": false
+              }
+            ]
+          ],
+          "graph": {
+            "nodes": [
+              {
+                "id": "213",
+                "labels": [
+                  "Employee"
+                ],
+                "properties": {
+                  "gender": "m",
+                  "surname": "De Pinnewaert",
+                  "name": "Bram",
+                  "experience": "1",
+                  "email": "bram.depinnewaert@gmail.com",
+                  "age": "15"
+                }
+              },
+              {
+                "id": "214",
+                "labels": [
+                  "Project"
+                ],
+                "properties": {
+                  "efficiency": "70",
+                  "cost": "1005",
+                  "onTime": "TRUE",
+                  "name": "LiveSimulator",
+                  "version": "0.1.2"
+                }
+              }
+            ],
+            "relationships": [
+              {
+                "id": "184",
+                "type": "WorkedOn",
+                "startNode": "213",
+                "endNode": "214",
+                "properties": {
+                  "role": "level designer",
+                  "nOfProject": "1"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "row": [
+            [
+              {
+                "gender": "m",
+                "surname": "Van Vreckem",
+                "name": "Stijn",
+                "experience": "1",
+                "email": "stijn.vanverckem@yahoo.com",
+                "age": "14"
+              }
+            ]
+          ],
+          "meta": [
+            [
+              {
+                "id": 217,
+                "type": "node",
+                "deleted": false
+              }
+            ]
+          ],
+          "graph": {
+            "nodes": [
+              {
+                "id": "217",
+                "labels": [
+                  "Employee"
+                ],
+                "properties": {
+                  "gender": "m",
+                  "surname": "Van Vreckem",
+                  "name": "Stijn",
+                  "experience": "1",
+                  "email": "stijn.vanverckem@yahoo.com",
+                  "age": "14"
+                }
+              }
+            ],
+            "relationships": []
+          }
+        },
+        {
+          "row": [
+            [
+              {
+                "gender": "m",
+                "surname": "Van Vreckem",
+                "name": "Stijn",
+                "experience": "1",
+                "email": "stijn.vanverckem@yahoo.com",
+                "age": "14"
+              },
+              {
+                "role": "boekhouder",
+                "nOfProject": "1"
+              },
+              {
+                "efficiency": "75",
+                "cost": "0",
+                "onTime": "TRUE",
+                "name": "T.E.R.E.S.A.",
+                "version": "0.0.1"
+              }
+            ]
+          ],
+          "meta": [
+            [
+              {
+                "id": 217,
+                "type": "node",
+                "deleted": false
+              },
+              {
+                "id": 194,
+                "type": "relationship",
+                "deleted": false
+              },
+              {
+                "id": 207,
+                "type": "node",
+                "deleted": false
+              }
+            ]
+          ],
+          "graph": {
+            "nodes": [
+              {
+                "id": "217",
+                "labels": [
+                  "Employee"
+                ],
+                "properties": {
+                  "gender": "m",
+                  "surname": "Van Vreckem",
+                  "name": "Stijn",
+                  "experience": "1",
+                  "email": "stijn.vanverckem@yahoo.com",
+                  "age": "14"
+                }
+              },
+              {
+                "id": "207",
+                "labels": [
+                  "Project"
+                ],
+                "properties": {
+                  "efficiency": "75",
+                  "cost": "0",
+                  "onTime": "TRUE",
+                  "name": "T.E.R.E.S.A.",
+                  "version": "0.0.1"
+                }
+              }
+            ],
+            "relationships": [
+              {
+                "id": "194",
+                "type": "WorkedOn",
+                "startNode": "217",
+                "endNode": "207",
+                "properties": {
+                  "role": "boekhouder",
+                  "nOfProject": "1"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "row": [
+            [
+              {
+                "gender": "m",
+                "surname": "Van Vreckem",
+                "name": "Stijn",
+                "experience": "1",
+                "email": "stijn.vanverckem@yahoo.com",
+                "age": "14"
+              },
+              {
+                "role": "boekhouder",
+                "nOfProject": "1"
+              },
+              {
+                "efficiency": "70",
+                "cost": "57",
+                "onTime": "TRUE",
+                "name": "MkmJgh",
+                "version": "1.2"
+              }
+            ]
+          ],
+          "meta": [
+            [
+              {
+                "id": 217,
+                "type": "node",
+                "deleted": false
+              },
+              {
+                "id": 189,
+                "type": "relationship",
+                "deleted": false
+              },
+              {
+                "id": 218,
+                "type": "node",
+                "deleted": false
+              }
+            ]
+          ],
+          "graph": {
+            "nodes": [
+              {
+                "id": "217",
+                "labels": [
+                  "Employee"
+                ],
+                "properties": {
+                  "gender": "m",
+                  "surname": "Van Vreckem",
+                  "name": "Stijn",
+                  "experience": "1",
+                  "email": "stijn.vanverckem@yahoo.com",
+                  "age": "14"
+                }
+              },
+              {
+                "id": "218",
+                "labels": [
+                  "Project"
+                ],
+                "properties": {
+                  "efficiency": "70",
+                  "cost": "57",
+                  "onTime": "TRUE",
+                  "name": "MkmJgh",
+                  "version": "1.2"
+                }
+              }
+            ],
+            "relationships": [
+              {
+                "id": "189",
+                "type": "WorkedOn",
+                "startNode": "217",
+                "endNode": "218",
+                "properties": {
+                  "role": "boekhouder",
+                  "nOfProject": "1"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "row": [
+            [
+              {
+                "gender": "m",
+                "surname": "Kestemont",
+                "name": "Lars",
+                "experience": "1",
+                "email": "lars.kestemont@gmail.com",
+                "age": "13"
+              }
+            ]
+          ],
+          "meta": [
+            [
+              {
+                "id": 220,
+                "type": "node",
+                "deleted": false
+              }
+            ]
+          ],
+          "graph": {
+            "nodes": [
+              {
+                "id": "220",
+                "labels": [
+                  "Employee"
+                ],
+                "properties": {
+                  "gender": "m",
+                  "surname": "Kestemont",
+                  "name": "Lars",
+                  "experience": "1",
+                  "email": "lars.kestemont@gmail.com",
+                  "age": "13"
+                }
+              }
+            ],
+            "relationships": []
+          }
+        },
+        {
+          "row": [
+            [
+              {
+                "gender": "m",
+                "surname": "Kestemont",
+                "name": "Lars",
+                "experience": "1",
+                "email": "lars.kestemont@gmail.com",
+                "age": "13"
+              },
+              {
+                "role": "astrofysicus",
+                "nOfProject": "1"
+              },
+              {
+                "efficiency": "72",
+                "onTime": "TRUE",
+                "cost": "17711",
+                "name": "JDG",
+                "version": "0.9"
+              }
+            ]
+          ],
+          "meta": [
+            [
+              {
+                "id": 220,
+                "type": "node",
+                "deleted": false
+              },
+              {
+                "id": 192,
+                "type": "relationship",
+                "deleted": false
+              },
+              {
+                "id": 221,
+                "type": "node",
+                "deleted": false
+              }
+            ]
+          ],
+          "graph": {
+            "nodes": [
+              {
+                "id": "220",
+                "labels": [
+                  "Employee"
+                ],
+                "properties": {
+                  "gender": "m",
+                  "surname": "Kestemont",
+                  "name": "Lars",
+                  "experience": "1",
+                  "email": "lars.kestemont@gmail.com",
+                  "age": "13"
+                }
+              },
+              {
+                "id": "221",
+                "labels": [
+                  "Project"
+                ],
+                "properties": {
+                  "efficiency": "72",
+                  "onTime": "TRUE",
+                  "cost": "17711",
+                  "name": "JDG",
+                  "version": "0.9"
+                }
+              }
+            ],
+            "relationships": [
+              {
+                "id": "192",
+                "type": "WorkedOn",
+                "startNode": "220",
+                "endNode": "221",
+                "properties": {
+                  "role": "astrofysicus",
+                  "nOfProject": "1"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "stats": {
+        "contains_updates": false,
+        "nodes_created": 0,
+        "nodes_deleted": 0,
+        "properties_set": 0,
+        "relationships_created": 0,
+        "relationship_deleted": 0,
+        "labels_added": 0,
+        "labels_removed": 0,
+        "indexes_added": 0,
+        "indexes_removed": 0,
+        "constraints_added": 0,
+        "constraints_removed": 0
+      }
+    }
+  ],
+  "errors": [],
+  "responseTime": 19
+}

@@ -14,11 +14,11 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @since 23.09.16
  */
 @Configuration
-@EnableNeo4jRepositories
+@EnableNeo4jRepositories(basePackages = "org.jarivm.relationGraph.repositories")
 @EnableTransactionManagement
 public class Application extends Neo4jConfiguration {
 
-    public static final String URL = System.getenv("NEO4J_URL") != null ? System.getenv("NEO4J_URL") : "http://localhost:7474";
+    public static final String URL = "http://localhost:7474";
 
     @Bean
     public org.neo4j.ogm.config.Configuration getConfiguration() {
@@ -34,6 +34,6 @@ public class Application extends Neo4jConfiguration {
     @Bean
     @Override
     public SessionFactory getSessionFactory() {
-        return new SessionFactory(getConfiguration());
+        return new SessionFactory(getConfiguration(),"org.jarivm.relationGraph.domains","org.jarivm.relationGraph.repositories");
     }
 }

@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>New Entity</title>
+</head>
+<body>
+<h1>new Client</h1>
+<form action="#" method="post" th:action="@{/user/create/createNewSector}" th:object="${sectorToken}">
+    name:&nbsp;
+    <input type="text" th:field="${sectorToken.name}"/><br/>
+    <input type="submit" value="Create"/>
+</form>
+</body>
+</html>

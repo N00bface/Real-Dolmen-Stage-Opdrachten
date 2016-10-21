@@ -12,7 +12,7 @@ import java.util.Date;
  * @author Jari Van Melckebeke
  * @since 30.09.16
  */
-@RelationshipEntity(type = "ISSUED")
+@RelationshipEntity(type = "Issued")
 public class Issued {
     public Issued(Client client, Project project, Date dateGiven, Long nProjectForClient) {
         this.client = client;

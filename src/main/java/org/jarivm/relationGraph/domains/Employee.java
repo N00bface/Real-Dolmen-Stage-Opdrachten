@@ -2,30 +2,35 @@ package org.jarivm.relationGraph.domains;
 
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Relationship;
 import org.neo4j.ogm.annotation.typeconversion.DateString;
+import org.springframework.beans.propertyeditors.CharacterEditor;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.Set;
 
 /**
  * @author Jari Van Melckebeke
  * @since 20.09.16
  */
-@NodeEntity
+@NodeEntity(label = "Employee")
+@Component
 public class Employee {
+    public Character getGender() {
+        return gender;
+    }
+
+    public void setGender(Character gender) {
+        this.gender = gender;
+    }
+
     public Long getId() {
         return id;
     }
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getSurname() {
@@ -36,21 +41,21 @@ public class Employee {
         this.surname = surname;
     }
 
-    public Date getDateOfBirth() {
-        return dateOfBirth;
+    public String getName() {
+        return name;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Date getDateOfAssigment() {
-        return dateOfAssigment;
-    }
-
-    public void setDateOfAssigment(Date dateOfAssigment) {
-        this.dateOfAssigment = dateOfAssigment;
-    }
+//    public Date getStartDateOfWork() {
+//        return startDateOfWork;
+//    }
+//
+//    public void setStartDateOfWork(Date startDateOfWork) {
+//        this.startDateOfWork = startDateOfWork;
+//    }
 
     public void setId(Long id) {
         this.id = id;
@@ -72,14 +77,6 @@ public class Employee {
         this.age = age;
     }
 
-    public Date getDateOfRetirement() {
-        return dateOfRetirement;
-    }
-
-    public void setDateOfRetirement(Date dateOfRetirement) {
-        this.dateOfRetirement = dateOfRetirement;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -88,55 +85,67 @@ public class Employee {
         this.email = email;
     }
 
+    public Set<WorkedOn> getWorkedOnSet() {
+        return workedOnSet;
+    }
+
+    public void setWorkedOnSet(Set<WorkedOn> workedOnSet) {
+        this.workedOnSet = workedOnSet;
+    }
+
+    public Date getStartDateOfWork() {
+        return startDateOfWork;
+    }
+
+    public void setStartDateOfWork(Date startDateOfWork) {
+        this.startDateOfWork = startDateOfWork;
+    }
+
     @GraphId
     private Long id;
 
-    private String name;
     private String surname;
+    private String name;
     private String email;
+    private Character gender;
 
     private Long experience;
     private Long age;
+    @DateString(value = "MM/dd/y")
+    private Date startDateOfWork;
 
-    @DateString(value = "yyyy-MM-dd")
-    private Date dateOfBirth;
-    @DateString(value = "yyyy-MM-dd")
-    private Date dateOfAssigment;
-    @DateString(value = "yyyy-MM-dd")
-    private Date dateOfRetirement;
+    @Relationship(type = "WorkedOn")
+    private Set<WorkedOn> workedOnSet;
 
     public Employee() {
 
     }
 
-    public Employee(String name, String surname) {
-        this.name = name;
-        this.surname = surname;
+    public Employee(String name, String first_name) {
+        this.surname = name;
+        this.name = first_name;
     }
 
-    //structure: first_name, last_name,email, Gender, start_date_of_work, Age, experience,
+    //structure: name, surname,email, Gender, startDateOfWork, Age, experience,
     // total_efficiency, start_date_project,end_date_project, on_time, role_on_project,
     // n_of_project, deathline, name_of_project, version, cost, client_experience, client_name
-    public Employee(String name, String surname, String email, Date dateOfBirth, Long age, Date dateOfAssigment) {
-        this.name = name;
+    public Employee(String surname, String name, String email, Long age) {
         this.surname = surname;
+        this.name = name;
         this.email = email;
         this.age = age;
-        this.dateOfBirth = dateOfBirth;
-        this.dateOfAssigment = dateOfAssigment;
+//        this.startDateOfWork = startDateOfWork;
     }
 
     @Override
     public String toString() {
         return "Employee{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
+                ", last_name='" + surname + '\'' +
+                ", first_name='" + name + '\'' +
                 ", experience=" + experience +
                 ", age=" + age +
-                ", dateOfBirth=" + dateOfBirth +
-                ", dateOfAssigment=" + dateOfAssigment +
-                ", dateOfRetirement=" + dateOfRetirement +
+//                ", start_date_of_work=" + startDateOfWork +
                 '}';
     }
 }

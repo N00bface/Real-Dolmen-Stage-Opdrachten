@@ -2,16 +2,22 @@ package org.jarivm.relationGraph.domains;
 
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Relationship;
 import org.neo4j.ogm.annotation.typeconversion.DateString;
+import org.neo4j.ogm.utils.RelationshipUtils;
+import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Jari Van Melckebeke
  * @since 20.09.16
  */
-@NodeEntity
+@NodeEntity(label = "Project")
+@Component
 public class Project {
 
     @GraphId
@@ -30,6 +36,8 @@ public class Project {
     @DateString(value = "yyyy-MM-dd")
     private Date dateFinished;
 
+    @Relationship(direction = Relationship.INCOMING, type = "WorkedOn")
+    private List<WorkedOn> workedOn;
     private Client client;
 
     public Project(String name) {
@@ -38,6 +46,14 @@ public class Project {
 
 
     public Project() {
+    }
+
+    public List<WorkedOn> getWorkedOn() {
+        return workedOn;
+    }
+
+    public void setWorkedOn(List<WorkedOn> workedOn) {
+        this.workedOn = workedOn;
     }
 
     public void setId(Long id) {
@@ -149,6 +165,7 @@ public class Project {
                 ", language='" + language + '\'' +
                 ", dateStarted=" + dateStarted +
                 ", dateFinished=" + dateFinished +
+                ", workedOn=" + workedOn +
                 ", client=" + client +
                 '}';
     }

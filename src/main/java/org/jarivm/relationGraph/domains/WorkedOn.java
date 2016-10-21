@@ -12,7 +12,7 @@ import java.util.Date;
  * @author Jari Van Melckebeke
  * @since 29.09.16
  */
-@RelationshipEntity(type = "WORKED_ON")
+@RelationshipEntity(type = "WorkedOn")
 public class WorkedOn {
     public WorkedOn() {
 
