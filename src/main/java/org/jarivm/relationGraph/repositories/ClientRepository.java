@@ -15,13 +15,12 @@ import java.util.Map;
  */
 @Repository
 public interface ClientRepository extends GraphRepository<Client> {
-    @Query("MATCH (n:Client)-[ISSUED]->(a:Project) WHERE n.name = {name} return n.name as name, n.experienceWithRealDolmen as experience, " +
+    @Query("MATCH (n:Client)-[:ISSUED]->(a:Project) WHERE n.name = {name} return n.name as name, n.experienceWithRealDolmen as experience, " +
             "collect({name:a.name ,version:a.version ,lang: a.language , cost:a.cost ,score:a.scoreFromClient}) as projects")
     List<Map<String, Client>> findByName(@Param(value = "name") String name);
 
-    @Query("MATCH (n:Client)-[ISSUED]->(a:Project) WHERE id(n)={id} return n.name as name, n.experienceWithRealDolmen as experience, " +
-            "collect({name:a.name ,version:a.version ,lang: a.language , cost:a.cost ,score:a.scoreFromClient}) as projects")
-    List<Map<String, Client>> findById(@Param(value = "id") Long id);
+    @Query("MATCH (n:Client)-[:ISSUED]->(a:Project) WHERE id(n)={id} return n")
+    Client findById(@Param(value = "id") Long id);
 
     @Query("MATCH (s:Sector)-[]->(m:Client)-[ISSUED]->(a:Project) RETURN s.name as sector, m.name as client, m.experience as experience," +
             "collect({id:a.id, name:a.name}) as projects ORDER BY s.name LIMIT {l}")

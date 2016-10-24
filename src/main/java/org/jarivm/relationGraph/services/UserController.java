@@ -14,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 
@@ -42,17 +44,26 @@ public class UserController {
         return "/user/index";
     }
 
-    @RequestMapping("/tableOverview")
-    public String graph(Model model) {
-        model.addAttribute("graphClient", clientRepository.graph(150));
-        model.addAttribute("graphProject", projectRepository.graph(150));
+    @RequestMapping(value = "/tableOverview")
+    public String graph(@RequestParam(name = "limit", defaultValue = "150", required = false) int limit, Model model) {
+        model.addAttribute("graphClient", clientRepository.graph(limit));
+        model.addAttribute("graphProject", projectRepository.graph(limit));
         return "/user/tableOverview";
     }
 
-    @RequestMapping("/employeeByScore")
-    public String employeeByScore(Model model) {
-        model.addAttribute("graphEmployee", employeeRepository.employeesOfAllTime(150));
+    @RequestMapping(value = "/employeeByScore")
+    public String employeeByScore(@RequestParam(name = "limit", defaultValue = "150", required = false) int limit, Model model) {
+        model.addAttribute("graphEmployee", employeeRepository.employeesOfAllTime(limit));
         return "/user/employeeByScore";
+    }
+
+    @RequestMapping(value = "/search")
+    public String search(Model model) {
+        model.addAttribute("clients", clientRepository.findAll());
+        model.addAttribute("employees", employeeRepository.findAll());
+        model.addAttribute("projects", projectRepository.findAll());
+        model.addAttribute("sectors", sectorRepository.findAll());
+        return "/user/search";
     }
 
     @RequestMapping("/newClient")

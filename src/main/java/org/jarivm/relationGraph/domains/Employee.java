@@ -4,11 +4,9 @@ import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 import org.neo4j.ogm.annotation.typeconversion.DateString;
-import org.springframework.beans.propertyeditors.CharacterEditor;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.Set;
 
 /**
  * @author Jari Van Melckebeke
@@ -85,12 +83,12 @@ public class Employee {
         this.email = email;
     }
 
-    public Set<WorkedOn> getWorkedOnSet() {
-        return workedOnSet;
+    public WorkedOn getWorkedOn() {
+        return workedOn;
     }
 
-    public void setWorkedOnSet(Set<WorkedOn> workedOnSet) {
-        this.workedOnSet = workedOnSet;
+    public void setWorkedOn(WorkedOn workedOn) {
+        this.workedOn = workedOn;
     }
 
     public Date getStartDateOfWork() {
@@ -111,11 +109,11 @@ public class Employee {
 
     private Long experience;
     private Long age;
-    @DateString(value = "MM/dd/y")
+    @DateString(value = "MM/dd/yyyy")
     private Date startDateOfWork;
 
     @Relationship(type = "WorkedOn")
-    private Set<WorkedOn> workedOnSet;
+    private WorkedOn workedOn;
 
     public Employee() {
 

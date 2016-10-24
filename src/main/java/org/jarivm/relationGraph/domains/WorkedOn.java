@@ -102,7 +102,8 @@ public class WorkedOn {
     @Override
     public String toString() {
         return "WorkedOn{" +
-                "employee=" + employee +
+                "id=" + id +
+                ", employee=" + employee +
                 ", project=" + project +
                 ", onTime=" + onTime +
                 ", role='" + role + '\'' +

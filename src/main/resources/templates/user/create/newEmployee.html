@@ -6,6 +6,7 @@
     <title>New Entity</title>
 </head>
 <body>
+<div th:substituteby="index::logout"></div>
 <h1>new Client</h1>
 <form action="#" method="post" th:action="@{/user/create/createNewEmployee}" th:object="${employeeToken}">
     surname:&nbsp;
@@ -15,7 +16,7 @@
     email:&nbsp;
     <input type="text" th:field="${employeeToken.email}"/><br/>
     gender:&nbsp;
-    <select th:object="${employeeToken.gender}">
+    <select th:field="${employeeToken.gender}">
         <option value="m">m</option>
         <option value="v">v</option>
     </select><br/>

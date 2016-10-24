@@ -30,8 +30,8 @@ public interface ProjectRepository extends GraphRepository<Project> {
 
     Collection<Project> findByNameContaining(@Param("0") String name);
 
-    @Query("MATCH (m:Project)<-[:WorkedOn]-(a:Employee) RETURN m.name as name, m.cost as cost," +
-            "m.total_efficiency as score, m.version as version," +
+    @Query("MATCH (m:Project)<-[r:WorkedOn]-(a:Employee) RETURN m.name as name, m.cost as cost," +
+            "sum(r.score)/toFloat(count(r)) as score, m.version as version," +
             " collect({id: id(a)}) as team LIMIT {l}")
     List<Map<String, Project>> graph(@Param("l") int l);
 

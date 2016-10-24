@@ -6,10 +6,12 @@
     <title>New Entity</title>
 </head>
 <body>
+<div th:substituteby="index::logout"></div>
 <h1>new Client</h1>
 <form action="#" method="post" th:action="@{/user/create/createNewSector}" th:object="${sectorToken}">
-    name:&nbsp;
-    <input type="text" th:field="${sectorToken.name}"/><br/>
+    <label>name:&nbsp;
+        <input type="text" th:field="${sectorToken.name}"/>
+    </label>
     <input type="submit" value="Create"/>
 </form>
 </body>

@@ -6,6 +6,7 @@
     <title>New Entity</title>
 </head>
 <body>
+<div th:substituteby="index::logout"></div>
 <h1>new Client</h1>
 <form action="#" method="post" th:action="@{/user/create/createNewClient}" th:object="${clientToken}">
     name:&nbsp;
@@ -13,8 +14,8 @@
     experience:&nbsp;
     <input type="number" th:field="${clientToken.experienceWithRealDolmen}"/><br/>
     sector:&nbsp;
-    <select th:object="${clientToken.sector}">
-        <option th:each="s : ${sectors}" th:text="${s.name}" th:value="${s}"></option>
+    <select th:field="${clientToken.sector}">
+        <option th:each="s : ${sectors}" th:text="${s.name}" th:value="${s.id}" name="sector"></option>
     </select><br/>
     <input type="submit" value="Create"/>
 </form>

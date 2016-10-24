@@ -7,27 +7,31 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+import javax.sql.DataSource;
+
 /**
- * Created by jarivm on 17.10.16.
+ * @author Jari Van Melckebeke
+ * @since 17.10.16.
  */
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
+    DataSource dataSource;
+
+    @Autowired
+    public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
+        auth.jdbcAuthentication().dataSource(dataSource)
+                .usersByUsernameQuery(
+                        "select username,password, enabled from users where username=?")
+                .authoritiesByUsernameQuery(
+                        "select username, role from user_roles where username=?");
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .antMatchers("/css/**", "/index").permitAll()
-                .antMatchers("/user/**").hasRole("USER")
-                .and()
-                .formLogin()
-                .loginPage("/login").failureUrl("/login-error");
+        http.authorizeRequests()
+                .anyRequest().authenticated().and().formLogin().loginPage("/login").permitAll().successForwardUrl("/user/index")
+                .failureForwardUrl("/login");
     }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .inMemoryAuthentication()
-                .withUser("jari").password("root").roles("USER");
-    }
 }

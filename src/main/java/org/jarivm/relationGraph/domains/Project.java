@@ -37,7 +37,9 @@ public class Project {
     private Date dateFinished;
 
     @Relationship(direction = Relationship.INCOMING, type = "WorkedOn")
-    private List<WorkedOn> workedOn;
+    private Set<WorkedOn> workedOn;
+
+    @Relationship(direction = Relationship.INCOMING, type = "ISSUED")
     private Client client;
 
     public Project(String name) {
@@ -48,11 +50,11 @@ public class Project {
     public Project() {
     }
 
-    public List<WorkedOn> getWorkedOn() {
+    public Set<WorkedOn> getWorkedOn() {
         return workedOn;
     }
 
-    public void setWorkedOn(List<WorkedOn> workedOn) {
+    public void setWorkedOn(Set<WorkedOn> workedOn) {
         this.workedOn = workedOn;
     }
 

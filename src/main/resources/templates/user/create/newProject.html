@@ -6,6 +6,7 @@
     <title>New Entity</title>
 </head>
 <body>
+<div th:substituteby="index::logout"></div>
 <h1>new Project</h1>
 <form action="#" method="post" th:action="@{/user/create/createNewProject}" th:object="${projectToken}">
     name:&nbsp;
@@ -17,16 +18,14 @@
     version:&nbsp;
     <input type="text" th:field="${projectToken.version}"/><br/>
     client:
-    <select th:object="${projectToken.client}">
-        <option th:each="s : ${clients}" th:text="${s.name}" th:value="${s}"></option>
+    <select th:field="${projectToken.client}">
+        <option th:each="s : ${clients}" th:text="${s.name}" th:value="${s.id}" name="client"></option>
     </select><br/>
     team:
     <div th:each="e,stat : ${employees}">
-        <input type="checkbox" th:field="${projectToken.workedOn[__${stat.index}__].employee}" th:value="${e}"
-               th:text="${e.surname} + ' ' + ${e.name}"
-               th:selected="${projectToken.workedOn[__${stat.index}__].employee}"/>
-    </div>
-
+        <input type="checkbox" name="employeesCollaborated" th:value="${e.id}"
+               th:text="${e.surname} + ' ' + ${e.name}"/>
+        role:<input type="text" name="roles"/><br/></div>
     <input type="submit" value="Create"/>
 </form>
 </body>
