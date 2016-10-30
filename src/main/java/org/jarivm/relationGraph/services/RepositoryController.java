@@ -26,15 +26,7 @@ import java.util.LinkedHashMap;
  * @since 02.10.16
  */
 @Controller
-public class RepositoryController {
-    @Autowired
-    ProjectRepository projectRepository;
-    @Autowired
-    ClientRepository clientRepository;
-    @Autowired
-    SectorRepository sectorRepository;
-    @Autowired
-    EmployeeRepository employeeRepository;
+public class RepositoryController extends BaseController{
 
     @RequestMapping("/auth")
     public String auth(Model model) {

@@ -1,17 +1,20 @@
 package org.jarivm.relationGraph;
 
+import org.neo4j.ogm.session.Neo4jSession;
 import org.neo4j.ogm.session.SessionFactory;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.logging.LogFile;
-import org.springframework.boot.logging.log4j2.Log4J2LoggingSystem;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.neo4j.config.Neo4jConfiguration;
 import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
+import org.springframework.data.neo4j.template.Neo4jOperations;
+import org.springframework.data.neo4j.template.Neo4jTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 
 /**
  * @author Jari Van Melckebeke
@@ -19,8 +22,11 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
  */
 @Configuration
 @EnableNeo4jRepositories(basePackages = "org.jarivm.relationGraph.repositories")
+@ComponentScan(basePackages = {"org.jarivm.relationGraph"})
 @EnableTransactionManagement
 public class Application extends Neo4jConfiguration {
+    public Application() {
+    }
 
     public static final String URL = "http://localhost:7474";
 
@@ -46,8 +52,15 @@ public class Application extends Neo4jConfiguration {
     }
 
     @Bean
+    public Neo4jTemplate neo4jTemplate() throws Exception {
+        return new Neo4jTemplate(getSession());
+    }
+
+
+    @Bean
     @Override
     public SessionFactory getSessionFactory() {
         return new SessionFactory(getConfiguration(), "org.jarivm.relationGraph.domains", "org.jarivm.relationGraph.repositories");
     }
+
 }

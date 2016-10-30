@@ -5,6 +5,7 @@ import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 import org.neo4j.ogm.annotation.typeconversion.DateString;
 import org.neo4j.ogm.utils.RelationshipUtils;
+import org.springframework.expression.spel.ast.FloatLiteral;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -16,17 +17,14 @@ import java.util.Set;
  * @author Jari Van Melckebeke
  * @since 20.09.16
  */
-@NodeEntity(label = "Project")
-@Component
+@NodeEntity
 public class Project {
 
     @GraphId
     private Long id;
 
-    private Double cost;
-    private Double scoreFromClient;
-    private List<String> conflicts;
-    private Long nConflicts;
+    private Float cost;
+    private Float scoreFromClient;
     private String name;
     private String version;
     private String language;
@@ -39,7 +37,7 @@ public class Project {
     @Relationship(direction = Relationship.INCOMING, type = "WorkedOn")
     private Set<WorkedOn> workedOn;
 
-    @Relationship(direction = Relationship.INCOMING, type = "ISSUED")
+    @Relationship(direction = Relationship.INCOMING, type = "Issued")
     private Client client;
 
     public Project(String name) {
@@ -62,32 +60,16 @@ public class Project {
         this.id = id;
     }
 
-    public void setCost(Double cost) {
+    public void setCost(Float cost) {
         this.cost = cost;
     }
 
-    public Double getScoreFromClient() {
+    public Float getScoreFromClient() {
         return scoreFromClient;
     }
 
-    public void setScoreFromClient(Double scoreFromClient) {
+    public void setScoreFromClient(Float scoreFromClient) {
         this.scoreFromClient = scoreFromClient;
-    }
-
-    public List<String> getConflicts() {
-        return conflicts;
-    }
-
-    public void setConflicts(List<String> conflicts) {
-        this.conflicts = conflicts;
-    }
-
-    public Long getnConflicts() {
-        return nConflicts;
-    }
-
-    public void setnConflicts(Long nConflicts) {
-        this.nConflicts = nConflicts;
     }
 
     public String getVersion() {
@@ -106,12 +88,8 @@ public class Project {
         this.id = id;
     }
 
-    public Double getCost() {
+    public Float getCost() {
         return cost;
-    }
-
-    public void setCost(double cost) {
-        this.cost = cost;
     }
 
     public String getName() {
@@ -160,8 +138,6 @@ public class Project {
                 "id=" + id +
                 ", cost=" + cost +
                 ", scoreFromClient=" + scoreFromClient +
-                ", conflicts=" + conflicts +
-                ", nConflicts=" + nConflicts +
                 ", name='" + name + '\'' +
                 ", version='" + version + '\'' +
                 ", language='" + language + '\'' +

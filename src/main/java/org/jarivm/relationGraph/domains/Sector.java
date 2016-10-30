@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
  * @since 20.09.16
  */
 @NodeEntity
-@Component
 public class Sector {
     public Sector(String name) {
         this.name = name;

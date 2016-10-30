@@ -1,11 +1,15 @@
 package org.jarivm.relationGraph.repositories;
 
 import org.jarivm.relationGraph.domains.Client;
+import org.neo4j.ogm.annotation.Property;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.GraphRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -24,8 +28,14 @@ public interface ClientRepository extends GraphRepository<Client> {
 
     @Query("MATCH (s:Sector)-[]->(m:Client)-[ISSUED]->(a:Project) RETURN s.name as sector, m.name as client, m.experience as experience," +
             "collect({id:a.id, name:a.name}) as projects ORDER BY s.name LIMIT {l}")
-    List<Map<String, Client>> graph(@Param("l") int l);
+    List<Map<String, Client>> graph(@Param("l") Long l);
 
     @Query("MATCH (n:Client) return n")
-    Iterable<Client> findAll();
+    Collection<Client> findAll();
+
+    @Query("MATCH (n:Client) return keys(n) limit 1")
+    String[] findProperties();
+
+    @Query("MATCH (m:Client) WHERE ANY(prop in keys(m) where prop={propertyKey} and m[prop] contains {propertyValue}) RETURN m;")
+    Iterable<Client> findByProperty(@Param("propertyKey") String propertyName, @Param("propertyValue") String propertyValue);
 }

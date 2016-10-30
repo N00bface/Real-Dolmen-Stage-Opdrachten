@@ -5,5 +5,4 @@
 /out/
 .idea_modules/
 target/
-pom.xml
 BusinessMappingGraphDrivenWebApp.iml

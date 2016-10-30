@@ -8,6 +8,7 @@ import org.jarivm.relationGraph.repositories.ProjectRepository;
 import org.jarivm.relationGraph.repositories.SectorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomCollectionEditor;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -25,18 +26,7 @@ import java.util.*;
  */
 @Controller
 @RequestMapping("user/create")
-@Transactional
-public class CreateController extends Application {
-    @Autowired
-    ProjectRepository projectRepository;
-    @Autowired
-    ClientRepository clientRepository;
-    @Autowired
-    SectorRepository sectorRepository;
-    @Autowired
-    EmployeeRepository employeeRepository;
-    Map<String, Employee> employeeCache;
-
+public class CreateController extends BaseController {
 
     @RequestMapping(value = "/createNewClient")
     public String createNewClient(@RequestParam(name = "sector") Long s, Client client, BindingResult bindingResult, Model model) {

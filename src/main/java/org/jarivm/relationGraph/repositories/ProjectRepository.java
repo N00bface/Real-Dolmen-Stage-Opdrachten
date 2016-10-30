@@ -2,10 +2,12 @@ package org.jarivm.relationGraph.repositories;
 
 import org.jarivm.relationGraph.domains.Client;
 import org.jarivm.relationGraph.domains.Project;
+import org.jarivm.relationGraph.domains.WorkedOn;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.GraphRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
@@ -33,6 +35,11 @@ public interface ProjectRepository extends GraphRepository<Project> {
     @Query("MATCH (m:Project)<-[r:WorkedOn]-(a:Employee) RETURN m.name as name, m.cost as cost," +
             "sum(r.score)/toFloat(count(r)) as score, m.version as version," +
             " collect({id: id(a)}) as team LIMIT {l}")
-    List<Map<String, Project>> graph(@Param("l") int l);
+    List<Map<String, Project>> graph(@Param("l") Long l);
 
+    @Query("MATCH (n:Project) return keys(n) limit 1")
+    String[] findProperties();
+
+    @Query("MATCH (m:Project) WHERE ANY(prop in keys(m) where prop={propertyKey} and m[prop] contains {propertyValue}) RETURN m;")
+    Iterable<Project> findByProperty(@Param("propertyKey") String propertyName, @Param("propertyValue") String propertyValue);
 }

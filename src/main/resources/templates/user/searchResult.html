@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link th:href="@{/css/main.css}" rel="stylesheet" href="../../css/main.css"/>
+    <title>table overview</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div th:substituteby="index::logout"></div>
+<div th:substituteby="user/search::newSearch"></div>
+<h1>results: </h1>
+<th:block th:switch="${type}">
+    <div class="result" th:case="client">
+        <div th:each="obj : ${results}">
+            <h4 th:text="${obj.name}"></h4><br/>
+            <q th:text="${obj.experience} + ' years of experience'"></q>
+        </div>
+    </div>
+    <div class="result" th:case="employee">
+        <div th:each="obj : ${results}">
+            <h4 th:text="${obj.surname} + ', ' + ${obj.name}"></h4>
+            <b th:text="${obj.experience} + ' years of experience'"></b><br/>
+            <b th:text="${obj.age} +  ' years'"></b><br/>
+            <b th:text="'gender: ' + ${obj.gender}"></b><br/>
+            <b><a th:href="'mailto:'+${obj.email}" th:text="${obj.email}"></a></b>
+        </div>
+    </div>
+    <div class="result" th:case="project">
+        <div th:each="obj : ${results}">
+            <h4 th:text="${obj.name}"></h4>
+            <b th:text="'version: ' + ${obj.scoreFromClient}"></b><br/>
+            <b th:text="'cost: ' + ${obj.cost}"></b><br/>
+            <span>team:
+                <span th:each="r,c : ${obj.workedOn}">
+                <span th:if="${c.count} &lt; ${#lists.size(obj.workedOn)}" th:text="${r.employee.name}+ ', '"></span>
+                <span th:unless="${c.count} &lt; ${#lists.size(obj.workedOn)}" th:text="${r.employee.name}"></span>
+            </span>
+            </span>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>

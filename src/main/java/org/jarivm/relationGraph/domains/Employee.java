@@ -12,8 +12,7 @@ import java.util.Date;
  * @author Jari Van Melckebeke
  * @since 20.09.16
  */
-@NodeEntity(label = "Employee")
-@Component
+@NodeEntity
 public class Employee {
     public Character getGender() {
         return gender;
@@ -112,7 +111,7 @@ public class Employee {
     @DateString(value = "MM/dd/yyyy")
     private Date startDateOfWork;
 
-    @Relationship(type = "WorkedOn")
+    @Relationship(type = "WorkedOn", direction = Relationship.OUTGOING)
     private WorkedOn workedOn;
 
     public Employee() {

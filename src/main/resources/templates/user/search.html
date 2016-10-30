@@ -8,14 +8,14 @@
 </head>
 <script th:href="@{/js/jquery-3.1.1.min.js}" type="text/javascript"></script>
 <body>
-<form method="get" action="#" th:action="@{/user/search/simpleSearch}">
+<form th:fragment="newSearch" method="get" action="#" th:action="@{/user/search/simpleSearch}">
     <label>
         search on property: <br/>
         property type:
-        <select th:field="${type}">
+        <select name="t">
             <!-- todo: make the keys more human readable -->
             <optgroup label="Client">
-                <option th:each="key : ${clientKeys}" th:text="${key}" th:value="'Project,' + ${key}"></option>
+                <option th:each="key : ${clientKeys}" th:text="${key}" th:value="'Client,' + ${key}"></option>
             </optgroup>
             <optgroup label="Employee">
                 <option th:each="key : ${employeeKeys}" th:text="${key}" th:value="'Employee,' + ${key}"></option>
@@ -28,9 +28,9 @@
             </optgroup>
         </select>
         value:
-        <input type="text" content="date format: MM/dd/YYYY" th:field="${query}"/>
+        <input type="text" content="date format: MM/dd/yyyy" name="q"/>
     </label>
-    <input type="submit" value="Search">
+    <input type="submit" value="Search"/>
 </form>
 </body>
 </html>
