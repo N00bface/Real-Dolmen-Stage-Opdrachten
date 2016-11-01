@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>New Entity</title>
+</head>
+<body>
+<div th:substituteby="index::logout"></div>
+<h1>new Project</h1>
+<form action="#" method="post" th:action="@{/user/create/edit/project/__${project.id}__/confirm}"
+      th:object="${project}" th:with="follow='-1'">
+    id:&nbsp;<input type="number" th:field="${project.id}" th:value="*{id}" disabled="disabled"/><br/>
+    name:&nbsp;
+    <input type="text" th:field="${project.name}" th:value="*{name}"/><br/>
+    cost:&nbsp;€
+    <input type="number" min="0" step="0.1" th:field="${project.cost}" th:value="*{cost}"/><br/>
+    start date:&nbsp;
+    <input type="date" th:field="${project.dateStarted}" th:value="*{dateStarted}"/><br/>
+    version:&nbsp;
+    <input type="text" th:field="${project.version}" th:value="*{version}"/><br/>
+    client:
+    <select th:field="${project.client}" th:value="*{client}">
+        <option th:each="s : ${clients}" th:text="${s.name}" th:value="${s.id}" name="client"></option>
+    </select><br/>
+    team:
+    <div th:each="e,stat : ${employees}">
+
+        <input type="checkbox" name="employeesCollaborated" th:value="${e.id}"
+               th:checked="${#lists.contains(employeesCollaborated, e.id)}"
+               th:text="${e.surname} + ' ' + ${e.name}"/>
+        role:
+        <th:block th:if="${#lists.contains(employeesCollaborated, e.id)}">
+            <input type="text" name="roles" th:value="${workedOns.next().role}"/>
+        </th:block>
+        <th:block th:unless="${#lists.contains(employeesCollaborated, e.id)}">
+            <input type="text" name="roles"/>
+        </th:block>
+        <br/>
+    </div>
+    <input type="submit" value="Confirm"/>
+</form>
+</body>
+</html>

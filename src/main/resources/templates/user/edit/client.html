@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>New Entity</title>
+</head>
+<body>
+<div th:substituteby="index::logout"></div>
+<h1>new Client</h1>
+<form action="#" method="post" th:action="@{/user/create/edit/client/__${client.id}__/confirm}" th:object="${client}">
+    id: <input type="number" th:value="${client.id}" disabled="disabled"/><br/>
+    name:&nbsp;
+    <input type="text" th:field="${client.name}" th:value="${client.name}"/><br/>
+    experience:&nbsp;
+    <input type="number" th:field="${client.experience}"
+           th:value="${client.experience}"/><br/>
+    sector:&nbsp;
+    <select th:field="${client.sector}" th:value="${client.sector}">
+        <option th:each="s : ${sectors}" th:text="${s.name}" th:value="${s.id}" name="sector"></option>
+    </select><br/>
+    <input type="submit" value="Confirm"/>
+</form>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Project view</title>
+</head>
+<body>
+<h1 th:text="${project.name}"></h1><br/>
+<b th:text="'version: ' + ${project.scoreFromClient}"></b><br/>
+<b th:text="'cost: ' + ${project.cost}"></b><br/>
+<span>team:
+                <!--todo: add links to employee views-->
+                <span th:each="r,c : ${project.workedOn}">
+                <span th:if="${c.count} &lt; ${#lists.size(project.workedOn)}"
+                      th:text="${r.employee.surname}+ ', ' + ${r.employee.name} + '; '"></span>
+                <span th:unless="${c.count} &lt; ${#lists.size(project.workedOn)}"
+                      th:text="${r.employee.surname}+ ', ' + ${r.employee.name}"></span>
+            </span>
+            </span>
+<a th:href="@{/user/create/edit/__${project.id}__}">edit</a>
+</body>
+</html>

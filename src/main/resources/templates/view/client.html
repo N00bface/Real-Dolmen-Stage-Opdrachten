@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Client view</title>
+</head>
+<body>
+<h1 th:text="${client.name}"></h1>
+<b th:text="'has ' + ${client.experience} + ' years of experience with Realdolmen'"></b><br/>
+<a th:href="@{/user/create/edit/__${client.id}__}">edit</a>
+</body>
+</html>

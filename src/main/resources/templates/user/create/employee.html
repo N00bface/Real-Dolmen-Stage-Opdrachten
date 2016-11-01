@@ -8,7 +8,7 @@
 <body>
 <div th:substituteby="index::logout"></div>
 <h1>new Client</h1>
-<form action="#" method="post" th:action="@{/user/create/createNewEmployee}" th:object="${employeeToken}">
+<form action="#" method="post" th:action="@{/user/create/createEmployee}" th:object="${employeeToken}">
     surname:&nbsp;
     <input type="text" th:field="${employeeToken.surname}"/><br/>
     name:&nbsp;

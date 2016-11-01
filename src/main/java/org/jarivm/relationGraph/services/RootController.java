@@ -26,7 +26,7 @@ import java.util.LinkedHashMap;
  * @since 02.10.16
  */
 @Controller
-public class RepositoryController extends BaseController{
+public class RootController extends BaseController{
 
     @RequestMapping("/auth")
     public String auth(Model model) {

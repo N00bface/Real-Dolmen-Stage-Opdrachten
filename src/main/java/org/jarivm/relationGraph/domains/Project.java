@@ -17,134 +17,140 @@ import java.util.Set;
  * @author Jari Van Melckebeke
  * @since 20.09.16
  */
-@NodeEntity
+@NodeEntity(label = "Project")
 public class Project {
 
-    @GraphId
-    private Long id;
+	@GraphId
+	private Long id;
 
-    private Float cost;
-    private Float scoreFromClient;
-    private String name;
-    private String version;
-    private String language;
+	private Float cost;
+	private Float scoreFromClient;
+	private String name;
+	private String version;
+	private String language;
+	private Boolean onTime;
+	@DateString(value = "yyyy-MM-dd")
+	private Date dateStarted;
+	@DateString(value = "yyyy-MM-dd")
+	private Date dateFinished;
+	@Relationship(direction = Relationship.INCOMING, type = "WorkedOn")
+	private List<WorkedOn> workedOn;
+	@Relationship(direction = Relationship.INCOMING, type = "Issued")
+	private Client client;
 
-    @DateString(value = "yyyy-MM-dd")
-    private Date dateStarted;
-    @DateString(value = "yyyy-MM-dd")
-    private Date dateFinished;
+	public Project(String name) {
+		this.name = name;
+	}
 
-    @Relationship(direction = Relationship.INCOMING, type = "WorkedOn")
-    private Set<WorkedOn> workedOn;
+	public Project() {
+	}
 
-    @Relationship(direction = Relationship.INCOMING, type = "Issued")
-    private Client client;
+	public Client getClient() {
+		return client;
+	}
 
-    public Project(String name) {
-        this.name = name;
-    }
+	public void setClient(Client client) {
+		this.client = client;
+	}
 
+	public Float getCost() {
+		return cost;
+	}
 
-    public Project() {
-    }
+	public void setCost(Float cost) {
+		this.cost = cost;
+	}
 
-    public Set<WorkedOn> getWorkedOn() {
-        return workedOn;
-    }
+	public Date getDateFinished() {
+		return dateFinished;
+	}
 
-    public void setWorkedOn(Set<WorkedOn> workedOn) {
-        this.workedOn = workedOn;
-    }
+	public void setDateFinished(Date dateFinished) {
+		this.dateFinished = dateFinished;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public Date getDateStarted() {
+		return dateStarted;
+	}
 
-    public void setCost(Float cost) {
-        this.cost = cost;
-    }
+	public void setDateStarted(Date dateStarted) {
+		this.dateStarted = dateStarted;
+	}
 
-    public Float getScoreFromClient() {
-        return scoreFromClient;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setScoreFromClient(Float scoreFromClient) {
-        this.scoreFromClient = scoreFromClient;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getVersion() {
-        return version;
-    }
+	public String getLanguage() {
+		return language;
+	}
 
-    public void setVersion(String version) {
-        this.version = version;
-    }
+	public void setLanguage(String language) {
+		this.language = language;
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setId(long id) {
-        this.id = id;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public Float getCost() {
-        return cost;
-    }
+	public Boolean getOnTime() {
+		return onTime;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setOnTime(Boolean onTime) {
+		this.onTime = onTime;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public Float getScoreFromClient() {
+		return scoreFromClient;
+	}
 
-    public Date getDateStarted() {
-        return dateStarted;
-    }
+	public void setScoreFromClient(Float scoreFromClient) {
+		this.scoreFromClient = scoreFromClient;
+	}
 
-    public void setDateStarted(Date dateStarted) {
-        this.dateStarted = dateStarted;
-    }
+	public String getVersion() {
+		return version;
+	}
 
-    public Date getDateFinished() {
-        return dateFinished;
-    }
+	public void setVersion(String version) {
+		this.version = version;
+	}
 
-    public void setDateFinished(Date dateFinished) {
-        this.dateFinished = dateFinished;
-    }
+	public List<WorkedOn> getWorkedOn() {
+		return workedOn;
+	}
 
-    public String getLanguage() {
-        return language;
-    }
+	public void setWorkedOn(List<WorkedOn> workedOn) {
+		this.workedOn = workedOn;
+	}
 
-    public void setLanguage(String language) {
-        this.language = language;
-    }
+	@Override
+	public String toString() {
+		return "Project{" +
+				"id=" + id +
+				", cost=" + cost +
+				", name='" + name + '\'' +
+				", version='" + version + '\'' +
+				", language='" + language + '\'' +
+				", onTime=" + onTime +
+				", dateStarted=" + dateStarted +
+				", dateFinished=" + dateFinished +
+				", workedOn=" + workedOn +
+				", client=" + client +
+				'}';
+	}
 
-    public Client getClient() {
-        return client;
-    }
+	public Boolean isOnTime() {
+		return onTime;
 
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
-    @Override
-    public String toString() {
-        return "Project{" +
-                "id=" + id +
-                ", cost=" + cost +
-                ", scoreFromClient=" + scoreFromClient +
-                ", name='" + name + '\'' +
-                ", version='" + version + '\'' +
-                ", language='" + language + '\'' +
-                ", dateStarted=" + dateStarted +
-                ", dateFinished=" + dateFinished +
-                ", workedOn=" + workedOn +
-                ", client=" + client +
-                '}';
-    }
+	}
 }

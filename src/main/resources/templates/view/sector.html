@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Sector view</title>
+</head>
+<body>
+<h1 th:text="${sector.name}"></h1><br/>
+<a th:href="@{/user/create/edit/__${sector.id}__}">edit</a>
+</body>
+</html>

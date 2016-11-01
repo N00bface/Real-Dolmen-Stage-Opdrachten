@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>New Entity</title>
+</head>
+<body>
+<div th:substituteby="index::logout"></div>
+<h1>new Client</h1>
+<form action="#" method="post" th:action="@{/user/create/edit/employee/__${employee.id}__/confirm}" th:object="${employee}">
+    id:&nbsp;<input type="number" th:field="${employee.id}" th:value="${employee.id}" disabled="disabled"/><br/>
+    surname:&nbsp;
+    <input type="text" th:field="${employee.surname}" th:value="${employee.surname}"/><br/>
+    name:&nbsp;
+    <input type="text" th:field="${employee.name}" th:value="${employee.name}"/><br/>
+    email:&nbsp;
+    <input type="text" th:field="${employee.email}" th:value="${employee.email}"/><br/>
+    gender:&nbsp;
+    <select th:field="${employee.gender}" th:value="${employee.gender}">
+        <option value="m">m</option>
+        <option value="v">v</option>
+    </select><br/>
+    start date of work:&nbsp;
+    <input type="date" th:field="${employee.startDateOfWork}" th:value="${employee.startDateOfWork}"/><br/>
+    age:&nbsp;
+    <input type="number" th:field="${employee.age}" th:value="${employee.age}"/><br/>
+    experience:&nbsp;
+    <input type="number" th:field="${employee.experience}" th:value="${employee.experience}"/><br/>
+    <input type="submit" value="Confirm"/>
+</form>
+</body>
+</html>

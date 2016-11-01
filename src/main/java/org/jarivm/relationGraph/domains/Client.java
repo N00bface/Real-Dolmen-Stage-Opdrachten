@@ -16,10 +16,10 @@ public class Client {
     @GraphId
     private Long id;
 
-    @Relationship(type = "IS_SECTOR_FOR", direction = Relationship.INCOMING)
+    @Relationship(type = "IsSectorFor", direction = Relationship.INCOMING)
     private Sector sector;
     private String name;
-    private Long experienceWithRealDolmen;
+    private Long experience;
     private Double avgScoreForProject;
 
     @DateString(value = "yyyy-MM-dd")
@@ -59,12 +59,12 @@ public class Client {
         this.sector = sector;
     }
 
-    public Long getExperienceWithRealDolmen() {
-        return experienceWithRealDolmen;
+    public Long getExperience() {
+        return experience;
     }
 
-    public void setExperienceWithRealDolmen(Long experienceWithRealDolmen) {
-        this.experienceWithRealDolmen = experienceWithRealDolmen;
+    public void setExperience(Long experience) {
+        this.experience = experience;
     }
 
     public Double getAvgScoreForProject() {
@@ -97,7 +97,7 @@ public class Client {
                 "id=" + id +
                 ", sector=" + sector +
                 ", name='" + name + '\'' +
-                ", experienceWithRealDolmen=" + experienceWithRealDolmen +
+                ", experience=" + experience +
                 ", avgScoreForProject=" + avgScoreForProject +
                 ", dateOfFounding=" + dateOfFounding +
                 ", dateOfFirstCooperation=" + dateOfFirstCooperation +

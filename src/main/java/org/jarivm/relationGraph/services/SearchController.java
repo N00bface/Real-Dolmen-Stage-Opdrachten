@@ -1,13 +1,9 @@
 package org.jarivm.relationGraph.services;
 
-import org.jarivm.relationGraph.domains.*;
-import org.jarivm.relationGraph.repositories.ClientRepository;
-import org.jarivm.relationGraph.repositories.EmployeeRepository;
-import org.jarivm.relationGraph.repositories.ProjectRepository;
-import org.jarivm.relationGraph.repositories.SectorRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.neo4j.template.Neo4jOperations;
-import org.springframework.data.neo4j.template.Neo4jTemplate;
+import org.jarivm.relationGraph.domains.Client;
+import org.jarivm.relationGraph.domains.Employee;
+import org.jarivm.relationGraph.domains.Project;
+import org.jarivm.relationGraph.domains.Sector;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;

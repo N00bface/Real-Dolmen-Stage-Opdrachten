@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Employee view</title>
+</head>
+<body>
+<h1 th:text="${employee.surname} + ', ' + ${employee.name}"></h1>
+<b th:text="${employee.experience} + ' years of experience'"></b><br/>
+<b th:text="${employee.age} +  ' years'"></b><br/>
+<b th:text="'gender: ' + ${employee.gender}"></b><br/>
+<b><a th:href="'mailto:'+${employee.email}" th:text="${employee.email}"></a></b>
+<a th:href="@{/user/create/edit/__${employee.id}__}">edit</a>
+</body>
+</html>

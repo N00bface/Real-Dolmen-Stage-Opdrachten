@@ -8,6 +8,7 @@ import org.springframework.data.neo4j.repository.GraphRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -20,18 +21,21 @@ import java.util.Map;
  */
 @Repository
 public interface SectorRepository extends GraphRepository<Sector> {
-    @Query("MATCH (m:Sector) WHERE m.name={name} return m limit 1")
-    LinkedHashMap<String, Object> findByName(@Param("name") String name);
+	@Query("MATCH (m:Sector) WHERE m.name={name} return m limit 1")
+	LinkedHashMap<String, Object> findByName(@Param("name") String name);
 
-    Collection<Project> findByNameContaining(@Param("0") String name);
+	Collection<Project> findByNameContaining(@Param("0") String name);
 
-    @Query("MATCH (m:Sector)-[IS_SECTOR_FOR]->(a:Client) RETURN m.name as sector, collect(a.name) as clients")
-    List<Map<String, Sector>> graph(@Param("l") int l);
+	@Query("MATCH (n:Sector) where id(n)={id} return n")
+	Sector findById(@Param("id") Long id);
 
-    @Query("MATCH (n:Sector) return keys(n) limit 1")
-    String[] findProperties();
+	@Query("MATCH (m:Sector)-[IS_SECTOR_FOR]->(a:Client) RETURN m.name as sector, collect(a.name) as clients")
+	List<Map<String, Sector>> graph(@Param("l") int l);
 
-    @Query("MATCH (m:Sector) WHERE ANY(prop in keys(m) where prop={propertyKey} and m[prop] contains {propertyValue}) RETURN m;")
-    Iterable<Sector> findByProperty(@Param("propertyKey") String propertyName, @Param("propertyValue") String propertyValue);
+	@Query("MATCH (n:Sector) return keys(n) limit 1")
+	String[] findProperties();
+
+	@Query("MATCH (m:Sector) WHERE ANY(prop in keys(m) where prop={propertyKey} and m[prop] contains {propertyValue}) RETURN m;")
+	Iterable<Sector> findByProperty(@Param("propertyKey") String propertyName, @Param("propertyValue") String propertyValue);
 
 }

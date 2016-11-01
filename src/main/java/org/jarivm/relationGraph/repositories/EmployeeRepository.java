@@ -1,13 +1,11 @@
 package org.jarivm.relationGraph.repositories;
 
-import org.jarivm.relationGraph.domains.Client;
 import org.jarivm.relationGraph.domains.Employee;
 import org.jarivm.relationGraph.domains.Project;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.GraphRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
@@ -24,7 +22,7 @@ public interface EmployeeRepository extends GraphRepository<Employee> {
     List<Map<String, Project>> employeesOfAllTime(@Param("l") Long l);
 
     @Query("MATCH (n:Employee) where id(n)={id} return n")
-    List<Map<String, Employee>> findById(@Param(value = "id") Long id);
+    Employee findById(@Param(value = "id") Long id);
 
     @Query("MATCH (n:Employee) return n")
     Iterable<Employee> findAll();

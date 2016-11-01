@@ -8,7 +8,7 @@
 <body>
 <div th:substituteby="index::logout"></div>
 <h1>new Client</h1>
-<form action="#" method="post" th:action="@{/user/create/createNewSector}" th:object="${sectorToken}">
+<form action="#" method="post" th:action="@{/user/create/createSector}" th:object="${sectorToken}">
     <label>name:&nbsp;
         <input type="text" th:field="${sectorToken.name}"/>
     </label>

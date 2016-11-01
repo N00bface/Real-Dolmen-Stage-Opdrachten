@@ -14,101 +14,106 @@ import java.util.Date;
  */
 @RelationshipEntity(type = "WorkedOn")
 public class WorkedOn {
-    public WorkedOn() {
+	@GraphId
+	private Long id;
+	@StartNode
+	private Employee employee;
+	@EndNode
+	private Project project;
+	private boolean onTime;
+	private String role;
+	private double score;
+	private long projectNr;
 
-    }
+	public WorkedOn() {
 
-    public WorkedOn(Employee employee, Project project, boolean onTime, String role, double score, long projectNr) {
-        this.employee = employee;
-        this.project = project;
-        this.onTime = onTime;
-        this.role = role;
-        this.score = score;
-        this.projectNr = projectNr;
-    }
+	}
 
-    public WorkedOn(Employee employee, Project project, String role) {
-        this.employee = employee;
-        this.project = project;
-        this.role = role;
-    }
+	public WorkedOn(Employee employee, Project project, boolean onTime, String role, double score, long projectNr) {
+		this.employee = employee;
+		this.project = project;
+		this.onTime = onTime;
+		this.role = role;
+		this.score = score;
+		this.projectNr = projectNr;
+	}
 
-    public WorkedOn(Employee employee, Project project) {
-        this.employee = employee;
-        this.project = project;
-    }
+	public WorkedOn(Employee employee, Project project, String role) {
+		this.employee = employee;
+		this.project = project;
+		this.role = role;
+	}
 
-    @GraphId
-    Long id;
+	public WorkedOn(Employee employee, Project project) {
+		this.employee = employee;
+		this.project = project;
+	}
 
-    @StartNode
-    private Employee employee;
-    @EndNode
-    private Project project;
+	public Employee getEmployee() {
+		return employee;
+	}
 
-    private boolean onTime;
-    private String role;
-    private double score;
-    private long projectNr;
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+	}
 
-    public Employee getEmployee() {
-        return employee;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public Project getProject() {
-        return project;
-    }
+	public Project getProject() {
+		return project;
+	}
 
-    public void setProject(Project project) {
-        this.project = project;
-    }
+	public void setProject(Project project) {
+		this.project = project;
+	}
 
-    public boolean isOnTime() {
-        return onTime;
-    }
+	public long getProjectNr() {
+		return projectNr;
+	}
 
-    public void setOnTime(boolean onTime) {
-        this.onTime = onTime;
-    }
+	public void setProjectNr(long projectNr) {
+		this.projectNr = projectNr;
+	}
 
-    public String getRole() {
-        return role;
-    }
+	public String getRole() {
+		return role;
+	}
 
-    public void setRole(String role) {
-        this.role = role;
-    }
+	public void setRole(String role) {
+		this.role = role;
+	}
 
-    public double getScore() {
-        return score;
-    }
+	public double getScore() {
+		return score;
+	}
 
-    public void setScore(double score) {
-        this.score = score;
-    }
+	public void setScore(double score) {
+		this.score = score;
+	}
 
-    public long getProjectNr() {
-        return projectNr;
-    }
+	public boolean isOnTime() {
+		return onTime;
+	}
 
-    public void setProjectNr(long projectNr) {
-        this.projectNr = projectNr;
-    }
+	public void setOnTime(boolean onTime) {
+		this.onTime = onTime;
+	}
 
-    @Override
-    public String toString() {
-        return "WorkedOn{" +
-                "id=" + id +
-                ", employee=" + employee +
-                ", project=" + project +
-                ", onTime=" + onTime +
-                ", role='" + role + '\'' +
-                ", score=" + score +
-                ", projectNr=" + projectNr +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return "WorkedOn{" +
+				"id=" + id +
+				", employee=" + employee +
+				", onTime=" + onTime +
+				", role='" + role + '\'' +
+				", score=" + score +
+				", projectNr=" + projectNr +
+				'}';
+	}
 }

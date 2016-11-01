@@ -23,7 +23,7 @@ public interface ClientRepository extends GraphRepository<Client> {
             "collect({name:a.name ,version:a.version ,lang: a.language , cost:a.cost ,score:a.scoreFromClient}) as projects")
     List<Map<String, Client>> findByName(@Param(value = "name") String name);
 
-    @Query("MATCH (n:Client)-[:ISSUED]->(a:Project) WHERE id(n)={id} return n")
+    @Query("MATCH (n:Client) WHERE id(n)={id} return n")
     Client findById(@Param(value = "id") Long id);
 
     @Query("MATCH (s:Sector)-[]->(m:Client)-[ISSUED]->(a:Project) RETURN s.name as sector, m.name as client, m.experience as experience," +
