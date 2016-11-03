@@ -1,40 +1,29 @@
 package org.jarivm.relationGraph;
 
-import org.neo4j.ogm.session.Neo4jSession;
 import org.neo4j.ogm.session.SessionFactory;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.boot.SpringBootConfiguration;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
-import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.neo4j.config.Neo4jConfiguration;
 import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
-import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.data.neo4j.template.Neo4jTemplate;
 import org.springframework.data.neo4j.transaction.Neo4jTransactionManager;
+import org.springframework.data.transaction.ChainedTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.config.JtaTransactionManagerFactoryBean;
 
 /**
  * @author Jari Van Melckebeke
- * @since 23.09.16
+ * @since 03.11.16.
  */
-@Configuration
+@TestConfiguration
 @EnableNeo4jRepositories(basePackages = "org.jarivm.relationGraph.repositories")
 @ComponentScan(basePackages = {"org.jarivm.relationGraph"})
-public class Application extends Neo4jConfiguration {
+public class TestApplication extends Neo4jConfiguration {
 	public static final String URL = "http://localhost:7474";
-
-	public Application() {
-	}
 
 	@Bean(name = "dataSource")
 	public DriverManagerDataSource dataSource() {
@@ -68,8 +57,8 @@ public class Application extends Neo4jConfiguration {
 		return config;
 	}
 
-	@Bean
-	public EmbeddedServletContainerFactory servletContainer() {
-		return new TomcatEmbeddedServletContainerFactory();
+	@Bean(name = "transactionManager")
+	public PlatformTransactionManager neo4jTransactionManager() throws Exception {
+		return new Neo4jTransactionManager(getSession());
 	}
 }

@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @since 02.10.16
  */
 @SpringBootApplication
-@ComponentScan({"org.jarivm.relationGraph"})
 public class Startup  {
 
     public static void main(String[] args) {

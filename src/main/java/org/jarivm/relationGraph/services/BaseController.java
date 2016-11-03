@@ -7,13 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import java.util.Arrays;
+
 /**
  * @author Jari Van Melckebeke
  * @since 29.10.16.
  */
 @ControllerAdvice
 public class BaseController {
-	static Logger logger = Logger.getLogger(Application.class.getName());
 	@Autowired
 	public ProjectRepository projectRepository;
 	@Autowired
