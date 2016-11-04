@@ -1,9 +1,10 @@
-package org.jarivm.relationGraph.services;
+package org.jarivm.relationGraph.controllers;
 
 import org.jarivm.relationGraph.domains.Client;
 import org.jarivm.relationGraph.domains.Employee;
 import org.jarivm.relationGraph.domains.Project;
 import org.jarivm.relationGraph.domains.Sector;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import java.text.SimpleDateFormat;
 public class SearchController extends BaseController {
 
     @RequestMapping("/simpleSearch")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_PROJECT_LEADER')")
     public String simpleSearch(@RequestParam(name = "q") String query, @RequestParam(name = "t") String type, Model model) {
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
         if (type.startsWith("Client,")) {

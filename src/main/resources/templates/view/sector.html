@@ -7,6 +7,7 @@
 </head>
 <body>
 <h1 th:text="${sector.name}"></h1><br/>
-<a th:href="@{/user/create/edit/__${sector.id}__}">edit</a>
+<a th:href="@{/user/create/edit/__${sector.id}__}">edit</a><br/>
+<a th:href="@{/user/delete/__${sector.id}__}">delete</a>
 </body>
 </html>

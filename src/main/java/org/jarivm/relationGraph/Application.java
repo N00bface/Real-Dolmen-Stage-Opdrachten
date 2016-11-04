@@ -1,27 +1,16 @@
 package org.jarivm.relationGraph;
 
-import org.neo4j.ogm.session.Neo4jSession;
 import org.neo4j.ogm.session.SessionFactory;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.boot.SpringBootConfiguration;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.neo4j.config.Neo4jConfiguration;
 import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
-import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.data.neo4j.template.Neo4jTemplate;
-import org.springframework.data.neo4j.transaction.Neo4jTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
 /**
  * @author Jari Van Melckebeke
@@ -30,6 +19,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableNeo4jRepositories(basePackages = "org.jarivm.relationGraph.repositories")
 @ComponentScan(basePackages = {"org.jarivm.relationGraph"})
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class Application extends Neo4jConfiguration {
 	public static final String URL = "http://localhost:7474";
 
@@ -47,6 +37,7 @@ public class Application extends Neo4jConfiguration {
 	}
 
 	@Bean
+	@Override
 	public Neo4jTemplate neo4jTemplate() throws Exception {
 		return new Neo4jTemplate(getSession());
 	}
@@ -68,8 +59,8 @@ public class Application extends Neo4jConfiguration {
 		return config;
 	}
 
-	@Bean
+	/*@Bean
 	public EmbeddedServletContainerFactory servletContainer() {
 		return new TomcatEmbeddedServletContainerFactory();
-	}
+	}*/
 }

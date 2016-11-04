@@ -8,6 +8,7 @@
 <body>
 <h1 th:text="${client.name}"></h1>
 <b th:text="'has ' + ${client.experience} + ' years of experience with Realdolmen'"></b><br/>
-<a th:href="@{/user/create/edit/__${client.id}__}">edit</a>
+<a th:href="@{/user/create/edit/__${client.id}__}">edit</a><br/>
+<a th:href="@{/user/delete/__${client.id}__}">delete</a>
 </body>
 </html>

@@ -1,25 +1,19 @@
 package org.jarivm.relationGraph;
 
 import org.neo4j.ogm.session.SessionFactory;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
-import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.neo4j.config.Neo4jConfiguration;
 import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
 import org.springframework.data.neo4j.template.Neo4jTemplate;
-import org.springframework.data.neo4j.transaction.Neo4jTransactionManager;
-import org.springframework.data.transaction.ChainedTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.config.JtaTransactionManagerFactoryBean;
 
 /**
  * @author Jari Van Melckebeke
  * @since 03.11.16.
  */
-@TestConfiguration
+@Configuration
 @EnableNeo4jRepositories(basePackages = "org.jarivm.relationGraph.repositories")
 @ComponentScan(basePackages = {"org.jarivm.relationGraph"})
 public class TestApplication extends Neo4jConfiguration {
@@ -56,9 +50,10 @@ public class TestApplication extends Neo4jConfiguration {
 				.setCredentials("neo4j", "tanzania");
 		return config;
 	}
-
-	@Bean(name = "transactionManager")
-	public PlatformTransactionManager neo4jTransactionManager() throws Exception {
+/*
+	@Bean
+	@Override
+	public PlatformTransactionManager transactionManager() throws Exception {
 		return new Neo4jTransactionManager(getSession());
-	}
+	}*/
 }

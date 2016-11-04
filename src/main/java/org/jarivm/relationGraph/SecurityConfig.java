@@ -18,6 +18,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	DataSource dataSource;
 
+
+	// possible roles: ROLE_ADMIN, ROLE_EMPLOYEE, ROLE_CLIENT, ROLE_PROJECT_LEADER
 	@Autowired
 	public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication().dataSource(dataSource)
@@ -34,10 +36,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.anyRequest().authenticated()
 				.and()
 				.formLogin()
+				.successForwardUrl("/user/index")
+				.failureForwardUrl("/index")
 				.permitAll()
 				.and()
-				.logout()
-				.permitAll();
+				.logout().permitAll();
 	}
 
 }

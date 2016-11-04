@@ -1,13 +1,15 @@
-package org.jarivm.relationGraph.services;
+package org.jarivm.relationGraph.controllers;
 
-import org.apache.log4j.Logger;
-import org.jarivm.relationGraph.Application;
+import org.jarivm.relationGraph.domains.Client;
+import org.jarivm.relationGraph.domains.Employee;
+import org.jarivm.relationGraph.domains.Project;
+import org.jarivm.relationGraph.domains.Sector;
 import org.jarivm.relationGraph.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import java.util.Arrays;
+import static org.jarivm.relationGraph.controllers.EntityConstants.*;
 
 /**
  * @author Jari Van Melckebeke
@@ -46,5 +48,23 @@ public class BaseController {
 		return sectorRepository.findProperties();
 	}
 
-
+	public EntityConstants getTypeOfNode(Long id) {
+		Client c = clientRepository.findById(id);
+		Employee e = employeeRepository.findById(id);
+		Project p = projectRepository.findById(id);
+		Sector s = sectorRepository.findById(id);
+		if (c != null) {
+			return CLIENT_TYPE;
+		}
+		if (e != null) {
+			return EMPLOYEE_TYPE;
+		}
+		if (p != null) {
+			return PROJECT_TYPE;
+		}
+		if (s != null) {
+			return SECTOR_TYPE;
+		}
+		return INVALID;
+	}
 }

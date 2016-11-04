@@ -10,7 +10,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
@@ -20,9 +22,9 @@ import java.util.Objects;
  * @author Jari Van Melckebeke
  * @since 02.09.16
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootApplication
-@Transactional(readOnly = true,value = "transactionManager")
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@ComponentScan("org.jarivm.relationGraph")
 public class SeleniumTests {
 
 

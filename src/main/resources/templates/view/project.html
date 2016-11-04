@@ -17,7 +17,8 @@
                 <span th:unless="${c.count} &lt; ${#lists.size(project.workedOn)}"
                       th:text="${r.employee.surname}+ ', ' + ${r.employee.name}"></span>
             </span>
-            </span>
-<a th:href="@{/user/create/edit/__${project.id}__}">edit</a>
+            </span><br/>
+<a th:href="@{/user/create/edit/__${project.id}__}">edit</a><br/>
+<a th:href="@{/user/delete/__${project.id}__}">delete</a>
 </body>
 </html>
