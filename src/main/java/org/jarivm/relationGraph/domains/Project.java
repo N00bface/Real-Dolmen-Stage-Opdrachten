@@ -4,19 +4,17 @@ import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 import org.neo4j.ogm.annotation.typeconversion.DateString;
-import org.neo4j.ogm.utils.RelationshipUtils;
-import org.springframework.expression.spel.ast.FloatLiteral;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Jari Van Melckebeke
  * @since 20.09.16
  */
+@Component
 @NodeEntity(label = "Project")
 public class Project {
 
@@ -36,21 +34,14 @@ public class Project {
 	@Relationship(direction = Relationship.INCOMING, type = "WorkedOn")
 	private List<WorkedOn> workedOn;
 	@Relationship(direction = Relationship.INCOMING, type = "Issued")
-	private Client client;
+	private List<Issued> issued;
 
 	public Project(String name) {
 		this.name = name;
 	}
 
 	public Project() {
-	}
-
-	public Client getClient() {
-		return client;
-	}
-
-	public void setClient(Client client) {
-		this.client = client;
+		issued = new ArrayList<>();
 	}
 
 	public Float getCost() {
@@ -83,6 +74,14 @@ public class Project {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public List<Issued> getIssued() {
+		return issued;
+	}
+
+	public void setIssued(List<Issued> issued) {
+		this.issued = issued;
 	}
 
 	public String getLanguage() {
@@ -138,6 +137,7 @@ public class Project {
 		return "Project{" +
 				"id=" + id +
 				", cost=" + cost +
+				", scoreFromClient=" + scoreFromClient +
 				", name='" + name + '\'' +
 				", version='" + version + '\'' +
 				", language='" + language + '\'' +
@@ -145,12 +145,11 @@ public class Project {
 				", dateStarted=" + dateStarted +
 				", dateFinished=" + dateFinished +
 				", workedOn=" + workedOn +
-				", client=" + client +
+				", issued=" + issued +
 				'}';
 	}
 
 	public Boolean isOnTime() {
 		return onTime;
-
 	}
 }

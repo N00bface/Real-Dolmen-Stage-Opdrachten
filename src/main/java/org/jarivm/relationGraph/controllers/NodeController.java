@@ -1,11 +1,13 @@
 package org.jarivm.relationGraph.controllers;
 
+import groovyjarjarantlr.LexerSharedInputState;
 import org.jarivm.relationGraph.domains.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -56,7 +58,7 @@ public class NodeController extends BaseController {
 		client.setSector(sectorRepository.findOne(s));
 		System.out.println(client);
 		clientRepository.save(client);
-		return "forward:/user/index";
+		return "redirect:/user/index.html";
 	}
 
 	@RequestMapping(value = "/createEmployee")
@@ -64,7 +66,7 @@ public class NodeController extends BaseController {
 	public String createNewEmployee(Employee employee, BindingResult bindingResult, Model model) {
 		System.out.println(employee);
 		employeeRepository.save(employee);
-		return "redirect:/user/index";
+		return "redirect:/user/index.html";
 	}
 
 	@RequestMapping(value = "/createSector")
@@ -72,27 +74,31 @@ public class NodeController extends BaseController {
 	public String createNewSector(Sector sector, BindingResult bindingResult, Model model) {
 		System.out.println(sector);
 		sectorRepository.save(sector);
-		return "redirect:/user/index";
+		return "redirect:/user/index.html";
 	}
 
 	@RequestMapping(value = "/createProject")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PROJECT_LEADER')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROJECT_LEADER', 'ROLE_CLIENT')")
 	public String createNewProject(@RequestParam(name = "employeesCollaborated") List<Long> employees,
 								   @RequestParam(name = "roles") List<String> roles,
 								   @RequestParam(name = "client") Long client,
-								   Project project,
+								   @ModelAttribute Project project,
 								   BindingResult bindingResult, Model model) {
-		project.setClient(clientRepository.findById(client));
+		Client c = clientRepository.findById(client);
+		Issued issued = new Issued(c, project);
+		List<Issued> issuedList = new ArrayList<>();
+		issuedList.add(issued);
 		List<Employee> employeesCollaborated = (List<Employee>) employeeRepository.findAll(employees);
 		List<WorkedOn> workedOnSet = new ArrayList<>();
 		for (int i = 0; i < employeesCollaborated.size(); i++) {
 			WorkedOn workedOn = new WorkedOn(employeesCollaborated.get(i), project, roles.get(i));
-			workedOn.setScore(employeeRepository.getAvgScore(employees.get(i)));
+			workedOn.setScore(0);
 			workedOnSet.add(workedOn);
 		}
-		project.setWorkedOn(workedOnSet);
 		projectRepository.save(project);
-		return "redirect:/user/index";
+		issuedRepository.save(issuedList);
+		workedOnRepository.save(workedOnSet);
+		return "redirect:/user/index.html";
 	}
 
 	@RequestMapping(value = "/edit/{id}")
@@ -121,7 +127,7 @@ public class NodeController extends BaseController {
 				model.addAttribute("sector", sectorRepository.findById(id));
 				return "/user/edit/sector";
 			default:
-				return "/user/err404";
+				return "/error/404";
 		}
 	}
 
@@ -131,7 +137,7 @@ public class NodeController extends BaseController {
 		System.out.println(node);
 		node.setId(id);
 		clientRepository.save(node);
-		return "redirect:/user/index";
+		return "redirect:/user/index.html";
 	}
 
 	@RequestMapping(value = "/edit/employee/{id}/confirm")
@@ -140,36 +146,36 @@ public class NodeController extends BaseController {
 		System.out.println(node);
 		node.setId(id);
 		employeeRepository.save(node);
-		return "redirect:/user/index";
+		return "redirect:/user/index.html";
 	}
 
 	@RequestMapping(value = "/edit/project/{id}/confirm")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROJECT_LEADER')")
 	public String confirmEditProject(@PathVariable("id") Long id,
 									 @RequestParam(name = "employeesCollaborated") List<Long> employees,
 									 @RequestParam(name = "roles") List<String> roles,
-									 @RequestParam(name = "client") Long client,
+									 @RequestParam(name = "issuedId") Long issuedId,
 									 Project node, BindingResult bindingResult, Model model) {
-		node.setClient(clientRepository.findById(client));
+		Issued issued = issuedRepository.findById(issuedId);
+		List<Issued> issuedList = new ArrayList<>();
+		issuedList.add(issued);
 		List<Employee> employeesCollaborated = (List<Employee>) employeeRepository.findAll(employees);
-		Iterator<WorkedOn> WorkedOnsAlready = projectRepository.findWorkedOnsByEmployees(employees, id).iterator();
-		List<WorkedOn> workedOnList = new ArrayList<>();
-		int follow = 0;
-		for (Employee e : employeesCollaborated) {
-			if (projectRepository.findWorkedOnByEmployee(e.getId(), id) == null) {
-				workedOnList.add(new WorkedOn(e, projectRepository.findById(id), roles.get(follow++)));
+		List<WorkedOn> w = workedOnRepository.findByProject(id);
+		for (int i = 0; i < employeesCollaborated.size(); i++) {
+			boolean b = false;
+			for (int j = 0; j < w.size(); j++) {
+				if (employeesCollaborated.get(i).getId().equals(w.get(i).getEmployee().getId())) {
+					b = true;
+					break;
+				}
+			}
+			if (!b) {
+				w.add(new WorkedOn(employeesCollaborated.get(i), node));
 			}
 		}
-		while (WorkedOnsAlready.hasNext()) {
-			WorkedOn workedOn = WorkedOnsAlready.next();
-			workedOn.setProject(node);
-			workedOn.setRole(roles.get(follow++));
-			workedOnList.add(workedOn);
-		}
-		node.setWorkedOn(workedOnList);
-		workedOnRepository.save(workedOnList);
+		workedOnRepository.save(w);
+		issuedRepository.save(issuedList);
 		projectRepository.save(node);
-		return "redirect:/user/index";
+		return "redirect:/user/index.html";
 	}
 
 	@RequestMapping(value = "/edit/sector/{id}/confirm")
@@ -178,6 +184,6 @@ public class NodeController extends BaseController {
 		System.out.println(node);
 		node.setId(id);
 		sectorRepository.save(node);
-		return "redirect:/user/index";
+		return "redirect:/user/index.html";
 	}
 }

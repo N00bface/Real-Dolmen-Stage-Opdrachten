@@ -1,11 +1,10 @@
 package org.jarivm.relationGraph.controllers;
 
-import org.jarivm.relationGraph.domains.Client;
-import org.jarivm.relationGraph.domains.Employee;
-import org.jarivm.relationGraph.domains.Project;
-import org.jarivm.relationGraph.domains.Sector;
+import org.jarivm.relationGraph.domains.*;
 import org.jarivm.relationGraph.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -27,6 +26,8 @@ public class BaseController {
 	public EmployeeRepository employeeRepository;
 	@Autowired
 	public WorkedOnRepository workedOnRepository;
+	@Autowired
+	public IssuedRepository issuedRepository;
 
 	@ModelAttribute("clientKeys")
 	public String[] getClientKeys() {
@@ -46,6 +47,15 @@ public class BaseController {
 	@ModelAttribute("sectorKeys")
 	public String[] getSectorKeys() {
 		return sectorRepository.findProperties();
+	}
+
+	public boolean getHasRelationWithProject(Long id) {
+		//todo: complete has relation
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		return projectRepository.relationToWithClient(authentication.getName(), id)
+				|| projectRepository.relationToWithProjectLeader(authentication.getName(), id)
+				|| projectRepository.relationToWithEmployee(authentication.getName(), id)
+				|| authentication.getName().equals("admin");
 	}
 
 	public EntityConstants getTypeOfNode(Long id) {
@@ -68,3 +78,5 @@ public class BaseController {
 		return INVALID;
 	}
 }
+
+

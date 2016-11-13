@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
  * @author Jari Van Melckebeke
  * @since 20.09.16
  */
+@Component
 @NodeEntity
 public class Sector {
     public Sector(String name) {

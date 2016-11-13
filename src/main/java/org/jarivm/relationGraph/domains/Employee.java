@@ -12,6 +12,7 @@ import java.util.Date;
  * @author Jari Van Melckebeke
  * @since 20.09.16
  */
+@Component
 @NodeEntity
 public class Employee {
 	@GraphId

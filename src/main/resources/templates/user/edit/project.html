@@ -10,6 +10,7 @@
 <h1>new Project</h1>
 <form action="#" method="post" th:action="@{/user/create/edit/project/__${project.id}__/confirm}"
       th:object="${project}" th:with="follow='-1'">
+    <input type="hidden" name="issuedId" th:value="${project.issued[0].id}"/>
     id:&nbsp;<input type="number" th:field="${project.id}" th:value="*{id}" disabled="disabled"/><br/>
     name:&nbsp;
     <input type="text" th:field="${project.name}" th:value="*{name}"/><br/>
@@ -20,12 +21,11 @@
     version:&nbsp;
     <input type="text" th:field="${project.version}" th:value="*{version}"/><br/>
     client:
-    <select th:field="${project.client}" th:value="*{client}">
+    <select name="client" id="client" th:value="*{issued[0].client.id}">
         <option th:each="s : ${clients}" th:text="${s.name}" th:value="${s.id}" name="client"></option>
     </select><br/>
     team:
     <div th:each="e,stat : ${employees}">
-
         <input type="checkbox" name="employeesCollaborated" th:value="${e.id}"
                th:checked="${#lists.contains(employeesCollaborated, e.id)}"
                th:text="${e.surname} + ' ' + ${e.name}"/>

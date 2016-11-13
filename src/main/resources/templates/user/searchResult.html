@@ -29,8 +29,9 @@
     <div class="result" th:case="project">
         <div th:each="obj : ${results}">
             <h4><a th:href="@{/user/viewProject/__${obj.id}__}" th:text="${obj.name}"></a></h4><br/>
-            <b th:text="'version: ' + ${obj.scoreFromClient}"></b><br/>
+            <b th:text="'version: ' + ${obj.version}"></b><br/>
             <b th:text="'cost: ' + ${obj.cost}"></b><br/>
+            <b th:text="'client: ' + ${obj.issued.client}"></b><br/>
             <span>team:
                 <span th:each="r,c : ${obj.workedOn}">
                 <span th:if="${c.count} &lt; ${#lists.size(obj.workedOn)}"

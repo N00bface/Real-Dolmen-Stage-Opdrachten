@@ -41,4 +41,5 @@ public interface EmployeeRepository extends GraphRepository<Employee> {
 
     @Query("MATCH (m:Employee) WHERE ANY(prop in keys(m) where prop={propertyKey} and m[prop] contains {propertyValue}) RETURN m;")
     Iterable<Employee> findByProperty(@Param("propertyKey") String propertyName, @Param("propertyValue") String propertyValue);
+
 }

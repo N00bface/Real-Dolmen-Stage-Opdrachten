@@ -15,9 +15,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @since 02.10.16
  */
 @SpringBootApplication
-public class Startup  {
+public class Startup {
 
-    public static void main(String[] args) {
-        SpringApplication.run(Startup.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(Startup.class, args);
+	}
 }

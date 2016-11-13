@@ -7,4 +7,3 @@ package org.jarivm.relationGraph.controllers;
 public enum EntityConstants {
 	CLIENT_TYPE, EMPLOYEE_TYPE, PROJECT_TYPE, SECTOR_TYPE, INVALID
 }
-	

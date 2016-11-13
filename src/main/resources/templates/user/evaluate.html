@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="'evaluate ' + ${project.name}"></title>
+</head>
+<body>
+<div th:substituteby="index::logout"></div>
+<h1 th:text="'evaluate ' + ${project.name}"></h1>
+<form action="#" method="post" th:action="@{/user/evaluate/__${project.id}__/confirm}">
+    <input type="hidden" name="client" th:value="${project.issued[0].client.id}"/>
+    <input type="hidden" th:field="${project.version}" th:value="*{version}"/>
+    <input type="hidden" name="issuedId" th:value="${project.issued[0].id}"/>
+    <input type="hidden" th:each="w, stat : ${project.workedOn}" name="workedOnId"
+           th:value="${project.workedOn[__${stat.index}__].id}"/>
+    <br/>
+    increase cost:&nbsp;€
+    <input type="number" th:min="${project.cost}" step="0.1" name="cost" th:value="${project.cost}"/>
+    <br/>
+    version:&nbsp;
+    <span th:text="${project.version}"></span>
+    team:
+    <div th:each="e,stat : ${project.workedOn}">
+        <input type="hidden" name="employeeIds" th:value="${e.employee.id}"/>
+        <input type="hidden" name="roles" th:value="${e.role}"/>
+        <span th:text="${e.employee.name} + ' ' + ${e.employee.surname} + ' as ' + ${e.role}"></span>
+        score:<input type="number" step="any" min="0" max="100" th:name="score"/>%
+        <br/>
+    </div>
+    <input type="submit" value="Confirm"/>
+</form>
+</body>
+</html>

@@ -7,8 +7,9 @@
 </head>
 <body>
 <h1 th:text="${project.name}"></h1><br/>
-<b th:text="'version: ' + ${project.scoreFromClient}"></b><br/>
+<b th:text="'version: ' + ${project.version}"></b><br/>
 <b th:text="'cost: ' + ${project.cost}"></b><br/>
+<b th:text="'client: ' + ${project.issued[0].client.name}"></b><br/>
 <span>team:
                 <!--todo: add links to employee views-->
                 <span th:each="r,c : ${project.workedOn}">

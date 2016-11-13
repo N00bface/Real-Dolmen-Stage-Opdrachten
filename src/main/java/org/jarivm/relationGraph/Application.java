@@ -12,6 +12,8 @@ import org.springframework.data.neo4j.template.Neo4jTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author Jari Van Melckebeke
  * @since 23.09.16
@@ -57,6 +59,15 @@ public class Application extends Neo4jConfiguration {
 				.setURI(URL)
 				.setCredentials("neo4j", "tanzania");
 		return config;
+	}
+
+	@Bean
+	public EmbeddedServletContainerFactory servletContainer() {
+		TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory();
+		factory.setPort(9000);
+		factory.setSessionTimeout(10, TimeUnit.MINUTES);
+		//factory.addErrorPages(new ErrorPage(HttpStatus.404, "/notfound.html"));
+		return factory;
 	}
 
 	/*@Bean

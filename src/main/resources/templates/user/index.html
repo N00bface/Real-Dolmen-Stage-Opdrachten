@@ -10,12 +10,32 @@
 <br/>
 <div th:substituteby="user/search::newSearch"></div>
 <br/>
-<p>go to: <a href="/user/tableOverview">projects by sector</a></p>
-<p>go to: <a href="/user/employeeByScore">best employees of all time</a></p>
+<h1>Home</h1>
+<h2>your current projects</h2>
+<table>
+    <tr>
+        <th>name</th>
+        <th>start date</th>
+        <th>deadline</th>
+        <th>score on project</th>
+    </tr>
+    <tr th:each="project : ${userprojects}">
+        <td th:text="${project.name}"></td>
+        <td th:text="${project.dateStarted}"></td>
+        <td th:text="${project.dateFinished}"></td>
+        <td th:text="${project.scoreFromClient}"></td>
+        <td><a th:href="@{/user/viewProject/__${project.id}__}">view</a></td>
+        <td><a th:href="@{/user/create/edit/__${project.id}__}">edit</a></td>
+        <td><a th:href="@{/user/evaluate/__${project.id}__}">evaluate</a></td>
+    </tr>
+</table>
+<h2>go to:</h2>
+<p><a href="/user/tableOverview">projects by sector</a></p>
+<p><a href="/user/employeeByScore">best employees of all time</a></p>
 <br/>
-<p>go to: <a href="/user/create/employee">new employee</a></p>
-<p>go to: <a href="/user/create/sector">new sector</a></p>
-<p>go to: <a href="/user/create/client">new client</a></p>
-<p>go to: <a href="/user/create/project">new project</a></p>
+<p><a href="/user/create/employee">new employee</a></p>
+<p><a href="/user/create/sector">new sector</a></p>
+<p><a href="/user/create/client">new client</a></p>
+<p><a href="/user/create/project">new project</a></p>
 </body>
 </html>

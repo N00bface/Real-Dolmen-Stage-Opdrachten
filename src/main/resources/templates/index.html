@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <title>Hello Spring Security</title>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" href="/css/main.css" th:href="@{/css/main.css}" />
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" href="/css/main.css" th:href="@{/css/main.css}"/>
 </head>
 <body>
 <div th:fragment="logout" class="logout" sec:authorize="isAuthenticated()">
-    user: <span sec:authentication="name"></span> as
-    <span sec:authentication="principal.authorities"></span>
+    Logged in user: <span sec:authentication="name"></span> |
+    Roles: <span sec:authentication="principal.authorities"></span>
     <div>
         <form action="#" th:action="@{/logout}" method="post">
-            <input type="submit" value="Logout" />
+            <input type="submit" value="Logout"/>
         </form>
     </div>
 </div>

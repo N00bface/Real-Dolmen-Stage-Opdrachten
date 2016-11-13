@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2016. LICENCED BY (c) Jari Van Melckebeke, all rights reserved, use only with permission of Jari Van Melckebeke
+ */
+
 package org.jarivm.relationGraph.domains;
 
 import org.neo4j.ogm.annotation.EndNode;
@@ -5,6 +9,7 @@ import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.RelationshipEntity;
 import org.neo4j.ogm.annotation.StartNode;
 import org.neo4j.ogm.annotation.typeconversion.DateString;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
@@ -12,76 +17,83 @@ import java.util.Date;
  * @author Jari Van Melckebeke
  * @since 30.09.16
  */
+@Component
 @RelationshipEntity(type = "Issued")
 public class Issued {
-    public Issued(Client client, Project project, Date dateGiven, Long nProjectForClient) {
-        this.client = client;
-        this.project = project;
-        this.dateGiven = dateGiven;
-        this.nProjectForClient = nProjectForClient;
-    }
+	@GraphId
+	private Long id;
+	@StartNode
+	private Client client;
+	@EndNode
+	private Project project;
+	@DateString(value = "yyyy-MM-dd")
+	private Date dateGiven;
+	private Long nProjectForClient;
 
-    public Issued(Client client, Project project) {
-        this.client = client;
-        this.project = project;
-    }
+	public Issued(Client client, Project project, Date dateGiven, Long nProjectForClient) {
+		this.client = client;
+		this.project = project;
+		this.dateGiven = dateGiven;
+		this.nProjectForClient = nProjectForClient;
+	}
 
-    public Issued() {
+	public Issued(Client client, Project project) {
+		this.client = client;
+		this.project = project;
+	}
 
-    }
+	public Issued() {
 
-    @GraphId
-    private Long id;
+	}
 
-    @StartNode
-    private Client client;
-    @EndNode
-    private Project project;
+	public Client getClient() {
+		return client;
+	}
 
-    @DateString(value = "yyyy-MM-dd")
-    private Date dateGiven;
+	public void setClient(Client client) {
+		this.client = client;
+	}
 
-    private Long nProjectForClient;
+	public Date getDateGiven() {
+		return dateGiven;
+	}
 
-    public Client getClient() {
-        return client;
-    }
+	public void setDateGiven(Date dateGiven) {
+		this.dateGiven = dateGiven;
+	}
 
-    public void setClient(Client client) {
-        this.client = client;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public Project getProject() {
-        return project;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setProject(Project project) {
-        this.project = project;
-    }
+	public Project getProject() {
+		return project;
+	}
 
-    public Date getDateGiven() {
-        return dateGiven;
-    }
+	public void setProject(Project project) {
+		this.project = project;
+	}
 
-    public void setDateGiven(Date dateGiven) {
-        this.dateGiven = dateGiven;
-    }
+	public Long getnProjectForClient() {
+		return nProjectForClient;
+	}
 
-    public Long getnProjectForClient() {
-        return nProjectForClient;
-    }
+	public void setnProjectForClient(Long nProjectForClient) {
+		this.nProjectForClient = nProjectForClient;
+	}
 
-    public void setnProjectForClient(Long nProjectForClient) {
-        this.nProjectForClient = nProjectForClient;
-    }
+	@Override
+	public String toString() {
+		return "Issued{" +
+				"id=" + id +
+				", client=" + client +
+				", dateGiven=" + dateGiven +
+				", nProjectForClient=" + nProjectForClient +
+				'}';
+	}
 
-    @Override
-    public String toString() {
-        return "Issued{" +
-                "client=" + client +
-                ", project=" + project +
-                ", dateGiven=" + dateGiven +
-                ", nProjectForClient=" + nProjectForClient +
-                '}';
-    }
 }
