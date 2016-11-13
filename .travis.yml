@@ -1,0 +1,15 @@
+language: java
+
+sudo: true
+
+jdk:
+  - oraclejdk8
+  - oraclejdk7
+  - openjdk8
+
+services:
+  - neo4j
+  - mysql
+
+os:
+  - linux
