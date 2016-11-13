@@ -1,7 +1,11 @@
 package org.jarivm.relationGraph;
 
 import org.neo4j.ogm.session.SessionFactory;
+import org.openqa.jetty.jetty.Server;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.context.embedded.EmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
+import org.springframework.boot.context.embedded.jetty.JettyEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -22,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 @EnableNeo4jRepositories(basePackages = "org.jarivm.relationGraph.repositories")
 @ComponentScan(basePackages = {"org.jarivm.relationGraph"})
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableAutoConfiguration
 public class Application extends Neo4jConfiguration {
 	public static final String URL = "http://localhost:7474";
 
@@ -59,15 +64,6 @@ public class Application extends Neo4jConfiguration {
 				.setURI(URL)
 				.setCredentials("neo4j", "tanzania");
 		return config;
-	}
-
-	@Bean
-	public EmbeddedServletContainerFactory servletContainer() {
-		TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory();
-		factory.setPort(9000);
-		factory.setSessionTimeout(10, TimeUnit.MINUTES);
-		//factory.addErrorPages(new ErrorPage(HttpStatus.404, "/notfound.html"));
-		return factory;
 	}
 
 	/*@Bean

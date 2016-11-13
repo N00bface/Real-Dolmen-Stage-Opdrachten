@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 
 /**
@@ -44,6 +45,7 @@ public class SeleniumTests {
 
 	@AfterClass
 	public static void mainTearDown() {
+		assertNotNull(s);
 		s.query("MATCH (n) where n.name CONTAINS 'test' detach delete n;", new HashMap<>());
 		driver.close();
 		driver.quit();
