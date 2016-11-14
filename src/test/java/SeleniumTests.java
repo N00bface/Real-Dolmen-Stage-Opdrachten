@@ -33,9 +33,6 @@ import static org.junit.Assert.assertNotNull;
 @Transactional
 @ComponentScan("org.jarivm.relationGraph")
 public class SeleniumTests {
-	public static final String USERNAME = "N00bface";
-	public static final String ACCESS_KEY = "fbe21e01-aeb0-46ef-baab-b5e4aafc3b7b";
-	public static final String URL = "https://" + USERNAME + ":" + ACCESS_KEY + "@ondemand.saucelabs.com:443/wd/hub";
 
 	private static Session s;
 	private static WebDriver driver;
@@ -44,11 +41,7 @@ public class SeleniumTests {
 	@BeforeClass
 	public static void mainSetUp() throws MalformedURLException {
 		context = SpringApplication.run(SeleniumTests.class);
-		DesiredCapabilities caps = DesiredCapabilities.chrome();
-		caps.setCapability("platform", "Windows XP");
-		caps.setCapability("version", "43.0");
-
-		driver = new RemoteWebDriver(new URL(URL), caps);
+		driver = new ChromeDriver(DesiredCapabilities.chrome());
 
 		driver.get("localhost:2907");
 		System.out.println(driver.getTitle());
