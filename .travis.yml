@@ -1,7 +1,7 @@
 language: java
 
 before_install:
-  - mysql springstageopdracht.sql -uroot
+  - mysql -uroot springstageopdracht.sql
 
 sudo: true
 
