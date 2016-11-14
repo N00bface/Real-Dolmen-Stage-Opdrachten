@@ -65,6 +65,14 @@ LOCK TABLES `users` WRITE;
 INSERT INTO `users` VALUES (1,'admin','root',1),(2,'leader','leader',1),(3,'client','client',1),(4,'employee','employee',1),(5,'Colruyt','client',1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping events for database 'springstageopdracht'
+--
+
+--
+-- Dumping routines for database 'springstageopdracht'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -75,4 +83,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-11-13 20:20:21
+-- Dump completed on 2016-11-14 16:56:39
