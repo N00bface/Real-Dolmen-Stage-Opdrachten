@@ -1,6 +1,7 @@
 language: java
 
 before_install:
+  - mysql -uroot -e 'create database springstageopdracht;'
   - mysql -uroot springstageopdracht < springstageopdracht.sql
 
 sudo: true
