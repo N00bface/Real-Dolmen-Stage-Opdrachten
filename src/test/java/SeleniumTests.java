@@ -8,6 +8,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,6 +17,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
@@ -29,16 +33,23 @@ import static org.junit.Assert.assertNotNull;
 @Transactional
 @ComponentScan("org.jarivm.relationGraph")
 public class SeleniumTests {
+	public static final String USERNAME = "N00bface";
+	public static final String ACCESS_KEY = "fbe21e01-aeb0-46ef-baab-b5e4aafc3b7b";
+	public static final String URL = "https://" + USERNAME + ":" + ACCESS_KEY + "@ondemand.saucelabs.com:443/wd/hub";
 
 	private static Session s;
 	private static WebDriver driver;
 	private static ConfigurableApplicationContext context;
 
 	@BeforeClass
-	public static void mainSetUp() {
+	public static void mainSetUp() throws MalformedURLException {
 		context = SpringApplication.run(SeleniumTests.class);
-		System.setProperty("webdriver.chrome.driver", "/home/jarivm/programs/chromedriver");
-		driver = new ChromeDriver(ChromeDriverService.createDefaultService());
+		DesiredCapabilities caps = DesiredCapabilities.chrome();
+		caps.setCapability("platform", "Windows XP");
+		caps.setCapability("version", "43.0");
+
+		WebDriver driver = new RemoteWebDriver(new URL(URL), caps);
+
 		driver.get("localhost:2907");
 		System.out.println(driver.getTitle());
 	}
