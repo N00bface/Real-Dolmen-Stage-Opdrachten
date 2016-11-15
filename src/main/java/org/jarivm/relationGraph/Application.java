@@ -14,6 +14,7 @@ import org.springframework.data.neo4j.config.Neo4jConfiguration;
 import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
 import org.springframework.data.neo4j.template.Neo4jTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.security.authentication.dao.SystemWideSaltSource;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
 import java.util.concurrent.TimeUnit;
@@ -37,9 +38,9 @@ public class Application extends Neo4jConfiguration {
 	public DriverManagerDataSource dataSource() {
 		DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
 		driverManagerDataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		driverManagerDataSource.setUrl("jdbc:mysql://localhost:3306/springstageopdracht?autoReconnect=true&useSSL=false");
-		driverManagerDataSource.setUsername("root");
-		driverManagerDataSource.setPassword("Tanzania1");
+		driverManagerDataSource.setUrl("jdbc:mysql://127.0.0.1:3306/springstageopdracht");
+		driverManagerDataSource.setUsername(System.getenv("MYSQL_USER"));
+		driverManagerDataSource.setPassword(System.getenv("MYSQL_PASSWORD"));
 		return driverManagerDataSource;
 	}
 
