@@ -1,6 +1,3 @@
-begin
-commit
-begin
 create (_206:`Employee` {`age`:15, `email`:"vmjari@outlook.com", `experience`:1, `gender`:"m", `name`:"Jari", `surname`:"Van Melckebeke"})
 create (_207:`Project` {`cost`:0.000000, `name`:"T.E.R.E.S.A.", `onTime`:true, `version`:"0.0.1"})
 create (_208:`Client` {`experience`:10, `name`:"noobcorp"})
@@ -33,4 +30,3 @@ create (_217)-[:`WorkedOn` {`nOfProject`:"1", `role`:"boekhouder", `score`:70.00
 create (_217)-[:`WorkedOn` {`nOfProject`:"1", `role`:"boekhouder", `score`:75.000000}]->(_207)
 create (_220)-[:`WorkedOn` {`onTime`:false, `projectNr`:0, `role`:"astrofysicus", `score`:95.000000}]->(_221)
 ;
-commit
