@@ -12,9 +12,11 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.MalformedURLException;
@@ -32,6 +34,8 @@ import static org.junit.Assert.assertNotNull;
 @SpringBootApplication
 @Transactional
 @ComponentScan("org.jarivm.relationGraph")
+@EnableAutoConfiguration
+@ActiveProfiles("CI")
 public class SeleniumTests {
 
 	private static Session s;
