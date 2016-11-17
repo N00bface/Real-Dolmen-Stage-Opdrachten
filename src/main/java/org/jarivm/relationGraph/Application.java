@@ -10,6 +10,7 @@ import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletCon
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.neo4j.config.Neo4jConfiguration;
 import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
 import org.springframework.data.neo4j.template.Neo4jTemplate;
@@ -28,6 +29,7 @@ import java.util.concurrent.TimeUnit;
 @ComponentScan(basePackages = {"org.jarivm.relationGraph"})
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableAutoConfiguration
+@Profile("prod")
 public class Application extends Neo4jConfiguration {
 	public static final String URL = "http://localhost:7474";
 

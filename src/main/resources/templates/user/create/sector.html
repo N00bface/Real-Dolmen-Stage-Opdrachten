@@ -10,9 +10,9 @@
 <h1>new Client</h1>
 <form action="#" method="post" th:action="@{/user/create/createSector}" th:object="${sectorToken}">
     <label>name:&nbsp;
-        <input type="text" th:field="${sectorToken.name}"/>
+        <input id="name" type="text" th:field="${sectorToken.name}"/>
     </label>
-    <input type="submit" value="Create"/>
+    <input id="submit" type="submit" value="Create"/>
 </form>
 </body>
 </html>

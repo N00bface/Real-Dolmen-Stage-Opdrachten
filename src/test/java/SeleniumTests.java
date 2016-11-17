@@ -137,4 +137,14 @@ public class SeleniumTests {
 		assertEquals(driver.getTitle(), "User home");
 	}
 
+	@Test
+	public void testCreateSector() {
+		driver.navigate().to("localhost:2904/user/create/sector");
+		login();
+		assertEquals("New Entity", driver.getTitle());
+		driver.findElement(By.id("name")).sendKeys("test");
+		driver.findElement(By.id("submit")).click();
+		assertEquals("User home", driver.getTitle());
+	}
+
 }
