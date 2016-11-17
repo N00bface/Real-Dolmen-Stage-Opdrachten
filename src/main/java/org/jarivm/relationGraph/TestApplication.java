@@ -52,7 +52,7 @@ public class TestApplication extends Neo4jConfiguration {
 				.driverConfiguration()
 				.setDriverClassName("org.neo4j.ogm.drivers.http.driver.HttpDriver")
 				.setURI(URL)
-				.setCredentials("neo4j", "neo4j");
+				.setCredentials("neo4j", "tanzania");
 		return config;
 	}
 }
