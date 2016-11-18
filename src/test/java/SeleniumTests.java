@@ -46,7 +46,7 @@ public class SeleniumTests {
 	public static void mainSetUp() throws MalformedURLException {
 		context = SpringApplication.run(SeleniumTests.class);
 		System.setProperty("webdriver.chrome.driver", "/usr/bin/google-chrome");
-		driver = new ChromeDriver();
+		driver = new ChromeDriver(DesiredCapabilities.chrome());
 
 		driver.get("localhost:2907");
 		System.out.println(driver.getTitle());
@@ -146,6 +146,15 @@ public class SeleniumTests {
 		driver.findElement(By.id("name")).sendKeys("test");
 		driver.findElement(By.id("submit")).click();
 		assertEquals("User home", driver.getTitle());
+	}
+
+	@Test
+	public void testEmployeeOfTheMonth() {
+		driver.navigate().to("localhost:2904/employeeByScore");
+		login();
+		assertEquals("Employees of the month", driver.getTitle());
+		String a = driver.findElements(By.tagName("tr")).get(0).findElements(By.tagName("td")).get(2).getText();
+		assertEquals("Kestemont", a);
 	}
 
 }
