@@ -46,7 +46,7 @@ public class SeleniumTests {
 	public static void mainSetUp() throws MalformedURLException {
 		context = SpringApplication.run(SeleniumTests.class);
 		System.setProperty("webdriver.chrome.driver", "/usr/bin/google-chrome");
-		driver = new ChromeDriver(DesiredCapabilities.chrome());
+		driver = new ChromeDriver();
 
 		driver.get("localhost:2907");
 		System.out.println(driver.getTitle());
