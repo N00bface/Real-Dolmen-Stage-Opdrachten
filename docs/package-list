@@ -1,4 +1,5 @@
+
 org.jarivm.relationGraph
+org.jarivm.relationGraph.controllers
 org.jarivm.relationGraph.domains
 org.jarivm.relationGraph.repositories
-org.jarivm.relationGraph.controllers

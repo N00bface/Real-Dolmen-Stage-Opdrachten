@@ -42,6 +42,7 @@ public class Application extends Neo4jConfiguration {
 		driverManagerDataSource.setDriverClassName("com.mysql.jdbc.Driver");
 		driverManagerDataSource.setUrl("jdbc:mysql://127.0.0.1:3306/springstageopdracht");
 		driverManagerDataSource.setUsername("root");
+		driverManagerDataSource.setPassword("Tanzania1");
 		return driverManagerDataSource;
 	}
 
