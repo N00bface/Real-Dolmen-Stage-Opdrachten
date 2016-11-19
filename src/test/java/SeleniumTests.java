@@ -38,6 +38,9 @@ import static org.junit.Assert.assertNotNull;
 @ActiveProfiles("CI")
 public class SeleniumTests {
 
+	private static String USERNAME = "N00bface";
+	private static String ACCESS_KEY = "fbe21e01-aeb0-46ef-baab-b5e4aafc3b7b";
+	private static String URL = "https://" + USERNAME + ":" + ACCESS_KEY + "@ondemand.saucelabs.com:443/wd/hub";
 	private static Session s;
 	private static WebDriver driver;
 	private static ConfigurableApplicationContext context;
@@ -45,8 +48,10 @@ public class SeleniumTests {
 	@BeforeClass
 	public static void mainSetUp() throws MalformedURLException {
 		context = SpringApplication.run(SeleniumTests.class);
-		System.setProperty("webdriver.chrome.driver", "/usr/bin/chromium-browser");
-		driver = new ChromeDriver();
+		DesiredCapabilities caps = DesiredCapabilities.chrome();
+		caps.setCapability("platform", "Linux");
+		caps.setCapability("version", "48.0");
+		driver = new RemoteWebDriver(new URL(URL), caps);
 
 		driver.get("localhost:2907");
 		System.out.println(driver.getTitle());

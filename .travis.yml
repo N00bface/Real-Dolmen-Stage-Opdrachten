@@ -1,7 +1,10 @@
 language: java
 sudo: true
+addons:
+  sauce_connect:
+    username: "N00bface"
+    access_key: "fbe21e01-aeb0-46ef-baab-b5e4aafc3b7b"
 before_install:
-  - sudo apt-get -qq update
   - chmod a+x install.sh
 
 jdk:
