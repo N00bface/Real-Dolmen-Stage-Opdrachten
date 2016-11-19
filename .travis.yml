@@ -1,8 +1,11 @@
 language: java
 sudo: true
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y google-chrome-stable
+  - chmod a+x install.sh
+
 jdk:
   - oraclejdk8
 
-before_install:
-  - chmod a+x install.sh
 install: ./install.sh
