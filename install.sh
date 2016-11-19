@@ -9,3 +9,4 @@ neo4j-community-3.0.1/bin/neo4j start
 sudo sleep 20
 sudo curl -H "Content-Type: application/json" -X POST -d '{"password":"tanzania"}' -u neo4j:neo4j http://localhost:7474/user/neo4j/password
 ./neo4j-community-3.0.1/bin/neo4j-shell -c < setup.cql
+#ddd
