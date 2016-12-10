@@ -5,9 +5,9 @@ chmod +x chrome/chromedriver
 sudo mv -f chrome/chromedriver /usr/local/share/chromedriver
 sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver
 sudo ln -s /usr/local/share/chromedriver /usr/bin/chromedriver
-wget -o neo4j.tar.gz "https://neo4j.com/artifact.php?name=neo4j-community-3.0.3-unix.tar.gz"
-tar -xf neo4j.tar.gz
-neo4j/bin/neo4j start
+wget "https://neo4j.com/artifact.php?name=neo4j-community-3.0.3-unix.tar.gz"
+tar -xvzf "artifact.php?name=neo4j-community-3.0.3-unix.tar.gz"
+neo4j-community-3.0.3/bin/neo4j start
 sleep 20
 curl -H "Content-Type: application/json" -X POST -d '{"password":"tanzania"}' -u neo4j:neo4j http://localhost:7474/browser
-./neo4j/bin/neo4j-shell -c < setup.cql
+./neo4j-community-3.0.3/bin/neo4j-shell -c < setup.cql
