@@ -5,8 +5,7 @@ chmod +x chrome/chromedriver
 sudo mv -f chrome/chromedriver /usr/local/share/chromedriver
 sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver
 sudo ln -s /usr/local/share/chromedriver /usr/bin/chromedriver
-wget https://neo4j.com/artifact.php?name=neo4j-community-3.0.3-unix.tar.gz
-ls
+wget -o neo4j "https://neo4j.com/artifact.php?name=neo4j-community-3.0.3-unix.tar.gz"
 tar -xf neo4j.tar.gz
 neo4j/bin/neo4j start
 sleep 20
