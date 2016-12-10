@@ -10,4 +10,4 @@ tar -xf neo4j.tar.gz
 neo4j/bin/neo4j start
 sleep 20
 curl -H "Content-Type: application/json" -X POST -d '{"password":"tanzania"}' -u neo4j:neo4j http://localhost:7474/browser
-./neo4j-community-3.0.1/bin/neo4j-shell -c < setup.cql
+./neo4j/bin/neo4j-shell -c < setup.cql
