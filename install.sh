@@ -11,4 +11,4 @@ ls
 neo4j-community-3.0.3/bin/neo4j start
 sleep 10
 #curl -v -H "Content-Type: application/json" -X POST -d '{"password":"tanzania"}' -u neo4j:neo4j http://localhost:7474/browser
-./neo4j-community-3.0.3/bin/neo4j-shell -c < setup.cql
+./neo4j-community-3.0.3/bin/neo4j-shell -v -c < setup.cql
