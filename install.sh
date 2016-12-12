@@ -6,4 +6,4 @@ ls
 sleep 10
 #curl -v -H "Content-Type: application/json" -X POST -d '{"password":"tanzania"}' -u neo4j:neo4j http://localhost:7474/browser
 echo "done sleeping"
-./neo4j-community-3.0.3/bin/neo4j-shell -v -c < setup.cql
+./neo4j-community-3.0.3/bin/neo4j-shell -f setup.cql
