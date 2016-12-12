@@ -1,10 +1,4 @@
 #!/usr/bin/env bash
-wget -N http://chromedriver.storage.googleapis.com/2.10/chromedriver_linux64.zip -P chrome/
-unzip chrome/chromedriver_linux64.zip -d chrome/
-chmod +x chrome/chromedriver
-sudo mv -f chrome/chromedriver /usr/local/share/chromedriver
-sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver
-sudo ln -s /usr/local/share/chromedriver /usr/bin/chromedriver
 wget "https://neo4j.com/artifact.php?name=neo4j-community-3.0.3-unix.tar.gz"
 tar -xvzf "artifact.php?name=neo4j-community-3.0.3-unix.tar.gz"
 ls
