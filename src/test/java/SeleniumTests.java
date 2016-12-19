@@ -8,6 +8,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.Select;
@@ -45,10 +46,11 @@ public class SeleniumTests {
 
 	@BeforeClass
 	public static void mainSetUp() throws MalformedURLException {
-		System.setProperty("webdriver.chrome.driver", "/bin/google-chrome");
+		System.setProperty("webdriver.chrome.driver","/usr/bin/chromedriver");
+		ChromeOptions options = new ChromeOptions();
+		options.setBinary("/usr/bin/google-chrome-stable");
+		driver = new ChromeDriver(options);
 		context = SpringApplication.run(SeleniumTests.class);
-		driver = new ChromeDriver();
-
 		driver.get("localhost:2907");
 		System.out.println(driver.getTitle());
 	}

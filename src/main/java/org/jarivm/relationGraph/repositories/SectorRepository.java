@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2016. LICENCED BY (c) Jari Van Melckebeke, all rights reserved, use only with permission of Jari Van Melckebeke
+ */
+
 package org.jarivm.relationGraph.repositories;
 
 import org.jarivm.relationGraph.domains.Client;
