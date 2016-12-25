@@ -3,7 +3,7 @@
   ~ Copyright (c) 2016. LICENCED BY (c) Jari Van Melckebeke, all rights reserved, use only with permission of Jari Van Melckebeke
   -->
 
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>User home</title>
     <meta charset="utf-8"/>
@@ -11,6 +11,7 @@
 </head>
 <body>
 <div th:substituteby="index::logout"></div>
+<div th:substituteby="menubar::menubar"></div>
 <br/>
 <div th:substituteby="user/search::newSearch"></div>
 <br/>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<!--
+  ~ Copyright (c) 2016. LICENCED BY (c) Jari Van Melckebeke, all rights reserved, use only with permission of Jari Van Melckebeke
+  -->
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+</head>
+<body>
+<th:block th:fragment="menubar">
+    <ul>
+        <li th:each="item : ${endpoints}">
+            <a th:href="@{/__${item.link}__}" th:text="${item.name}"></a>
+        </li>
+    </ul>
+</th:block>
+</body>
+</html>

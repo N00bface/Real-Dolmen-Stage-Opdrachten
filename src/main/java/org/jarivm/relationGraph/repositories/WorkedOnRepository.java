@@ -4,7 +4,6 @@
 
 package org.jarivm.relationGraph.repositories;
 
-import org.jarivm.relationGraph.domains.Issued;
 import org.jarivm.relationGraph.domains.WorkedOn;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.GraphRepository;

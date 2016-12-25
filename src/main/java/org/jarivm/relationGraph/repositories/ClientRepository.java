@@ -5,15 +5,12 @@
 package org.jarivm.relationGraph.repositories;
 
 import org.jarivm.relationGraph.domains.Client;
-import org.neo4j.ogm.annotation.Property;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.GraphRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 

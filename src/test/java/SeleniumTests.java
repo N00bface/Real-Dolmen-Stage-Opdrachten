@@ -7,12 +7,8 @@ import org.neo4j.ogm.session.Session;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.SystemClock;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,7 +18,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
@@ -46,7 +41,7 @@ public class SeleniumTests {
 
 	@BeforeClass
 	public static void mainSetUp() throws MalformedURLException {
-		System.setProperty("webdriver.chrome.driver","/usr/bin/chromedriver");
+		System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver");
 		ChromeOptions options = new ChromeOptions();
 		options.setBinary("/usr/bin/google-chrome-stable");
 		driver = new ChromeDriver(options);
@@ -156,8 +151,8 @@ public class SeleniumTests {
 		driver.navigate().to("localhost:2904/user/employeeByScore");
 		login();
 		assertEquals("Employees of the month", driver.getTitle());
-		String a = driver.findElements(By.tagName("tr")).get(0).findElements(By.tagName("td")).get(0).getText();
-		System.out.println(a);
+		Assert.assertTrue("element size", driver.findElement(By.className("fit_table"))
+				.findElements(By.tagName("tbody")).get(0).findElements(By.tagName("tr")).size() > 0);
 	}
 
 }

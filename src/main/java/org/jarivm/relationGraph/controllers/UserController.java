@@ -8,18 +8,17 @@ import org.jarivm.relationGraph.domains.Employee;
 import org.jarivm.relationGraph.domains.Issued;
 import org.jarivm.relationGraph.domains.Project;
 import org.jarivm.relationGraph.domains.WorkedOn;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -30,7 +29,7 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "user")
 public class UserController extends BaseController {
 
-	@RequestMapping("/")
+	@RequestMapping(value = "/", name = "user home")
 	public String root(Model model) {
 		return index(model);
 	}
@@ -43,64 +42,74 @@ public class UserController extends BaseController {
 		return "/user/index";
 	}
 
-	@RequestMapping(value = "/tableOverview")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PROJECT_LEADER')")
+	@RequestMapping(value = "/tableOverview", name = "table overview")
 	public String graph(@RequestParam(name = "limit", defaultValue = "150", required = false) Long limit, Model model) {
+		if (!isProjectLeader()) {
+			return "/error/403";
+		}
 		System.out.println(limit);
 		model.addAttribute("graphClient", clientRepository.graph(limit));
 		model.addAttribute("graphProject", projectRepository.graph(limit));
 		return "/user/tableOverview";
 	}
 
-	@RequestMapping(value = "/employeeByScore")
+	@RequestMapping(value = "/employeeByScore", name = "employee of the month")
 	public String employeeByScore(@RequestParam(name = "limit", defaultValue = "150", required = false) Long limit, Model model) {
 		model.addAttribute("graphEmployee", employeeRepository.employeesOfAllTime(limit));
 		return "/user/employeeByScore";
 	}
 
 	@RequestMapping("/viewClient/{id}")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_PROJECT_LEADER')")
 	public String viewClient(@PathVariable(name = "id") Long id, Model model) {
+		if (!isDeveloper())
+			return "/error/403";
 		model.addAttribute("client", clientRepository.findById(id));
 		return "/view/client";
 	}
 
 	@RequestMapping("/viewEmployee/{id}")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_PROJECT_LEADER')")
 	public String viewEmployee(@PathVariable(name = "id") Long id, Model model) {
+		if (!isDeveloper())
+			return "/error/403";
 		model.addAttribute("employee", employeeRepository.findById(id));
 		return "/view/employee";
 	}
 
 	@RequestMapping("/viewProject/{id}")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_PROJECT_LEADER') or (hasRole('ROLE_CLIENT') and @baseController.getHasRelationWithProject(#id))")
 	public String viewProject(@PathVariable(name = "id") Long id, Model model) {
+		if (!(isDeveloper() || (isClient() && hasRelationWithProject(id)))) {
+			return "/error/403";
+		}
 		model.addAttribute("project", projectRepository.findById(id));
 		return "/view/project";
 	}
 
 	@RequestMapping("/viewSector/{id}")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_PROJECT_LEADER')")
 	public String viewSector(@PathVariable(name = "id") Long id, Model model) {
+		if (!isDeveloper())
+			return "/error/403";
 		model.addAttribute("sector", sectorRepository.findById(id));
 		return "/view/sector";
 	}
 
 	@RequestMapping(value = "/delete/{id}")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public String deleteNode(@PathVariable(name = "id") Long id, Model model) {
 		switch (getTypeOfNode(id)) {
 			case CLIENT_TYPE:
-				clientRepository.delete(id);
+				if (isClient())
+					clientRepository.delete(id);
 				return "redirect:/user/index.html";
 			case EMPLOYEE_TYPE:
-				employeeRepository.delete(id);
+				if (isDeveloper())
+					employeeRepository.delete(id);
 				return "redirect:/user/index.html";
 			case PROJECT_TYPE:
-				projectRepository.delete(id);
+				if (isDeveloper() || isClient())
+					projectRepository.delete(id);
 				return "redirect:/user/index.html";
 			case SECTOR_TYPE:
-				sectorRepository.delete(id);
+				if (isAdmin())
+					sectorRepository.delete(id);
 				return "redirect:/user/index.html";
 			default:
 				return "/error/404";
@@ -108,8 +117,10 @@ public class UserController extends BaseController {
 	}
 
 	@RequestMapping(value = "/evaluate/{id}")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_PROJECT_LEADER') or (hasRole('ROLE_CLIENT') and @baseController.getHasRelationWithProject(#id))")
 	public String evaluate(@PathVariable("id") Long id, Model model) {
+		if (!(isDeveloper() || (isClient() && hasRelationWithProject(id)))) {
+			return "/error/403";
+		}
 		Project p = projectRepository.findById(id);
 		System.out.println("p = " + p);
 		model.addAttribute("project", p);
@@ -122,13 +133,15 @@ public class UserController extends BaseController {
 	}
 
 	@RequestMapping(value = "/evaluate/{id}/confirm")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_PROJECT_LEADER') or (hasRole('ROLE_CLIENT') and @baseController.getHasRelationWithProject(#id))")
 	public String confirmEvaluate(@PathVariable("id") Long id,
 								  @RequestParam("issuedId") Long issuedId,
 								  @RequestParam("score") List<Double> score,
 								  @RequestParam("workedOnId") List<Long> workedOnId,
 								  @RequestParam("cost") Float cost,
 								  Model model) {
+		if (!(isDeveloper() || (isClient() && hasRelationWithProject(id)))) {
+			return "/error/403";
+		}
 		List<WorkedOn> workedOns = new ArrayList<>();
 		for (int i = 0; i < workedOnId.size(); i++) {
 			WorkedOn w = workedOnRepository.findById(workedOnId.get(i));

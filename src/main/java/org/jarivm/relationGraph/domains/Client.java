@@ -38,16 +38,28 @@ public class Client {
 
 	}
 
-	@Override
-	public String toString() {
-		return "Client{" +
-				"id=" + id +
-				", sector=" + sector +
-				", name='" + name + '\'' +
-				", experience=" + experience +
-				", dateOfFounding=" + dateOfFounding +
-				", dateOfFirstCooperation=" + dateOfFirstCooperation +
-				'}';
+	public Date getDateOfFirstCooperation() {
+		return dateOfFirstCooperation;
+	}
+
+	public void setDateOfFirstCooperation(Date dateOfFirstCooperation) {
+		this.dateOfFirstCooperation = dateOfFirstCooperation;
+	}
+
+	public Date getDateOfFounding() {
+		return dateOfFounding;
+	}
+
+	public void setDateOfFounding(Date dateOfFounding) {
+		this.dateOfFounding = dateOfFounding;
+	}
+
+	public Long getExperience() {
+		return experience;
+	}
+
+	public void setExperience(Long experience) {
+		this.experience = experience;
 	}
 
 	public Long getId() {
@@ -58,43 +70,31 @@ public class Client {
 		this.id = id;
 	}
 
-	public Sector getSector() {
-		return sector;
-	}
-
 	public String getName() {
 		return name;
-	}
-
-	public Long getExperience() {
-		return experience;
-	}
-
-	public Date getDateOfFounding() {
-		return dateOfFounding;
-	}
-
-	public Date getDateOfFirstCooperation() {
-		return dateOfFirstCooperation;
-	}
-
-	public void setDateOfFirstCooperation(Date dateOfFirstCooperation) {
-		this.dateOfFirstCooperation = dateOfFirstCooperation;
-	}
-
-	public void setDateOfFounding(Date dateOfFounding) {
-		this.dateOfFounding = dateOfFounding;
-	}
-
-	public void setExperience(Long experience) {
-		this.experience = experience;
 	}
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	public Sector getSector() {
+		return sector;
+	}
+
 	public void setSector(Sector sector) {
 		this.sector = sector;
+	}
+
+	@Override
+	public String toString() {
+		return "Client{" +
+				"id=" + id +
+				", sector=" + sector +
+				", name='" + name + '\'' +
+				", experience=" + experience +
+				", dateOfFounding=" + dateOfFounding +
+				", dateOfFirstCooperation=" + dateOfFirstCooperation +
+				'}';
 	}
 }

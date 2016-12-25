@@ -8,13 +8,10 @@ import org.jarivm.relationGraph.domains.Client;
 import org.jarivm.relationGraph.domains.Employee;
 import org.jarivm.relationGraph.domains.Project;
 import org.jarivm.relationGraph.domains.Sector;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.text.SimpleDateFormat;
 
 /**
  * @author Jari Van Melckebeke
@@ -24,9 +21,10 @@ import java.text.SimpleDateFormat;
 @RequestMapping("/user/search")
 public class SearchController extends BaseController {
 
-	@RequestMapping("/simpleSearch")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_PROJECT_LEADER', 'ROLE_CLIENT')")
+	@RequestMapping(value = "/simpleSearch", name = "simple search")
 	public String simpleSearch(@RequestParam(name = "q") String query, @RequestParam(name = "t") String type, Model model) {
+		if (!isDeveloper() && !isClient())
+			return "/error/403";
 		if (type.startsWith("Client,")) {
 			String prop = type.substring(7);
 			System.out.println(prop);

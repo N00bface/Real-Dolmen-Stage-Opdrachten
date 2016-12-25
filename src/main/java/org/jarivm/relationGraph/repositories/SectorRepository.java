@@ -4,15 +4,12 @@
 
 package org.jarivm.relationGraph.repositories;
 
-import org.jarivm.relationGraph.domains.Client;
 import org.jarivm.relationGraph.domains.Project;
 import org.jarivm.relationGraph.domains.Sector;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.GraphRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;

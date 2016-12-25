@@ -4,10 +4,7 @@
 
 package org.jarivm.relationGraph.controllers;
 
-import groovyjarjarantlr.LexerSharedInputState;
 import org.jarivm.relationGraph.domains.*;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,7 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -26,30 +25,38 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("user/create")
 public class NodeController extends BaseController {
-	@RequestMapping("/client")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CLIENT')")
+	@RequestMapping(value = "/client", name = "create client")
 	public String createClient(Model model) {
+		if (!isAdmin()) {
+			return "/error/403";
+		}
 		model.addAttribute("clientToken", new Client());
 		model.addAttribute("sectors", sectorRepository.findAll());
 		return "/user/create/client";
 	}
 
-	@RequestMapping("/employee")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_EMPLOYEE', 'ROLE_PROJECT_LEADER')")
+	@RequestMapping(value = "/employee", name = "create employee")
 	public String createEmployee(Model model) {
+		if (!isProjectLeader()) {
+			return "/error/403";
+		}
 		model.addAttribute("employeeToken", new Employee());
 		return "/user/create/employee";
 	}
 
-	@RequestMapping("/sector")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PROJECT_LEADER', 'ROLE_CLIENT')")
+	@RequestMapping(value = "/sector", name = "create sector")
 	public String createSector(Model model) {
+		if (!isClient() && !isProjectLeader())
+			return "/error/403";
 		model.addAttribute("sectorToken", new Sector());
 		return "/user/create/sector";
 	}
 
-	@RequestMapping("/project")
+	@RequestMapping(value = "/project", name = "create project")
 	public String createProject(Model model) {
+		if (!isProjectLeader()) {
+			return "/error/403";
+		}
 		model.addAttribute("projectToken", new Project());
 		model.addAttribute("employees", employeeRepository.findAll());
 		model.addAttribute("clients", clientRepository.findAll());
@@ -57,8 +64,10 @@ public class NodeController extends BaseController {
 	}
 
 	@RequestMapping(value = "/createClient")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CLIENT')")
 	public String createNewClient(@RequestParam(name = "sector") Long s, Client client, BindingResult bindingResult, Model model) {
+		if (!isClient()) {
+			return "/error/403";
+		}
 		client.setSector(sectorRepository.findOne(s));
 		System.out.println(client);
 		clientRepository.save(client);
@@ -66,28 +75,33 @@ public class NodeController extends BaseController {
 	}
 
 	@RequestMapping(value = "/createEmployee")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_EMPLOYEE')")
 	public String createNewEmployee(Employee employee, BindingResult bindingResult, Model model) {
+		if (!isAdmin())
+			return "/error/403";
 		System.out.println(employee);
 		employeeRepository.save(employee);
 		return "redirect:/user/index.html";
 	}
 
 	@RequestMapping(value = "/createSector")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PROJECT_LEADER', 'ROLE_CLIENT')")
 	public String createNewSector(Sector sector, BindingResult bindingResult, Model model) {
+		if (!isDeveloper()) {
+			return "/error/403";
+		}
 		System.out.println(sector);
 		sectorRepository.save(sector);
 		return "redirect:/user/index.html";
 	}
 
 	@RequestMapping(value = "/createProject")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PROJECT_LEADER', 'ROLE_CLIENT')")
 	public String createNewProject(@RequestParam(name = "employeesCollaborated") List<Long> employees,
 								   @RequestParam(name = "roles") List<String> roles,
 								   @RequestParam(name = "client") Long client,
 								   @ModelAttribute Project project,
 								   BindingResult bindingResult, Model model) {
+		if (!isDeveloper()) {
+			return "/error/403";
+		}
 		Client c = clientRepository.findById(client);
 		Issued issued = new Issued(c, project);
 		List<Issued> issuedList = new ArrayList<>();
@@ -105,7 +119,7 @@ public class NodeController extends BaseController {
 		return "redirect:/user/index.html";
 	}
 
-	@RequestMapping(value = "/edit/{id}")
+	@RequestMapping(value = "/edit/{id}", name = "edit entity")
 	public String editEntity(@PathVariable("id") Long id, Model model) {
 		switch (getTypeOfNode(id)) {
 			case CLIENT_TYPE:
@@ -136,8 +150,10 @@ public class NodeController extends BaseController {
 	}
 
 	@RequestMapping(value = "/edit/client/{id}/confirm")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CLIENT')")
 	public String confirmEditClient(@PathVariable("id") Long id, Client node, BindingResult bindingResult, Model model) {
+		if (!isClient()) {
+			return "/error/403";
+		}
 		System.out.println(node);
 		node.setId(id);
 		clientRepository.save(node);
@@ -145,8 +161,10 @@ public class NodeController extends BaseController {
 	}
 
 	@RequestMapping(value = "/edit/employee/{id}/confirm")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_EMPLOYEE')")
 	public String confirmEditEmployee(@PathVariable("id") Long id, Employee node, BindingResult bindingResult, Model model) {
+		if (!isDeveloper()) {
+			return "/error/403";
+		}
 		System.out.println(node);
 		node.setId(id);
 		employeeRepository.save(node);
@@ -183,8 +201,10 @@ public class NodeController extends BaseController {
 	}
 
 	@RequestMapping(value = "/edit/sector/{id}/confirm")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	public String confirmEditSector(@PathVariable("id") Long id, Sector node, BindingResult bindingResult, Model model) {
+		if (!isAdmin()) {
+			return "/error/403";
+		}
 		System.out.println(node);
 		node.setId(id);
 		sectorRepository.save(node);

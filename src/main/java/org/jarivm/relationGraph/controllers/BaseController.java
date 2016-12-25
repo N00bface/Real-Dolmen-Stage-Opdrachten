@@ -4,15 +4,22 @@
 
 package org.jarivm.relationGraph.controllers;
 
-import org.jarivm.relationGraph.domains.*;
+import org.jarivm.relationGraph.config.AuthenticationConfig;
+import org.jarivm.relationGraph.constants.AuthType;
+import org.jarivm.relationGraph.constants.NodeType;
+import org.jarivm.relationGraph.domains.Client;
+import org.jarivm.relationGraph.domains.Employee;
+import org.jarivm.relationGraph.domains.Project;
+import org.jarivm.relationGraph.domains.Sector;
 import org.jarivm.relationGraph.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import static org.jarivm.relationGraph.controllers.EntityConstants.*;
+import static org.jarivm.relationGraph.constants.NodeType.*;
 
 /**
  * @author Jari Van Melckebeke
@@ -32,6 +39,8 @@ public class BaseController {
 	public WorkedOnRepository workedOnRepository;
 	@Autowired
 	public IssuedRepository issuedRepository;
+	@Autowired
+	public RequestMappingHandlerMapping requestMappingHandlerMapping;
 
 	@ModelAttribute("clientKeys")
 	public String[] getClientKeys() {
@@ -43,17 +52,56 @@ public class BaseController {
 		return employeeRepository.findProperties();
 	}
 
+	@ModelAttribute("endpoints")
+	public String[] getMappings() {
+		return null;
+	}
+
 	@ModelAttribute("projectKeys")
 	public String[] getProjectKeys() {
 		return projectRepository.findProperties();
 	}
+
 
 	@ModelAttribute("sectorKeys")
 	public String[] getSectorKeys() {
 		return sectorRepository.findProperties();
 	}
 
-	public boolean getHasRelationWithProject(Long id) {
+	boolean isAdmin() {
+		return isAdmin(AuthenticationConfig.getRole());
+	}
+
+	private boolean isAdmin(AuthType role) {
+		return (role == AuthType.ADMIN);
+	}
+
+	boolean isClient() {
+		return isClient(AuthenticationConfig.getRole());
+	}
+
+	private boolean isClient(AuthType role) {
+		return (role == AuthType.ADMIN) || (role == AuthType.CLIENT);
+	}
+
+	boolean isDeveloper() {
+		return isDeveloper(AuthenticationConfig.getRole());
+	}
+
+	private boolean isDeveloper(AuthType role) {
+		return (role == AuthType.ADMIN) || (role == AuthType.PROJECT_LEADER) || (role == AuthType.DEVELOPER);
+	}
+
+	boolean isProjectLeader() {
+		return isProjectLeader(AuthenticationConfig.getRole());
+	}
+
+	private boolean isProjectLeader(AuthType role) {
+		return (role == AuthType.ADMIN) || (role == AuthType.PROJECT_LEADER);
+	}
+
+	//todo: clean this
+	public boolean hasRelationWithProject(Long id) {
 		//todo: complete has relation
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		return projectRepository.relationToWithClient(authentication.getName(), id)
@@ -62,7 +110,7 @@ public class BaseController {
 				|| authentication.getName().equals("admin");
 	}
 
-	public EntityConstants getTypeOfNode(Long id) {
+	NodeType getTypeOfNode(Long id) {
 		Client c = clientRepository.findById(id);
 		Employee e = employeeRepository.findById(id);
 		Project p = projectRepository.findById(id);
