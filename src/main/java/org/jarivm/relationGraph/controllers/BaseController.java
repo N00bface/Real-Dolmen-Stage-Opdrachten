@@ -11,6 +11,8 @@ import org.jarivm.relationGraph.domains.Client;
 import org.jarivm.relationGraph.domains.Employee;
 import org.jarivm.relationGraph.domains.Project;
 import org.jarivm.relationGraph.domains.Sector;
+import org.jarivm.relationGraph.exceptions.ForbiddenException;
+import org.jarivm.relationGraph.exceptions.NFException;
 import org.jarivm.relationGraph.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -52,6 +54,7 @@ public class BaseController {
 		return employeeRepository.findProperties();
 	}
 
+	//todo: create sitemap :exclamation:
 	@ModelAttribute("endpoints")
 	public String[] getMappings() {
 		return null;
@@ -100,14 +103,30 @@ public class BaseController {
 		return (role == AuthType.ADMIN) || (role == AuthType.PROJECT_LEADER);
 	}
 
-	//todo: clean this
+	public String noAccess() {
+		System.out.println("NO ACCESS");
+		throw new ForbiddenException();
+	}
+
+	public String notFound() {
+		throw new NFException();
+	}
+
 	public boolean hasRelationWithProject(Long id) {
-		//todo: complete has relation
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		return projectRepository.relationToWithClient(authentication.getName(), id)
-				|| projectRepository.relationToWithProjectLeader(authentication.getName(), id)
-				|| projectRepository.relationToWithEmployee(authentication.getName(), id)
-				|| authentication.getName().equals("admin");
+		String name = authentication.getName();
+		switch (AuthenticationConfig.getRole()) {
+			case ADMIN:
+				return true;
+			case PROJECT_LEADER:
+				return projectRepository.relationToWithProjectLeader(name, id);
+			case EMPLOYEE:
+				return projectRepository.relationToWithEmployee(name, id);
+			case CLIENT:
+				return projectRepository.relationToWithClient(name, id);
+			default:
+				return false;
+		}
 	}
 
 	NodeType getTypeOfNode(Long id) {
@@ -115,18 +134,10 @@ public class BaseController {
 		Employee e = employeeRepository.findById(id);
 		Project p = projectRepository.findById(id);
 		Sector s = sectorRepository.findById(id);
-		if (c != null) {
-			return CLIENT_TYPE;
-		}
-		if (e != null) {
-			return EMPLOYEE_TYPE;
-		}
-		if (p != null) {
-			return PROJECT_TYPE;
-		}
-		if (s != null) {
-			return SECTOR_TYPE;
-		}
+		if (c != null) return CLIENT_TYPE;
+		if (e != null) return EMPLOYEE_TYPE;
+		if (p != null) return PROJECT_TYPE;
+		if (s != null) return SECTOR_TYPE;
 		return INVALID;
 	}
 }

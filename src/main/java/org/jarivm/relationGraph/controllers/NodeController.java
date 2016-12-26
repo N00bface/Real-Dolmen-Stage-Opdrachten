@@ -22,13 +22,12 @@ import java.util.stream.Collectors;
  * @author Jari Van Melckebeke
  * @since 17.10.16.
  */
-@Controller
-@RequestMapping("user/create")
+@Controller("/user/create")
 public class NodeController extends BaseController {
 	@RequestMapping(value = "/client", name = "create client")
 	public String createClient(Model model) {
 		if (!isAdmin()) {
-			return "/error/403";
+			return noAccess();
 		}
 		model.addAttribute("clientToken", new Client());
 		model.addAttribute("sectors", sectorRepository.findAll());
@@ -38,7 +37,7 @@ public class NodeController extends BaseController {
 	@RequestMapping(value = "/employee", name = "create employee")
 	public String createEmployee(Model model) {
 		if (!isProjectLeader()) {
-			return "/error/403";
+			return noAccess();
 		}
 		model.addAttribute("employeeToken", new Employee());
 		return "/user/create/employee";
@@ -46,8 +45,8 @@ public class NodeController extends BaseController {
 
 	@RequestMapping(value = "/sector", name = "create sector")
 	public String createSector(Model model) {
-		if (!isClient() && !isProjectLeader())
-			return "/error/403";
+		if (!isAdmin())
+			return noAccess();
 		model.addAttribute("sectorToken", new Sector());
 		return "/user/create/sector";
 	}
@@ -55,7 +54,7 @@ public class NodeController extends BaseController {
 	@RequestMapping(value = "/project", name = "create project")
 	public String createProject(Model model) {
 		if (!isProjectLeader()) {
-			return "/error/403";
+			return noAccess();
 		}
 		model.addAttribute("projectToken", new Project());
 		model.addAttribute("employees", employeeRepository.findAll());
@@ -66,7 +65,7 @@ public class NodeController extends BaseController {
 	@RequestMapping(value = "/createClient")
 	public String createNewClient(@RequestParam(name = "sector") Long s, Client client, BindingResult bindingResult, Model model) {
 		if (!isClient()) {
-			return "/error/403";
+			return "";
 		}
 		client.setSector(sectorRepository.findOne(s));
 		System.out.println(client);
@@ -77,7 +76,7 @@ public class NodeController extends BaseController {
 	@RequestMapping(value = "/createEmployee")
 	public String createNewEmployee(Employee employee, BindingResult bindingResult, Model model) {
 		if (!isAdmin())
-			return "/error/403";
+			return noAccess();
 		System.out.println(employee);
 		employeeRepository.save(employee);
 		return "redirect:/user/index.html";
@@ -86,7 +85,7 @@ public class NodeController extends BaseController {
 	@RequestMapping(value = "/createSector")
 	public String createNewSector(Sector sector, BindingResult bindingResult, Model model) {
 		if (!isDeveloper()) {
-			return "/error/403";
+			return noAccess();
 		}
 		System.out.println(sector);
 		sectorRepository.save(sector);
@@ -100,7 +99,7 @@ public class NodeController extends BaseController {
 								   @ModelAttribute Project project,
 								   BindingResult bindingResult, Model model) {
 		if (!isDeveloper()) {
-			return "/error/403";
+			return noAccess();
 		}
 		Client c = clientRepository.findById(client);
 		Issued issued = new Issued(c, project);
@@ -152,7 +151,7 @@ public class NodeController extends BaseController {
 	@RequestMapping(value = "/edit/client/{id}/confirm")
 	public String confirmEditClient(@PathVariable("id") Long id, Client node, BindingResult bindingResult, Model model) {
 		if (!isClient()) {
-			return "/error/403";
+			return noAccess();
 		}
 		System.out.println(node);
 		node.setId(id);
@@ -163,7 +162,7 @@ public class NodeController extends BaseController {
 	@RequestMapping(value = "/edit/employee/{id}/confirm")
 	public String confirmEditEmployee(@PathVariable("id") Long id, Employee node, BindingResult bindingResult, Model model) {
 		if (!isDeveloper()) {
-			return "/error/403";
+			return noAccess();
 		}
 		System.out.println(node);
 		node.setId(id);
@@ -203,7 +202,7 @@ public class NodeController extends BaseController {
 	@RequestMapping(value = "/edit/sector/{id}/confirm")
 	public String confirmEditSector(@PathVariable("id") Long id, Sector node, BindingResult bindingResult, Model model) {
 		if (!isAdmin()) {
-			return "/error/403";
+			return noAccess();
 		}
 		System.out.println(node);
 		node.setId(id);

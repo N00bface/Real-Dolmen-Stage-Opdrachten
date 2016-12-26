@@ -45,7 +45,7 @@ public class UserController extends BaseController {
 	@RequestMapping(value = "/tableOverview", name = "table overview")
 	public String graph(@RequestParam(name = "limit", defaultValue = "150", required = false) Long limit, Model model) {
 		if (!isProjectLeader()) {
-			return "/error/403";
+			return noAccess();
 		}
 		System.out.println(limit);
 		model.addAttribute("graphClient", clientRepository.graph(limit));
@@ -62,7 +62,7 @@ public class UserController extends BaseController {
 	@RequestMapping("/viewClient/{id}")
 	public String viewClient(@PathVariable(name = "id") Long id, Model model) {
 		if (!isDeveloper())
-			return "/error/403";
+			return noAccess();
 		model.addAttribute("client", clientRepository.findById(id));
 		return "/view/client";
 	}
@@ -70,15 +70,15 @@ public class UserController extends BaseController {
 	@RequestMapping("/viewEmployee/{id}")
 	public String viewEmployee(@PathVariable(name = "id") Long id, Model model) {
 		if (!isDeveloper())
-			return "/error/403";
+			return noAccess();
 		model.addAttribute("employee", employeeRepository.findById(id));
 		return "/view/employee";
 	}
 
 	@RequestMapping("/viewProject/{id}")
 	public String viewProject(@PathVariable(name = "id") Long id, Model model) {
-		if (!(isDeveloper() || (isClient() && hasRelationWithProject(id)))) {
-			return "/error/403";
+		if (!isDeveloper() && !(isClient() && hasRelationWithProject(id))) {
+			return noAccess();
 		}
 		model.addAttribute("project", projectRepository.findById(id));
 		return "/view/project";
@@ -87,7 +87,7 @@ public class UserController extends BaseController {
 	@RequestMapping("/viewSector/{id}")
 	public String viewSector(@PathVariable(name = "id") Long id, Model model) {
 		if (!isDeveloper())
-			return "/error/403";
+			return noAccess();
 		model.addAttribute("sector", sectorRepository.findById(id));
 		return "/view/sector";
 	}
@@ -118,8 +118,8 @@ public class UserController extends BaseController {
 
 	@RequestMapping(value = "/evaluate/{id}")
 	public String evaluate(@PathVariable("id") Long id, Model model) {
-		if (!(isDeveloper() || (isClient() && hasRelationWithProject(id)))) {
-			return "/error/403";
+		if (!isDeveloper() && !(isClient() && hasRelationWithProject(id))) {
+			return noAccess();
 		}
 		Project p = projectRepository.findById(id);
 		System.out.println("p = " + p);
@@ -139,8 +139,8 @@ public class UserController extends BaseController {
 								  @RequestParam("workedOnId") List<Long> workedOnId,
 								  @RequestParam("cost") Float cost,
 								  Model model) {
-		if (!(isDeveloper() || (isClient() && hasRelationWithProject(id)))) {
-			return "/error/403";
+		if (!isDeveloper() && !(isClient() && hasRelationWithProject(id))) {
+			return noAccess();
 		}
 		List<WorkedOn> workedOns = new ArrayList<>();
 		for (int i = 0; i < workedOnId.size(); i++) {

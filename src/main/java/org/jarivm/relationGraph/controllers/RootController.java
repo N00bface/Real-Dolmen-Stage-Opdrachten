@@ -4,9 +4,15 @@
 
 package org.jarivm.relationGraph.controllers;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Jari Van Melckebeke
@@ -33,8 +39,17 @@ public class RootController extends BaseController {
 
 	@RequestMapping(value = "/login", name = "login")
 	public String login() {
-
 		return "login";
+	}
+
+	@RequestMapping(value = "/logout", name = "log out")
+	public String logout(HttpServletRequest request, HttpServletResponse response) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth != null) {
+			new SecurityContextLogoutHandler().logout(request, response, auth);
+		}
+		return "redirect:/login?logout";
+
 	}
 
 	@RequestMapping("/login-error")

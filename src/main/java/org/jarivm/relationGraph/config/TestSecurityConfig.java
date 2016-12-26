@@ -27,6 +27,9 @@ public class TestSecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
 		auth.inMemoryAuthentication().withUser("admin").password("root").roles("ADMIN");
 		auth.inMemoryAuthentication().withUser("Colruyt").password("client").roles("CLIENT");
+		auth.inMemoryAuthentication().withUser("jari").password("jari").roles("PROJECT_LEADER");
+		auth.inMemoryAuthentication().withUser("amber").password("amber").roles("EMPLOYEE");
+		auth.inMemoryAuthentication().withUser("stijn").password("stijn").roles("EMPLOYEE");
 	}
 
 	@Override

@@ -24,7 +24,7 @@ public class SearchController extends BaseController {
 	@RequestMapping(value = "/simpleSearch", name = "simple search")
 	public String simpleSearch(@RequestParam(name = "q") String query, @RequestParam(name = "t") String type, Model model) {
 		if (!isDeveloper() && !isClient())
-			return "/error/403";
+			return noAccess();
 		if (type.startsWith("Client,")) {
 			String prop = type.substring(7);
 			System.out.println(prop);
@@ -57,6 +57,6 @@ public class SearchController extends BaseController {
 			model.addAttribute("type", "sector");
 			return "/user/searchResult";
 		}
-		return "/error/404";
+		return notFound();
 	}
 }

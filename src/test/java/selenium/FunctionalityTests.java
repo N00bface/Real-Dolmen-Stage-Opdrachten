@@ -2,26 +2,20 @@
  * Copyright (c) 2016. LICENCED BY (c) Jari Van Melckebeke, all rights reserved, use only with permission of Jari Van Melckebeke
  */
 
-import org.junit.*;
-import org.neo4j.ogm.session.Session;
+package selenium;
+
+import org.jarivm.relationGraph.constants.AuthType;
+import org.junit.Assert;
+import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.Select;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.net.MalformedURLException;
-import java.util.HashMap;
-
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 
 /**
@@ -33,41 +27,7 @@ import static org.junit.Assert.assertNotNull;
 @ComponentScan("org.jarivm.relationGraph")
 @EnableAutoConfiguration
 @ActiveProfiles("CI")
-public class SeleniumTests {
-
-	private static Session s;
-	private static WebDriver driver;
-	private static ConfigurableApplicationContext context;
-
-	@BeforeClass
-	public static void mainSetUp() throws MalformedURLException {
-		System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver");
-		ChromeOptions options = new ChromeOptions();
-		options.setBinary("/usr/bin/google-chrome-stable");
-		driver = new ChromeDriver(options);
-		context = SpringApplication.run(SeleniumTests.class);
-		driver.get("localhost:2907");
-		System.out.println(driver.getTitle());
-	}
-
-	@AfterClass
-	public static void mainTearDown() {
-		assertNotNull(s);
-		s.query("MATCH (n) where n.name CONTAINS 'test' detach delete n;", new HashMap<>());
-		driver.close();
-		driver.quit();
-		context.close();
-	}
-
-	@Before
-	public void setUp() {
-		System.out.println(context.getBeanFactory().getBeanNamesIterator().toString());
-		s = (Session) context.getBean("getSession");
-	}
-
-	@After
-	public void tearDown() {
-	}
+public class FunctionalityTests extends BasicTests {
 
 
 	@Test
@@ -78,14 +38,15 @@ public class SeleniumTests {
 
 	@Test
 	public void testSpringConnection() {
-		driver.navigate().to("localhost:2904/login");
+		driver.navigate().to("http://localhost:2904/login");
 		assertEquals(driver.getTitle(), "Login Page");
 	}
 
 	@Test
 	public void testCreateClient() {
-		driver.navigate().to("localhost:2904/user/create/client");
-		login();
+		login(AuthType.ADMIN);
+		System.out.println(driver.getCurrentUrl());
+		driver.navigate().to("http://localhost:2904/user/create/client");
 		assertEquals("New Entity", driver.getTitle());
 		driver.findElement(By.id("name")).sendKeys("mock test");
 		driver.findElement(By.id("experience")).sendKeys("15");
@@ -95,19 +56,11 @@ public class SeleniumTests {
 		assertEquals(driver.getTitle(), "User home");
 	}
 
-	public void login() {
-		if (driver.getTitle().equals("Login Page")) {
-			assertEquals("Login Page", driver.getTitle());
-			driver.findElement(By.name("username")).sendKeys("admin");
-			driver.findElement(By.name("password")).sendKeys("root");
-			driver.findElement(By.name("submit")).click();
-		}
-	}
-
 	@Test
 	public void testCreateEmployee() {
+		login(AuthType.ADMIN);
+		System.out.println(driver.getCurrentUrl());
 		driver.navigate().to("localhost:2904/user/create/employee");
-		login();
 		assertEquals("New Entity", driver.getTitle());
 		driver.findElement(By.id("surname")).sendKeys("Van Melckebeke");
 		driver.findElement(By.id("name")).sendKeys("test");
@@ -122,8 +75,8 @@ public class SeleniumTests {
 
 	@Test
 	public void testCreateProject() {
+		login(AuthType.ADMIN);
 		driver.navigate().to("localhost:2904/user/create/project");
-		login();
 		assertEquals("New Entity", driver.getTitle());
 		driver.findElement(By.id("name")).sendKeys("test");
 		driver.findElement(By.id("cost")).sendKeys("150");
@@ -138,8 +91,8 @@ public class SeleniumTests {
 
 	@Test
 	public void testCreateSector() {
+		login(AuthType.ADMIN);
 		driver.navigate().to("localhost:2904/user/create/sector");
-		login();
 		assertEquals("New Entity", driver.getTitle());
 		driver.findElement(By.id("name")).sendKeys("test");
 		driver.findElement(By.id("submit")).click();
@@ -148,8 +101,8 @@ public class SeleniumTests {
 
 	@Test
 	public void testEmployeeOfTheMonth() {
+		login(AuthType.ADMIN);
 		driver.navigate().to("localhost:2904/user/employeeByScore");
-		login();
 		assertEquals("Employees of the month", driver.getTitle());
 		Assert.assertTrue("element size", driver.findElement(By.className("fit_table"))
 				.findElements(By.tagName("tbody")).get(0).findElements(By.tagName("tr")).size() > 0);
