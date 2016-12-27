@@ -9,10 +9,10 @@ Currently the code only works on linux, tested on Ubuntu 16.04
 ## required to compile ##
 
 1. java / openjdk 1.8
-1. maven (3)
+1. maven (v3)
 1. Neo4J
 1. MySQL
-1. chrome driver installed at `/bin/chromedriver`
+1. chrome driver installed at `/usr/bin/chromedriver`
 
 ## running the code ##
 
