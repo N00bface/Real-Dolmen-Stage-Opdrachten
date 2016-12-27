@@ -19,5 +19,6 @@ public class AuthenticationSuccessListener implements ApplicationListener<Intera
 	public void onApplicationEvent(InteractiveAuthenticationSuccessEvent interactiveAuthenticationSuccessEvent) {
 		System.out.println("USER LOGGED IN AS " + interactiveAuthenticationSuccessEvent.getAuthentication().getName());
 		AuthenticationConfig.setRole();
+		AuthenticationConfig.setName();
 	}
 }

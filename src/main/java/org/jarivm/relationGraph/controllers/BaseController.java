@@ -72,6 +72,7 @@ public class BaseController {
 	}
 
 	boolean isAdmin() {
+		System.out.println(AuthenticationConfig.getRole());
 		return isAdmin(AuthenticationConfig.getRole());
 	}
 

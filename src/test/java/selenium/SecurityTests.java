@@ -31,6 +31,13 @@ public class SecurityTests extends BasicTests {
 	public void testAdmin() {
 		login(AuthType.ADMIN);
 		driver.get("localhost:2904/user/home");
-		assertTrue("admin logged in successfully", !Objects.equals(driver.getTitle(), "Login Page"));
+		assertTrue("admin logged in?", !Objects.equals(driver.getTitle(), "Login Page"));
+	}
+
+	@Test
+	public void testWrongUserName() {
+		login(AuthType.NONE);
+		driver.get("localhost:2904/user/home");
+		assertTrue("could log in?", Objects.equals(driver.getTitle(), "Login Page"));
 	}
 }

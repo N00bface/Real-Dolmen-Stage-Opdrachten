@@ -5,7 +5,6 @@
 package org.jarivm.relationGraph.controllers;
 
 import org.jarivm.relationGraph.domains.Employee;
-import org.jarivm.relationGraph.domains.Issued;
 import org.jarivm.relationGraph.domains.Project;
 import org.jarivm.relationGraph.domains.WorkedOn;
 import org.springframework.security.core.Authentication;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,18 +24,12 @@ import java.util.stream.Collectors;
  * @since 17.10.16.
  */
 @Controller
-@RequestMapping(value = "user")
+@RequestMapping("user")
 public class UserController extends BaseController {
 
-	@RequestMapping(value = "/", name = "user home")
-	public String root(Model model) {
-		return index(model);
-	}
-
-	@RequestMapping("/index")
+	@RequestMapping(value = {"/index", "/", "/home"}, name = "user home")
 	public String index(Model model) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		System.out.println(projectRepository.findByClientName(authentication.getName()));
 		model.addAttribute("userprojects", projectRepository.findByClientName(authentication.getName()));
 		return "/user/index";
 	}
@@ -98,22 +90,19 @@ public class UserController extends BaseController {
 			case CLIENT_TYPE:
 				if (isClient())
 					clientRepository.delete(id);
-				return "redirect:/user/index.html";
 			case EMPLOYEE_TYPE:
 				if (isDeveloper())
 					employeeRepository.delete(id);
-				return "redirect:/user/index.html";
 			case PROJECT_TYPE:
 				if (isDeveloper() || isClient())
 					projectRepository.delete(id);
-				return "redirect:/user/index.html";
 			case SECTOR_TYPE:
 				if (isAdmin())
 					sectorRepository.delete(id);
-				return "redirect:/user/index.html";
-			default:
+			case INVALID:
 				return "/error/404";
 		}
+		return "redirect:/user/index.html";
 	}
 
 	@RequestMapping(value = "/evaluate/{id}")
@@ -122,12 +111,11 @@ public class UserController extends BaseController {
 			return noAccess();
 		}
 		Project p = projectRepository.findById(id);
-		System.out.println("p = " + p);
-		model.addAttribute("project", p);
 		List<WorkedOn> workedOns = p.getWorkedOn();
-		Collections.sort(workedOns, (t, t1) -> (int) (t.getEmployee().getId() - t1.getEmployee().getId()));
-		model.addAttribute("workedOns", workedOns.iterator());
+		workedOns.sort((t, t1) -> (int) (t.getEmployee().getId() - t1.getEmployee().getId()));
 		List<Employee> employeesCollaborated = p.getWorkedOn().stream().map(WorkedOn::getEmployee).collect(Collectors.toList());
+		model.addAttribute("project", p);
+		model.addAttribute("workedOns", workedOns.iterator());
 		model.addAttribute("employeesCollaborated", employeesCollaborated);
 		return "/user/evaluate";
 	}
@@ -148,12 +136,10 @@ public class UserController extends BaseController {
 			w.setScore(score.get(i));
 			workedOns.add(w);
 		}
-		List<Issued> issuedList = new ArrayList<>();
-		issuedList.add(issuedRepository.findById(issuedId));
-		issuedRepository.save(issuedList);
-		workedOnRepository.save(workedOns);
 		Project p = projectRepository.findById(id);
 		p.setCost(cost);
+		issuedRepository.save(issuedRepository.findById(issuedId));
+		workedOnRepository.save(workedOns);
 		projectRepository.save(p);
 		return "redirect:/user/index.html";
 	}

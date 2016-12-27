@@ -5,6 +5,7 @@
 package org.jarivm.relationGraph.config;
 
 import org.jarivm.relationGraph.constants.AuthType;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -16,6 +17,11 @@ import java.util.Collection;
  */
 public class AuthenticationConfig {
 	private static AuthType role;
+	private static String name;
+
+	public static String getName() {
+		return name;
+	}
 
 	public static AuthType getRole() {
 		return role;
@@ -25,21 +31,31 @@ public class AuthenticationConfig {
 		return role != AuthType.NONE;
 	}
 
-	public static AuthType setRole() {
+	public static void setRole() {
 		Collection<GrantedAuthority> authorities =
 				(Collection<GrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 		String a = authorities.iterator().next().getAuthority();
+		System.out.println(a);
 		switch (a) {
 			case "ROLE_ADMIN":
-				return AuthType.ADMIN;
+				role = AuthType.ADMIN;
+				break;
 			case "ROLE_CLIENT":
-				return AuthType.CLIENT;
+				role = AuthType.CLIENT;
+				break;
 			case "ROLE_PROJECT_LEADER":
-				return AuthType.PROJECT_LEADER;
+				role = AuthType.PROJECT_LEADER;
+				break;
 			case "ROLE_EMPLOYEE":
-				return AuthType.DEVELOPER;
+				role = AuthType.DEVELOPER;
+				break;
 			default:
-				return AuthType.NONE;
+				role = AuthType.NONE;
 		}
+	}
+
+	public static void setName() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		name = authentication.getName();
 	}
 }

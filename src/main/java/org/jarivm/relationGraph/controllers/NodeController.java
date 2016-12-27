@@ -22,7 +22,8 @@ import java.util.stream.Collectors;
  * @author Jari Van Melckebeke
  * @since 17.10.16.
  */
-@Controller("/user/create")
+@Controller
+@RequestMapping("/user/create")
 public class NodeController extends BaseController {
 	@RequestMapping(value = "/client", name = "create client")
 	public String createClient(Model model) {

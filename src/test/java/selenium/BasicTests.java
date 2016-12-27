@@ -67,6 +67,9 @@ public class BasicTests {
 				return;
 			case CLIENT:
 				loginAsAnonymous("Colruyt", "client");
+				return;
+			case NONE:
+				loginAsAnonymous("ava", "client");
 		}
 	}
 
