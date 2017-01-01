@@ -14,8 +14,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
-<div th:substituteby="index::logout"></div>
-<div th:substituteby="menubar::menubar"></div>
+<div class="menubar">
+    <div th:substituteby="menubar::menubar"></div>
+</div>
 <h1>graph table</h1>
 <h2>clients</h2>
 <table>
@@ -25,7 +26,7 @@
         <th>experience</th>
         <th>projects</th>
     </tr>
-    <tr th:each="c : ${graphClient}">
+    <tr th:each="c : ${clients}">
         <td th:text="${c.sector}"></td>
         <td th:text="${c.client}"></td>
         <td th:text="${c.experience}"></td>
@@ -34,12 +35,12 @@
         </td>
     </tr>
 </table>
-<h2>projects</h2>
-<div th:each="proj: ${graphProject}" class="card">
+<h2>my projects</h2>
+<div th:each="proj: ${projects}" class="card">
     <div th:id="${proj.name}">
         <table>
             <tr>
-                <th>last_name</th>
+                <th>name</th>
                 <td th:text="${proj.name}"></td>
             </tr>
             <tr>

@@ -24,24 +24,61 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/user/search")
 public class SearchController extends BaseController {
 
+	@RequestMapping
+	public String search() {
+		return "/user/search";
+	}
+
 	@RequestMapping(value = "/simpleSearch", name = "simple search")
 	public String simpleSearch(@RequestParam(name = "q") String query, @RequestParam(name = "t") String type, Model model) {
 		if (!isDeveloper() && !isClient())
 			return noAccess();
+		if (type.equals("any")) {
+			model.addAttribute("type", "any");
+			Iterable<Client> c = clientRepository.findByAny(query);
+			Iterable<Employee> e = employeeRepository.findByAny(query);
+			Iterable<Project> p = projectRepository.findByAny(query);
+			Iterable<Sector> s = sectorRepository.findByAny(query);
+			if (noResults(c))
+				model.addAttribute("client", "none");
+			else
+				model.addAttribute("client", c);
+			if (noResults(e))
+				model.addAttribute("employee", "none");
+			else
+				model.addAttribute("employee", e);
+			if (noResults(p))
+				model.addAttribute("project", "none");
+			else
+				model.addAttribute("project", p);
+			if (noResults(s))
+				model.addAttribute("sector", "none");
+			else
+				model.addAttribute("sector", sectorRepository.findByAny(query));
+			return "/user/searchResult";
+		}
 		if (type.startsWith("Client,")) {
 			String prop = type.substring(7);
 			System.out.println(prop);
 			Iterable<Client> clients = clientRepository.findByProperty(prop, query);
 			model.addAttribute("results", clients);
-			model.addAttribute("type", "client");
+			if (noResults(clients))
+				model.addAttribute("type", "none");
+			else
+				model.addAttribute("type", "client");
 			return "/user/searchResult";
+
 		}
+
 		if (type.startsWith("Employee,")) {
 			String prop = type.substring(9);
 			System.out.println(prop);
 			Iterable<Employee> employees = employeeRepository.findByProperty(prop, query);
 			model.addAttribute("results", employees);
-			model.addAttribute("type", "employee");
+			if (noResults(employees))
+				model.addAttribute("type", "none");
+			else
+				model.addAttribute("type", "employee");
 			return "/user/searchResult";
 		}
 		if (type.startsWith("Project,")) {
@@ -49,7 +86,10 @@ public class SearchController extends BaseController {
 			System.out.println(prop);
 			Iterable<Project> results = projectRepository.findByProperty(prop, query);
 			model.addAttribute("results", results);
-			model.addAttribute("type", "project");
+			if (noResults(results))
+				model.addAttribute("type", "none");
+			else
+				model.addAttribute("type", "project");
 			return "/user/searchResult";
 		}
 		if (type.startsWith("Sector,")) {
@@ -57,9 +97,16 @@ public class SearchController extends BaseController {
 			System.out.println(prop);
 			Iterable<Sector> sectors = sectorRepository.findByProperty(prop, query);
 			model.addAttribute("results", sectors);
-			model.addAttribute("type", "sector");
+			if (noResults(sectors))
+				model.addAttribute("type", "none");
+			else
+				model.addAttribute("type", "sector");
 			return "/user/searchResult";
 		}
 		return notFound();
+	}
+
+	private boolean noResults(Iterable it) {
+		return !it.iterator().hasNext();
 	}
 }

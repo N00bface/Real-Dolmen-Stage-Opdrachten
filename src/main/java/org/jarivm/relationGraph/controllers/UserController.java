@@ -7,6 +7,8 @@
 
 package org.jarivm.relationGraph.controllers;
 
+import org.jarivm.relationGraph.config.AuthenticationConfig;
+import org.jarivm.relationGraph.domains.Client;
 import org.jarivm.relationGraph.domains.Employee;
 import org.jarivm.relationGraph.domains.Project;
 import org.jarivm.relationGraph.domains.WorkedOn;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -38,13 +41,52 @@ public class UserController extends BaseController {
 	}
 
 	@RequestMapping(value = "/tableOverview", name = "table overview")
-	public String graph(@RequestParam(name = "limit", defaultValue = "150", required = false) Long limit, Model model) {
-		if (!isProjectLeader()) {
+	public String myProjects(Model model) {
+		if (!isAuthenticated()) {
 			return noAccess();
 		}
-		System.out.println(limit);
-		model.addAttribute("graphClient", clientRepository.graph(limit));
-		model.addAttribute("graphProject", projectRepository.graph(limit));
+		ArrayList<Client> clients = (ArrayList<Client>) clientRepository.findAll();
+		ArrayList<Project> projects = (ArrayList<Project>) projectRepository.findAll();
+		if (isAdmin()) {
+			model.addAttribute("clients", clients);
+			model.addAttribute("projects", projects);
+			return "/user/tableOverview";
+		}
+		if (isClient()) {
+			projects.removeIf(project -> !project.getIssued().get(0).getClient().getId().equals(AuthenticationConfig.getId()));
+			clients.removeIf(client -> !client.getId().equals(AuthenticationConfig.getId()));
+			model.addAttribute("clients", clients);
+			model.addAttribute("projects", projects);
+			return "/user/tableOverview";
+		}
+		for (Project p : projects) {
+			if (isDeveloper()) {
+				boolean b = false;
+				for (int i = 0; i < p.getWorkedOn().size(); i++) {
+					if (Objects.equals(p.getWorkedOn().get(i).getEmployee().getId(), AuthenticationConfig.getId())) {
+						b = true;
+						break;
+					}
+				}
+				if (!b) {
+					projects.remove(p);
+				}
+			} else break;
+		}
+		for (Client c : clients) {
+			if (isDeveloper()) {
+				boolean b = false;
+				for (Project p : projectRepository.findByClientName(c.getName())) {
+					for (WorkedOn w : p.getWorkedOn()) {
+						if (w.getEmployee().getId().equals(AuthenticationConfig.getId())) {
+							b = true;
+							break;
+						}
+					}
+				}
+				if (!b) clients.remove(c);
+			} else break;
+		}
 		return "/user/tableOverview";
 	}
 
@@ -93,17 +135,21 @@ public class UserController extends BaseController {
 			case CLIENT_TYPE:
 				if (isClient())
 					clientRepository.delete(id);
+				break;
 			case EMPLOYEE_TYPE:
 				if (isDeveloper())
 					employeeRepository.delete(id);
+				break;
 			case PROJECT_TYPE:
 				if (isDeveloper() || isClient())
 					projectRepository.delete(id);
+				break;
 			case SECTOR_TYPE:
 				if (isAdmin())
 					sectorRepository.delete(id);
+				break;
 			case INVALID:
-				return "/error/404";
+				return notFound();
 		}
 		return "redirect:/user/index.html";
 	}

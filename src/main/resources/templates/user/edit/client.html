@@ -13,7 +13,9 @@
     <title>New Entity</title>
 </head>
 <body>
-<div th:substituteby="index::logout"></div>
+<div class="menubar">
+    <div th:substituteby="menubar::menubar"></div>
+</div>
 <h1>new Client</h1>
 <form action="#" method="post" th:action="@{/user/create/edit/client/__${client.id}__/confirm}" th:object="${client}">
     id: <input type="number" th:value="${client.id}" disabled="disabled"/><br/>

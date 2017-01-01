@@ -13,7 +13,9 @@
     <title th:text="'evaluate ' + ${project.name}"></title>
 </head>
 <body>
-<div th:substituteby="index::logout"></div>
+<div class="menubar">
+    <div th:substituteby="menubar::menubar"></div>
+</div>
 <h1 th:text="'evaluate ' + ${project.name}"></h1>
 <form action="#" method="post" th:action="@{/user/evaluate/__${project.id}__/confirm}">
     <input type="hidden" name="client" th:value="${project.issued[0].client.id}"/>

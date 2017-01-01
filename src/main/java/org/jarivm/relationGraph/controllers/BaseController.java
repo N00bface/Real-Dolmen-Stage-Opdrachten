@@ -24,6 +24,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.jarivm.relationGraph.constants.NodeType.*;
 
 /**
@@ -46,6 +49,7 @@ public class BaseController {
 	public IssuedRepository issuedRepository;
 	@Autowired
 	public RequestMappingHandlerMapping requestMappingHandlerMapping;
+	public Map<String, Boolean> authRole;
 
 	@ModelAttribute("clientKeys")
 	public String[] getClientKeys() {
@@ -74,37 +78,75 @@ public class BaseController {
 		return sectorRepository.findProperties();
 	}
 
-	boolean isAdmin() {
-		System.out.println(AuthenticationConfig.getRole());
-		return isAdmin(AuthenticationConfig.getRole());
+	@ModelAttribute("auth")
+	Map<String, Boolean> authMap() {
+		if (authRole == null) {
+			authRole = new HashMap<>();
+			authRole.put("ADMIN", isAdmin());
+			authRole.put("CLIENT", isClient());
+			authRole.put("DEVELOPER", isDeveloper());
+			authRole.put("PROJECT_LEADER", isProjectLeader());
+			authRole.put("EMPLOYEE", isEmployee());
+			authRole.put("NONE", !isAuthenticated());
+		}
+		System.out.println(authRole.toString());
+		return authRole;
 	}
 
-	private boolean isAdmin(AuthType role) {
-		return (role == AuthType.ADMIN);
+	boolean isAdmin() {
+		return isAdmin(AuthenticationConfig.getRole());
 	}
 
 	boolean isClient() {
 		return isClient(AuthenticationConfig.getRole());
 	}
 
-	private boolean isClient(AuthType role) {
-		return (role == AuthType.ADMIN) || (role == AuthType.CLIENT);
-	}
-
 	boolean isDeveloper() {
 		return isDeveloper(AuthenticationConfig.getRole());
-	}
-
-	private boolean isDeveloper(AuthType role) {
-		return (role == AuthType.ADMIN) || (role == AuthType.PROJECT_LEADER) || (role == AuthType.DEVELOPER);
 	}
 
 	boolean isProjectLeader() {
 		return isProjectLeader(AuthenticationConfig.getRole());
 	}
 
+	boolean isEmployee() {
+		return isEmployee(AuthenticationConfig.getRole());
+	}
+
+	boolean isAuthenticated() {
+		return isAuthenticated(AuthenticationConfig.getRole());
+	}
+
+	private boolean isAdmin(AuthType role) {
+		return (role == AuthType.ADMIN);
+	}
+
+	private boolean isClient(AuthType role) {
+		return (role == AuthType.ADMIN) || (role == AuthType.CLIENT);
+	}
+
+	private boolean isDeveloper(AuthType role) {
+		return (role == AuthType.ADMIN) || (role == AuthType.PROJECT_LEADER) || (role == AuthType.DEVELOPER)
+				|| (role == AuthType.EMPLOYEE);
+	}
+
 	private boolean isProjectLeader(AuthType role) {
 		return (role == AuthType.ADMIN) || (role == AuthType.PROJECT_LEADER);
+	}
+
+	private boolean isEmployee(AuthType role) {
+		return (role == AuthType.ADMIN) || (role == AuthType.EMPLOYEE);
+	}
+
+	private boolean isAuthenticated(AuthType role) {
+		return (role != AuthType.NONE);
+	}
+
+	public void resetAuth() {
+		AuthenticationConfig.setRole();
+		authRole = null;
+		authMap();
+		System.out.println("authentication resetted");
 	}
 
 	public String noAccess() {

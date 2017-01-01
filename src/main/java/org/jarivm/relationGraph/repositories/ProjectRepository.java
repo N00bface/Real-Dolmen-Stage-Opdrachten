@@ -34,10 +34,8 @@ public interface ProjectRepository extends GraphRepository<Project> {
 
 	Collection<Project> findByNameContaining(@Param("0") String name);
 
-	@Query("MATCH (m:Project)<-[r:WorkedOn]-(a:Employee) RETURN m.name as name, m.cost as cost," +
-			"sum(r.score)/toFloat(count(r)) as score, m.version as version," +
-			" collect({id: id(a)}) as team LIMIT {l}")
-	List<Map<String, Project>> graph(@Param("l") Long l);
+	@Query("MATCH r=(c:Client)-[:Issued]->(n:Project)<-[w:WorkedOn]-() return r")
+	Iterable<Project> findAll();
 
 	@Query("MATCH (n:Project) return keys(n) limit 1")
 	String[] findProperties();
@@ -62,4 +60,7 @@ public interface ProjectRepository extends GraphRepository<Project> {
 
 	@Query("MATCH a=(e:Employee)-[r:WorkedOn]->(p:Project) where id(p)={target} and c.name={employee} return length(a)>0")
 	boolean relationToWithEmployee(@Param("employee") String employee, @Param("target") Long projectId);
+
+	@Query("MATCH r=(:Client)-[:Issued]->(m:Project)<-[:WorkedOn]-() where ANY(prop in keys(m) where tostring(m[prop]) contains {q}) return r")
+	Iterable<Project> findByAny(@Param("q") String query);
 }

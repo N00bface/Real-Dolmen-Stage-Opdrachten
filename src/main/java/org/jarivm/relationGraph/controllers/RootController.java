@@ -32,7 +32,7 @@ public class RootController extends BaseController {
 
 	@RequestMapping("/")
 	public String root() {
-		return "redirect:/login";
+		return "redirect:/index";
 	}
 
 	@RequestMapping(value = "/index", name = "home")
@@ -45,9 +45,10 @@ public class RootController extends BaseController {
 		return "login";
 	}
 
-	@RequestMapping(value = "/logout", name = "log out")
+	@RequestMapping(value = "/log_out", name = "log out")
 	public String logout(HttpServletRequest request, HttpServletResponse response) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		resetAuth();
 		if (auth != null) {
 			new SecurityContextLogoutHandler().logout(request, response, auth);
 		}

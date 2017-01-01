@@ -8,6 +8,9 @@
 package org.jarivm.relationGraph.config;
 
 import org.jarivm.relationGraph.constants.AuthType;
+import org.jarivm.relationGraph.repositories.ClientRepository;
+import org.jarivm.relationGraph.repositories.EmployeeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +24,19 @@ import java.util.Collection;
 public class AuthenticationConfig {
 	private static AuthType role;
 	private static String name;
+	private static Long id;
+	@Autowired
+	private static EmployeeRepository employeeRepository;
+	@Autowired
+	private static ClientRepository clientRepository;
+
+	public static Long getId() {
+		return id;
+	}
+
+	public static void setId(Long id) {
+		AuthenticationConfig.id = id;
+	}
 
 	public static String getName() {
 		return name;
@@ -32,6 +48,28 @@ public class AuthenticationConfig {
 
 	public static boolean isAuthenticated() {
 		return role != AuthType.NONE;
+	}
+
+	public static void setId() {
+		if (name == null)
+			setName();
+		if (role == null)
+			setRole();
+		switch (role) {
+			case ADMIN:
+				id = -1L;
+				break;
+			case DEVELOPER:
+				id = employeeRepository.findByProperty("name", name).iterator().next().getId();
+				break;
+			case CLIENT:
+				id = clientRepository.findByProperty("name", name).iterator().next().getId();
+		}
+	}
+
+	public static void setName() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		name = authentication.getName();
 	}
 
 	public static void setRole() {
@@ -57,8 +95,7 @@ public class AuthenticationConfig {
 		}
 	}
 
-	public static void setName() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		name = authentication.getName();
+	public static void resetRole() {
+		role = AuthType.NONE;
 	}
 }

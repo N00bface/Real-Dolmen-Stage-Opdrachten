@@ -2,7 +2,6 @@ FROM ubuntu:16.04
 
 USER root
 # this is a non-interactive automated build - avoid some warning messages
-ENV DEBIAN_FRONTEND noninteractive
 
 # update dpkg repositories
 RUN apt-get update
@@ -11,7 +10,7 @@ RUN apt-get update
 RUN apt-get install -y wget
 
 # get maven 3.2.2
-RUN wget --no-verbose -O /tmp/apache-maven-3.2.2.tar.gz http://archive.apache.org/dist/maven/maven-3/3.2.2/binaries/apache-maven-3.2.2-bin.tar.gz
+RUN wget -O /tmp/apache-maven-3.2.2.tar.gz http://archive.apache.org/dist/maven/maven-3/3.2.2/binaries/apache-maven-3.2.2-bin.tar.gz
 
 #get google-chrome-stable
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
@@ -56,6 +55,7 @@ RUN mv -f chromedriver /usr/local/share/chromedriver && \
     ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver && \
     ln -s /usr/local/share/chromedriver /usr/bin/chromedriver && \
     ln -s /usr/local/share/chromedriver /bin/chromedriver
+
 # set shell variables for java installation
 ENV java_version 1.8.0_11
 ENV filename jdk-8u11-linux-x64.tar.gz

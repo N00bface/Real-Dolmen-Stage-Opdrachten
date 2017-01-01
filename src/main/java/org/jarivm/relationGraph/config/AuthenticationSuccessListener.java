@@ -7,6 +7,7 @@
 
 package org.jarivm.relationGraph.config;
 
+import org.jarivm.relationGraph.controllers.BaseController;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.event.InteractiveAuthenticationSuccessEvent;

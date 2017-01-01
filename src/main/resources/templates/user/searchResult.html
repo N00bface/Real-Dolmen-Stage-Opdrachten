@@ -14,45 +14,109 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
-<div th:substituteby="index::logout"></div>
-<div th:substituteby="user/search::newSearch"></div>
-<h1>results: </h1>
+<div class="menubar">
+    <div th:substituteby="menubar::menubar"></div>
+</div>
+<span class="spacer" th:height="4em"></span>
+<h2 class="topblock">results: </h2>
 <th:block th:switch="${type}">
-    <div class="result" th:case="client">
-        <div th:each="obj : ${results}">
-            <h4><a th:href="@{/user/viewClient/__${obj.id}__}" th:text="${obj.name}"></a></h4>
-            <q th:text="${obj.experience} + ' years of experience'"></q>
+    <div th:case="client" class="endblock">
+        <div class="result" th:each="obj : ${results}">
+            <a th:href="@{/user/viewClient/__${obj.id}__}">
+                <h4 th:text="${obj.name}"></h4>
+                <p th:text="${obj.experience} + ' years of experience'"></p>
+            </a>
         </div>
     </div>
-    <div class="result" th:case="employee">
-        <div th:each="obj : ${results}">
-            <h4><a th:href="@{/user/viewEmployee/__${obj.id}__}" th:text="${obj.surname} + ', ' + ${obj.name}"></a></h4>
-            <b th:text="${obj.experience} + ' years of experience'"></b><br/>
-            <b th:text="${obj.age} +  ' years'"></b><br/>
-            <b th:text="'gender: ' + ${obj.gender}"></b><br/>
-            <b><a th:href="'mailto:'+${obj.email}" th:text="${obj.email}"></a></b>
+    <div th:case="employee" class="endblock">
+        <div class="result" th:each="obj : ${results}">
+            <a th:href="@{/user/viewEmployee/__${obj.id}__}">
+                <h4 th:text="${obj.surname} + ', ' + ${obj.name}"></h4>
+                <b th:text="${obj.experience} + ' years of experience'"></b><br/>
+                <b th:text="${obj.age} +  ' years'"></b><br/>
+                <b th:text="'gender: ' + ${obj.gender}"></b><br/>
+                <b>mail:<a class="email" th:href="'mailto:'+${obj.email}" th:text="${obj.email}"></a></b>
+            </a>
         </div>
     </div>
-    <div class="result" th:case="project">
-        <div th:each="obj : ${results}">
-            <h4><a th:href="@{/user/viewProject/__${obj.id}__}" th:text="${obj.name}"></a></h4><br/>
-            <b th:text="'version: ' + ${obj.version}"></b><br/>
-            <b th:text="'cost: ' + ${obj.cost}"></b><br/>
-            <b th:text="'client: ' + ${obj.issued.client}"></b><br/>
-            <span>team:
-                <span th:each="r,c : ${obj.workedOn}">
-                <span th:if="${c.count} &lt; ${#lists.size(obj.workedOn)}"
-                      th:text="${r.employee.surname}+ ', ' + ${r.employee.name} + '; '"></span>
-                <span th:unless="${c.count} &lt; ${#lists.size(obj.workedOn)}"
-                      th:text="${r.employee.surname}+ ', ' + ${r.employee.name}"></span>
-            </span>
-            </span>
+    <div th:case="project" class="endblock">
+        <div class="result" th:each="obj : ${results}">
+            <a th:href="@{/user/viewProject/__${obj.id}__}">
+                <h4 th:text="${obj.name}"></h4><br/>
+                <b th:text="'version: ' + ${obj.version}"></b><br/>
+                <b th:text="'cost: ' + ${obj.cost}"></b><br/>
+                <b th:text="'client: ' + ${obj.issued[0].client.name}"></b><br/>
+                <div><b>team:</b>
+                    <br/>
+                    <div class="indent" th:each="r : ${obj.workedOn}">
+                        <a th:href="@{/user/viewEmployee/__${r.employee.id}__}"
+                           th:text="${r.employee.surname} + ', ' + ${r.employee.name} + ' as ' + ${r.role}"></a>
+                    </div>
+                </div>
+            </a>
         </div>
     </div>
-    <div class="result" th:case="sector">
-        <div th:each="obj : ${result}">
-            <h4><a th:href="@{/user/viewSector/__${obj.id}__}" th:text="${obj.name}"></a></h4><br/>
+    <div th:case="sector" class="endblock">
+        <div class="result" th:each="obj : ${result}">
+            <a th:href="@{/user/viewSector/__${obj.id}__}"><h4 th:text="${obj.name}"></h4><br/></a>
         </div>
+    </div>
+    <div th:case="any">
+        <p class="block" style="text-align: center; padding: 0 25px;"><br/></p>
+        <h3 class="subtitle-block">clients</h3>
+        <div class="block" th:if="${client} == 'none'">no search results found!
+        </div>
+        <div class="block" th:unless="${client} == 'none'">
+            <div class="result" th:each="obj : ${client}">
+                <a th:href="@{/user/viewClient/__${obj.id}__}">
+                    <h4 th:text="${obj.name}"></h4>
+                    <p th:text="${obj.experience} + ' years of experience'"></p>
+                </a>
+            </div>
+        </div>
+        <h3 class="subtitle-block">employees</h3>
+        <div class="block" th:if="${employee} == 'none'">no search results found!
+        </div>
+        <div class="block" th:unless="${employee} == 'none'">
+            <div class="result" th:each="obj : ${employee}">
+                <a th:href="@{/user/viewEmployee/__${obj.id}__}">
+                    <h4 th:text="${obj.surname} + ', ' + ${obj.name}"></h4>
+                    <b th:text="${obj.experience} + ' years of experience'"></b><br/>
+                    <b th:text="${obj.age} +  ' years'"></b><br/>
+                    <b th:text="'gender: ' + ${obj.gender}"></b><br/>
+                    <b>mail:<a class="email" th:href="'mailto:'+${obj.email}" th:text="${obj.email}"></a></b>
+                </a>
+            </div>
+        </div>
+        <h3 class="subtitle-block">projects</h3>
+        <div class="block" th:if="${project} == 'none'">no search results found!</div>
+        <div class="block" th:unless="${project} == 'none'">
+            <div class="result" th:each="obj : ${project}">
+                <a th:href="@{/user/viewProject/__${obj.id}__}">
+                    <h4 th:text="${obj.name}"></h4><br/>
+                    <b th:text="'version: ' + ${obj.version}"></b><br/>
+                    <b th:text="'cost: ' + ${obj.cost}"></b><br/>
+                    <b th:text="'client: ' + ${obj.issued[0].client.name}"></b><br/>
+                    <div><b>team:</b>
+                        <br/>
+                        <div class="indent" th:each="r : ${obj.workedOn}">
+                            <a th:href="@{/user/viewEmployee/__${r.employee.id}__}"
+                               th:text="${r.employee.surname} + ', ' + ${r.employee.name} + ' as ' + ${r.role}"></a>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <h3 class="subtitle-block">sectors</h3>
+        <div class="endblock" th:if="${sector} == 'none'">no search results found!</div>
+        <div class="endblock" th:unless="${sector} == 'none'">
+            <div class="result" th:each="obj : ${sector}">
+                <a th:href="@{/user/viewSector/__${obj.id}__}"><h4 th:text="${obj.name}"></h4><br/></a>
+            </div>
+        </div>
+    </div>
+    <div th:case="none" class="block">
+        no search results found!
     </div>
 </th:block>
 </body>

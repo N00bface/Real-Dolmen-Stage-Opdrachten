@@ -8,7 +8,6 @@
 package selenium;
 
 import org.jarivm.relationGraph.constants.AuthType;
-import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.Select;
@@ -19,6 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -107,8 +107,30 @@ public class FunctionalityTests extends BasicTests {
 		login(AuthType.ADMIN);
 		driver.navigate().to("localhost:2904/user/employeeByScore");
 		assertEquals("Employees of the month", driver.getTitle());
-		Assert.assertTrue("element size", driver.findElement(By.className("fit_table"))
+		assertTrue("element size", driver.findElement(By.className("fit_table"))
 				.findElements(By.tagName("tbody")).get(0).findElements(By.tagName("tr")).size() > 0);
+	}
+
+	@Test
+	public void testSearchNotFound() {
+		login(AuthType.ADMIN);
+		driver.navigate().to("localhost:2904/user/search");
+		Select select = new Select(driver.findElement(By.tagName("select")));
+		select.selectByIndex(0);
+		driver.findElement(By.name("q")).sendKeys("delta-foxtrot");
+		driver.findElement(By.name("submit")).click();
+		assertEquals("no search results found!", driver.findElement(By.xpath("/html/body/div[2]/p")).getText());
+	}
+
+	@Test
+	public void testSearchFound() {
+		login(AuthType.ADMIN);
+		driver.navigate().to("localhost:2904/user/search");
+		Select select = new Select(driver.findElement(By.tagName("select")));
+		select.selectByValue("Sector,name");
+		driver.findElement(By.name("q")).sendKeys("random");
+		driver.findElement(By.name("submit")).click();
+		assertTrue("one sector with name \'random\'", driver.findElements(By.className("result")).size() > 0);
 	}
 
 }

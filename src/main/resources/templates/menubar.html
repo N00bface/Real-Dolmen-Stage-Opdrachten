@@ -10,13 +10,29 @@
       xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8"/>
-    <title>Title</title>
+    <title>menubar</title>
 </head>
 <body>
 <th:block th:fragment="menubar">
     <ul>
-        <li th:each="item : ${endpoints}">
-            <a th:href="@{/__${item.link}__}" th:text="${item.name}"></a>
+        <li th:if="${not auth['NONE']}"><a th:href="@{/user/home}">home</a></li>
+        <li th:if="${auth['NONE']}"><a th:href="@{/home}">home</a></li>
+        <li th:if="not ${auth['NONE']}"><a th:href="@{/user/tableOverview}">my projects</a></li>
+        <li th:if="${auth['DEVELOPER']}"><a th:href="@{/user/employeeByScore}">Eo/tM</a></li>
+        <li class="dropdown" th:if="not ${auth['NONE']}">
+            <a href="javascript:void(0)" class="dropdownbtn">create</a>
+            <div class="dropdown-content">
+                <a th:if="${auth['ADMIN']}" th:href="@{/user/create/sector}">sector</a>
+                <a th:if="${auth['ADMIN']}" th:href="@{/user/create/client}">client</a>
+                <a th:if="${auth['PROJECT_LEADER']}" th:href="@{/user/create/employee}">employee</a>
+                <a th:if="${auth['PROJECT_LEADER']}" th:href="@{/user/create/project}">project</a>
+            </div>
+        </li>
+        <li th:if="not ${auth['NONE']}" class="right">
+            <th:block th:substituteby="index::logout"/>
+        </li>
+        <li th:if="not ${auth['NONE']}" class="right">
+            <th:block th:substituteby="/user/search::search"/>
         </li>
     </ul>
 </th:block>

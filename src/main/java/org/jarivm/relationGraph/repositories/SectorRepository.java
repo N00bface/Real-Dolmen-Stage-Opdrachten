@@ -42,4 +42,6 @@ public interface SectorRepository extends GraphRepository<Sector> {
 	@Query("MATCH (m:Sector) WHERE ANY(prop in keys(m) where prop={propertyKey} and m[prop] contains {propertyValue}) RETURN m;")
 	Iterable<Sector> findByProperty(@Param("propertyKey") String propertyName, @Param("propertyValue") String propertyValue);
 
+	@Query("MATCH (m:Sector) where ANY(prop in keys(m) where tostring(m[prop]) contains {q}) return m")
+	Iterable<Sector> findByAny(@Param("q") String query);
 }
