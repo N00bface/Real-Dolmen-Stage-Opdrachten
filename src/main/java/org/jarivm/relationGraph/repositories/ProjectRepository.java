@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016. MIT-license for Jari Van Melckebeke
+ * Copyright (c) 2017. MIT-license for Jari Van Melckebeke
  * Note that there was a lot of educational work in this project,
  * this project was (or is) used for an assignment from Realdolmen in Belgium.
  * Please just don't abuse my work
@@ -14,7 +14,6 @@ import org.springframework.data.neo4j.repository.GraphRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -31,8 +30,6 @@ public interface ProjectRepository extends GraphRepository<Project> {
 
 	@Query("MATCH r=(c:Client)-[:Issued]->(n:Project)<-[w:WorkedOn]-() where id(n)={id} return r")
 	Project findById(@Param(value = "id") Long id);
-
-	Collection<Project> findByNameContaining(@Param("0") String name);
 
 	@Query("MATCH r=(c:Client)-[:Issued]->(n:Project)<-[w:WorkedOn]-() return r")
 	Iterable<Project> findAll();
@@ -63,4 +60,7 @@ public interface ProjectRepository extends GraphRepository<Project> {
 
 	@Query("MATCH r=(:Client)-[:Issued]->(m:Project)<-[:WorkedOn]-() where ANY(prop in keys(m) where tostring(m[prop]) contains {q}) return r")
 	Iterable<Project> findByAny(@Param("q") String query);
+
+	@Query("MATCH (e:Employee)-[:WorkedOn]-(p:Project) where id(e) = {id} return p")
+	Iterable<Project> findByEmployee(@Param("id") Long id);
 }

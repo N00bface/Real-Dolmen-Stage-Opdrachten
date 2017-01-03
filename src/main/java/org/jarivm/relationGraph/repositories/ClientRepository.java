@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016. MIT-license for Jari Van Melckebeke
+ * Copyright (c) 2017. MIT-license for Jari Van Melckebeke
  * Note that there was a lot of educational work in this project,
  * this project was (or is) used for an assignment from Realdolmen in Belgium.
  * Please just don't abuse my work
@@ -23,11 +23,10 @@ import java.util.Map;
  */
 @Repository
 public interface ClientRepository extends GraphRepository<Client> {
-	@Query("MATCH (n:Client)-[:ISSUED]->(a:Project) WHERE n.name = {name} return n.name as name, n.experienceWithRealDolmen as experience, " +
-			"collect({name:a.name ,version:a.version ,lang: a.language , cost:a.cost ,score:a.scoreFromClient}) as projects")
-	List<Map<String, Client>> findByName(@Param(value = "name") String name);
+	@Query("MATCH (n:Client) WHERE n.name = {name} return n")
+	Iterable<Client> findByName(@Param(value = "name") String name);
 
-	@Query("MATCH (n:Client) WHERE id(n)={id} return n")
+	@Query("MATCH a=(n:Client)-[:IsSectorFor]-(:Sector) WHERE id(n)={id} return a")
 	Client findById(@Param(value = "id") Long id);
 
 	@Query("MATCH (s:Sector)-[]->(m:Client)-[ISSUED]->(a:Project) RETURN s.name as sector, m.name as client, m.experience as experience," +
@@ -40,9 +39,13 @@ public interface ClientRepository extends GraphRepository<Client> {
 	@Query("MATCH (n:Client) return keys(n) limit 1")
 	String[] findProperties();
 
-	@Query("MATCH (m:Client) WHERE ANY(prop in keys(m) where prop={propertyKey} and m[prop] contains {propertyValue}) RETURN m;")
+	@Query("MATCH (m:Client) WHERE ANY(prop in keys(m) where prop={propertyKey} and toString(m[prop]) contains {propertyValue}) RETURN m;")
 	Iterable<Client> findByProperty(@Param("propertyKey") String propertyName, @Param("propertyValue") String propertyValue);
 
 	@Query("MATCH (m:Client) where ANY(prop in keys(m) where tostring(m[prop]) contains {q}) return m")
 	Iterable<Client> findByAny(@Param("q") String query);
+
+	@Query("MATCH (e:Employee)-[:WorkedOn]-(:Project)-[:Issued]-(c:Client)-[:IsSectorFor]-(s:Sector) where id(e) = {EmpId} " +
+			"with c match a=(c)<-[:IsSectorFor]-(:Sector) return a; ")
+	Iterable<Client> findClientsByEmployee(@Param("EmpId") Long id);
 }

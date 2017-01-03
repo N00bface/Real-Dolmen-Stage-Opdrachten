@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016. MIT-license for Jari Van Melckebeke
+ * Copyright (c) 2017. MIT-license for Jari Van Melckebeke
  * Note that there was a lot of educational work in this project,
  * this project was (or is) used for an assignment from Realdolmen in Belgium.
  * Please just don't abuse my work
@@ -22,35 +22,43 @@ import java.util.Collection;
  * @since 25.12.16.
  */
 public class AuthenticationConfig {
-	private static AuthType role;
-	private static String name;
-	private static Long id;
+	private AuthType role;
+	private String name;
+	private Long id;
 	@Autowired
-	private static EmployeeRepository employeeRepository;
+	private EmployeeRepository employeeRepository;
 	@Autowired
-	private static ClientRepository clientRepository;
+	private ClientRepository clientRepository;
 
-	public static Long getId() {
+	public AuthenticationConfig() {
+		resetRole();
+	}
+
+	public void resetRole() {
+		role = AuthType.NONE;
+	}
+
+	public Long getId() {
 		return id;
 	}
 
-	public static void setId(Long id) {
-		AuthenticationConfig.id = id;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public static String getName() {
+	public String getName() {
 		return name;
 	}
 
-	public static AuthType getRole() {
+	public AuthType getRole() {
 		return role;
 	}
 
-	public static boolean isAuthenticated() {
+	public boolean isAuthenticated() {
 		return role != AuthType.NONE;
 	}
 
-	public static void setId() {
+	public void setId() {
 		if (name == null)
 			setName();
 		if (role == null)
@@ -60,19 +68,20 @@ public class AuthenticationConfig {
 				id = -1L;
 				break;
 			case DEVELOPER:
-				id = employeeRepository.findByProperty("name", name).iterator().next().getId();
+				id = employeeRepository.findBySurname(name).iterator().next().getId();
 				break;
 			case CLIENT:
-				id = clientRepository.findByProperty("name", name).iterator().next().getId();
+				System.out.println(clientRepository.findByName(name));
+				id = clientRepository.findByName(name).iterator().next().getId();
 		}
 	}
 
-	public static void setName() {
+	public void setName() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		name = authentication.getName();
 	}
 
-	public static void setRole() {
+	public void setRole() {
 		Collection<GrantedAuthority> authorities =
 				(Collection<GrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 		String a = authorities.iterator().next().getAuthority();
@@ -93,9 +102,5 @@ public class AuthenticationConfig {
 			default:
 				role = AuthType.NONE;
 		}
-	}
-
-	public static void resetRole() {
-		role = AuthType.NONE;
 	}
 }

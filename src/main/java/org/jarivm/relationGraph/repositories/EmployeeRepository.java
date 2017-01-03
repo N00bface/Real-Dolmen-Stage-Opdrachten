@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016. MIT-license for Jari Van Melckebeke
+ * Copyright (c) 2017. MIT-license for Jari Van Melckebeke
  * Note that there was a lot of educational work in this project,
  * this project was (or is) used for an assignment from Realdolmen in Belgium.
  * Please just don't abuse my work
@@ -38,7 +38,7 @@ public interface EmployeeRepository extends GraphRepository<Employee> {
 	Iterable<Employee> findAll(@Param(value = "ids") Iterable<Long> ids);
 
 	@Query("MATCH (n:Employee) where n.surname={surname} return n")
-	List<Map<String, Employee>> findBySurname(@Param(value = "surname") String surname);
+	Iterable<Employee> findBySurname(@Param(value = "surname") String surname);
 
 	@Query("MATCH (n:Employee)-[r:WorkedOn]->(p:Project) where id(n)={id} return sum(toFloat(p.efficiency))/toFloat(count(p))")
 	Long getAvgScore(@Param("id") Long id);

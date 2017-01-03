@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  ~ Copyright (c) 2016. MIT-license for Jari Van Melckebeke
+  ~ Copyright (c) 2017. MIT-license for Jari Van Melckebeke
   ~ Note that there was a lot of educational work in this project,
   ~ this project was (or is) used for an assignment from Realdolmen in Belgium.
   ~ Please just don't abuse my work
@@ -24,15 +24,11 @@
         <th>sector</th>
         <th>name</th>
         <th>experience</th>
-        <th>projects</th>
     </tr>
     <tr th:each="c : ${clients}">
-        <td th:text="${c.sector}"></td>
-        <td th:text="${c.client}"></td>
-        <td th:text="${c.experience}"></td>
-        <td th:each="p : ${c.projects}">
-            <span><a th:text="${p.name}" th:href="'#'+${p.name}"></a></span>
-        </td>
+        <td th:text="${c.sector.name}"></td>
+        <td th:text="${c.name}"></td>
+        <td th:text="${c.experience} + ' years'"></td>
     </tr>
 </table>
 <h2>my projects</h2>
@@ -49,11 +45,20 @@
             </tr>
             <tr>
                 <th>score</th>
-                <td th:text="${proj.score}"></td>
+                <td th:text="${proj.scoreFromClient}"></td>
             </tr>
             <tr>
                 <th>version</th>
                 <td th:text="${proj.version}"></td>
+            </tr>
+            <tr>
+                <td><a th:href="@{/user/viewProject/__${proj.id}__}" class="button">view</a></td>
+            </tr>
+            <tr>
+                <td><a th:href="@{/user/create/edit/__${proj.id}__}" class="button">edit</a></td>
+            </tr>
+            <tr>
+                <td><a th:href="@{/user/evaluate/__${proj.id}__}" class="button">evaluate</a></td>
             </tr>
         </table>
     </div>

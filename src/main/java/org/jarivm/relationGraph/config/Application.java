@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016. MIT-license for Jari Van Melckebeke
+ * Copyright (c) 2017. MIT-license for Jari Van Melckebeke
  * Note that there was a lot of educational work in this project,
  * this project was (or is) used for an assignment from Realdolmen in Belgium.
  * Please just don't abuse my work
@@ -68,6 +68,11 @@ public class Application extends Neo4jConfiguration {
 				.setURI(URL)
 				.setCredentials("neo4j", "tanzania");
 		return config;
+	}
+
+	@Bean
+	public AuthenticationConfig authenticationConfig() {
+		return new AuthenticationConfig();
 	}
 
 	/*@Bean

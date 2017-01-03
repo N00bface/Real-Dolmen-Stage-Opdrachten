@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016. MIT-license for Jari Van Melckebeke
+ * Copyright (c) 2017. MIT-license for Jari Van Melckebeke
  * Note that there was a lot of educational work in this project,
  * this project was (or is) used for an assignment from Realdolmen in Belgium.
  * Please just don't abuse my work
@@ -7,7 +7,6 @@
 
 package org.jarivm.relationGraph.controllers;
 
-import org.jarivm.relationGraph.config.AuthenticationConfig;
 import org.jarivm.relationGraph.domains.Client;
 import org.jarivm.relationGraph.domains.Employee;
 import org.jarivm.relationGraph.domains.Project;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -45,48 +43,22 @@ public class UserController extends BaseController {
 		if (!isAuthenticated()) {
 			return noAccess();
 		}
-		ArrayList<Client> clients = (ArrayList<Client>) clientRepository.findAll();
-		ArrayList<Project> projects = (ArrayList<Project>) projectRepository.findAll();
+		ArrayList<Client> clients;
+		ArrayList<Project> projects;
 		if (isAdmin()) {
-			model.addAttribute("clients", clients);
-			model.addAttribute("projects", projects);
-			return "/user/tableOverview";
+			clients = (ArrayList<Client>) clientRepository.findAll();
+			projects = (ArrayList<Project>) projectRepository.findAll();
+		} else if (isClient()) {
+			clients = new ArrayList<>();
+			clients.add(clientRepository.findById(authenticationConfig.getId()));
+			System.out.println(clients);
+			projects = (ArrayList<Project>) projectRepository.findByClientName(authenticationConfig.getName());
+		} else {
+			clients = (ArrayList<Client>) clientRepository.findClientsByEmployee(authenticationConfig.getId());
+			projects = (ArrayList<Project>) projectRepository.findByEmployee(authenticationConfig.getId());
 		}
-		if (isClient()) {
-			projects.removeIf(project -> !project.getIssued().get(0).getClient().getId().equals(AuthenticationConfig.getId()));
-			clients.removeIf(client -> !client.getId().equals(AuthenticationConfig.getId()));
-			model.addAttribute("clients", clients);
-			model.addAttribute("projects", projects);
-			return "/user/tableOverview";
-		}
-		for (Project p : projects) {
-			if (isDeveloper()) {
-				boolean b = false;
-				for (int i = 0; i < p.getWorkedOn().size(); i++) {
-					if (Objects.equals(p.getWorkedOn().get(i).getEmployee().getId(), AuthenticationConfig.getId())) {
-						b = true;
-						break;
-					}
-				}
-				if (!b) {
-					projects.remove(p);
-				}
-			} else break;
-		}
-		for (Client c : clients) {
-			if (isDeveloper()) {
-				boolean b = false;
-				for (Project p : projectRepository.findByClientName(c.getName())) {
-					for (WorkedOn w : p.getWorkedOn()) {
-						if (w.getEmployee().getId().equals(AuthenticationConfig.getId())) {
-							b = true;
-							break;
-						}
-					}
-				}
-				if (!b) clients.remove(c);
-			} else break;
-		}
+		model.addAttribute("clients", clients);
+		model.addAttribute("projects", projects);
 		return "/user/tableOverview";
 	}
 

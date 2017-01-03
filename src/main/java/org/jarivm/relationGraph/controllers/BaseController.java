@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016. MIT-license for Jari Van Melckebeke
+ * Copyright (c) 2017. MIT-license for Jari Van Melckebeke
  * Note that there was a lot of educational work in this project,
  * this project was (or is) used for an assignment from Realdolmen in Belgium.
  * Please just don't abuse my work
@@ -7,6 +7,7 @@
 
 package org.jarivm.relationGraph.controllers;
 
+import org.apache.log4j.Logger;
 import org.jarivm.relationGraph.config.AuthenticationConfig;
 import org.jarivm.relationGraph.constants.AuthType;
 import org.jarivm.relationGraph.constants.NodeType;
@@ -50,6 +51,9 @@ public class BaseController {
 	@Autowired
 	public RequestMappingHandlerMapping requestMappingHandlerMapping;
 	public Map<String, Boolean> authRole;
+	@Autowired
+	AuthenticationConfig authenticationConfig;
+	Logger logger = Logger.getLogger(BaseController.class.getName());
 
 	@ModelAttribute("clientKeys")
 	public String[] getClientKeys() {
@@ -78,6 +82,13 @@ public class BaseController {
 		return sectorRepository.findProperties();
 	}
 
+	public void resetAuth() {
+		authenticationConfig.setRole();
+		authRole = null;
+		authMap();
+		logger.info("authentication resetted");
+	}
+
 	@ModelAttribute("auth")
 	Map<String, Boolean> authMap() {
 		if (authRole == null) {
@@ -89,32 +100,31 @@ public class BaseController {
 			authRole.put("EMPLOYEE", isEmployee());
 			authRole.put("NONE", !isAuthenticated());
 		}
-		System.out.println(authRole.toString());
 		return authRole;
 	}
 
 	boolean isAdmin() {
-		return isAdmin(AuthenticationConfig.getRole());
+		return isAdmin(authenticationConfig.getRole());
 	}
 
 	boolean isClient() {
-		return isClient(AuthenticationConfig.getRole());
+		return isClient(authenticationConfig.getRole());
 	}
 
 	boolean isDeveloper() {
-		return isDeveloper(AuthenticationConfig.getRole());
+		return isDeveloper(authenticationConfig.getRole());
 	}
 
 	boolean isProjectLeader() {
-		return isProjectLeader(AuthenticationConfig.getRole());
+		return isProjectLeader(authenticationConfig.getRole());
 	}
 
 	boolean isEmployee() {
-		return isEmployee(AuthenticationConfig.getRole());
+		return isEmployee(authenticationConfig.getRole());
 	}
 
 	boolean isAuthenticated() {
-		return isAuthenticated(AuthenticationConfig.getRole());
+		return isAuthenticated(authenticationConfig.getRole());
 	}
 
 	private boolean isAdmin(AuthType role) {
@@ -142,15 +152,8 @@ public class BaseController {
 		return (role != AuthType.NONE);
 	}
 
-	public void resetAuth() {
-		AuthenticationConfig.setRole();
-		authRole = null;
-		authMap();
-		System.out.println("authentication resetted");
-	}
-
 	public String noAccess() {
-		System.out.println("NO ACCESS");
+		logger.warn("no access for user " + authenticationConfig.getName());
 		throw new ForbiddenException();
 	}
 
@@ -161,7 +164,7 @@ public class BaseController {
 	public boolean hasRelationWithProject(Long id) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String name = authentication.getName();
-		switch (AuthenticationConfig.getRole()) {
+		switch (authenticationConfig.getRole()) {
 			case ADMIN:
 				return true;
 			case PROJECT_LEADER:
