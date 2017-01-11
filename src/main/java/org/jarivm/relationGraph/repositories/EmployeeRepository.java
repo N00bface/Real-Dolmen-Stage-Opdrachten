@@ -41,7 +41,7 @@ public interface EmployeeRepository extends GraphRepository<Employee> {
 	Iterable<Employee> findBySurname(@Param(value = "surname") String surname);
 
 	@Query("MATCH (n:Employee)-[r:WorkedOn]->(p:Project) where id(n)={id} return sum(toFloat(p.efficiency))/toFloat(count(p))")
-	Long getAvgScore(@Param("id") Long id);
+	Double getAvgScore(@Param("id") Long id);
 
 	@Query("MATCH (n:Employee) return keys(n) limit 1")
 	String[] findProperties();

@@ -33,7 +33,7 @@ public interface ClientRepository extends GraphRepository<Client> {
 			"collect({id:a.id, name:a.name}) as projects ORDER BY s.name LIMIT {l}")
 	List<Map<String, Client>> graph(@Param("l") Long l);
 
-	@Query("MATCH (n:Client) return n")
+	@Query("MATCH n=(a:Client)<-[:IsSectorFor]-(:Sector) return n")
 	Collection<Client> findAll();
 
 	@Query("MATCH (n:Client) return keys(n) limit 1")

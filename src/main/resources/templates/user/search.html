@@ -20,7 +20,7 @@
 </div>
 <form th:fragment="search" method="get" action="#" th:action="@{/user/search/simpleSearch}">
     <input type="hidden" th:value="any" name="t"/>
-    <img th:src="@{/img-src/search-icon.png}" src="/img-src/search-icon.png" height="14px"/>
+    <i class="fa fa-search"></i>
     <input class="rounded" name="q" type="text" content="search..."/>
     <input class="hidden" type="submit" value=""/>
 </form>

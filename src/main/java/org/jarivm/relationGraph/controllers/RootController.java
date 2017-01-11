@@ -30,12 +30,7 @@ public class RootController extends BaseController {
 		return "access";
 	}
 
-	@RequestMapping("/")
-	public String root() {
-		return "redirect:/index";
-	}
-
-	@RequestMapping(value = "/index", name = "home")
+	@RequestMapping(value = {"/index", "/", "/home"}, name = "home")
 	public String index() {
 		return "index";
 	}

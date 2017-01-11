@@ -11,6 +11,8 @@
     <title>User home</title>
     <meta charset="utf-8"/>
     <link rel="stylesheet" href="/css/main.css" th:href="@{/css/main.css}"/>
+    <link rel="script" href="/js/jquery-3.1.1.min.js" th:href="@{/js/jquery-3.1.1.min.js}"/>
+    <link rel="script" href="/js/tablesorter/jquery.tablesorter.min.js" th:href="@{/js/tablesorter/jquery.tablesorter.min.js}"/>
 </head>
 <body>
 <div class="menubar">
@@ -18,13 +20,16 @@
 </div>
 <h1>Home</h1>
 <h2>your current projects</h2>
-<table class="overview-projects">
+<table class="tablesorter">
+    <thead>
     <tr>
         <th>name</th>
         <th>start date</th>
         <th>deadline</th>
         <th>score on project</th>
     </tr>
+    </thead>
+    <tbody>
     <tr th:each="project : ${userprojects}">
         <td th:text="${project.name}"></td>
         <td th:text="${project.dateStarted}"></td>
@@ -35,6 +40,7 @@
         <td><a th:href="@{/user/create/edit/__${project.id}__}" class="button">edit</a></td>
         <td><a th:href="@{/user/evaluate/__${project.id}__}" class="button">evaluate</a></td>
     </tr>
+    </tbody>
 </table>
 <h2>go to:</h2>
 <p><a th:href="@{/user/tableOverview}">projects by sector</a></p>

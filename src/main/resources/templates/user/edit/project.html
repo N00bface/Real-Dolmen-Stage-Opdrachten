@@ -10,43 +10,66 @@
       xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8"/>
-    <title>New Entity</title>
+    <title>edit project</title>
+    <link rel="stylesheet" href="/css/main.css" th:href="@{/css/main.css}"/>
 </head>
 <body>
 <div class="menubar">
     <div th:substituteby="menubar::menubar"></div>
 </div>
-<h1>new Project</h1>
+<h1>edit Project</h1>
 <form action="#" method="post" th:action="@{/user/create/edit/project/__${project.id}__/confirm}"
       th:object="${project}" th:with="follow='-1'">
-    <input type="hidden" name="issuedId" th:value="${project.issued[0].id}"/>
-    id:&nbsp;<input type="number" th:field="${project.id}" th:value="*{id}" disabled="disabled"/><br/>
-    name:&nbsp;
-    <input type="text" th:field="${project.name}" th:value="*{name}"/><br/>
-    cost:&nbsp;€
-    <input type="number" min="0" step="0.1" th:field="${project.cost}" th:value="*{cost}"/><br/>
-    start date:&nbsp;
-    <input type="date" th:field="${project.dateStarted}" th:value="*{dateStarted}"/><br/>
-    version:&nbsp;
-    <input type="text" th:field="${project.version}" th:value="*{version}"/><br/>
-    client:
-    <select name="client" id="client" th:value="*{issued[0].client.id}">
-        <option th:each="s : ${clients}" th:text="${s.name}" th:value="${s.id}" name="client"></option>
-    </select><br/>
-    team:
-    <div th:each="e,stat : ${employees}">
-        <input type="checkbox" name="employeesCollaborated" th:value="${e.id}"
-               th:checked="${#lists.contains(employeesCollaborated, e.id)}"
-               th:text="${e.surname} + ' ' + ${e.name}"/>
-        role:
-        <th:block th:if="${#lists.contains(employeesCollaborated, e.id)}">
-            <input type="text" name="roles" th:value="${workedOns.next().role}"/>
-        </th:block>
-        <th:block th:unless="${#lists.contains(employeesCollaborated, e.id)}">
-            <input type="text" name="roles"/>
-        </th:block>
-        <br/>
-    </div>
+    <table class="form">
+        <tr class="hidden">
+            <td><input type="number" name="issuedId" th:value="${project.issued[0].id}"/></td>
+        </tr>
+        <tr class="hidden">
+            <th>id</th>
+            <td><input type="number" name="projectId" th:value="*{id}"/></td>
+        </tr>
+        <tr>
+            <th>name</th>
+            <td><input type="text" name="projectName" th:value="*{name}"/></td>
+        </tr>
+        <tr>
+            <th>increase cost</th>
+            <td><input type="number" min="0" step="0.1" name="projectCost" th:value="*{cost}"/></td>
+        </tr>
+        <tr>
+            <th>version</th>
+            <td><input type="text" name="projectVersion" th:value="*{version}"/></td>
+        </tr>
+        <tr th:if="${auth['DEVELOPER']}">
+            <th>client</th>
+            <td>
+                <select name="client" th:value="*{issued[0].client.id}">
+                    <option th:each="s : ${clients}" th:text="${s.name}" th:value="${s.id}" name="client"></option>
+                </select>
+            </td>
+        </tr>
+        <tr class="hidden" th:unless="${auth['DEVELOPER']}">
+            <td>
+                <input type="text" name="client" th:value="*{issued[0].client.id}"/>
+            </td>
+        </tr>
+        <tr>
+            <td><br/></td>
+        </tr>
+        <tr>
+            <th>team</th>
+        </tr>
+        <tr th:each="e : ${workedOns}">
+            <td><input type="checkbox" name="employeesCollaborated" checked="checked"
+                       th:text="${e.employee.surname} + ', ' + ${e.employee.name}" th:value="${e.employee.id}"/></td>
+            <td><input type="text" name="role" th:value="${e.role}"/></td>
+        </tr>
+        <tr th:each="e : ${otherEmployees}">
+            <td><input type="checkbox" name="employeesCollaborated"
+                       th:text="${e.surname} + ', ' + ${e.name}" th:value="${e.id}"/></td>
+            <td><input type="text" name="role"/></td>
+        </tr>
+    </table>
     <input type="submit" value="Confirm"/>
 </form>
 </body>

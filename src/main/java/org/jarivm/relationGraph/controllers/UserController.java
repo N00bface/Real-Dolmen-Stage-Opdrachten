@@ -11,8 +11,6 @@ import org.jarivm.relationGraph.domains.Client;
 import org.jarivm.relationGraph.domains.Employee;
 import org.jarivm.relationGraph.domains.Project;
 import org.jarivm.relationGraph.domains.WorkedOn;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,8 +31,17 @@ public class UserController extends BaseController {
 
 	@RequestMapping(value = {"/index", "/", "/home"}, name = "user home")
 	public String index(Model model) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		model.addAttribute("userprojects", projectRepository.findByClientName(authentication.getName()));
+		ArrayList<Project> projects;
+		if (!isAuthenticated())
+			return noAccess();
+		if (isAdmin()) {
+			projects = (ArrayList<Project>) projectRepository.findAll();
+		} else if (isClient()) {
+			projects = (ArrayList<Project>) projectRepository.findByClientName(authenticationConfig.getName());
+		} else {
+			projects = (ArrayList<Project>) projectRepository.findByEmployee(authenticationConfig.getId());
+		}
+		model.addAttribute("userprojects", projects);
 		return "/user/index";
 	}
 

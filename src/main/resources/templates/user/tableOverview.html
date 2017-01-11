@@ -36,6 +36,10 @@
     <div th:id="${proj.name}">
         <table>
             <tr>
+                <th>client</th>
+                <td th:text="${proj.issued[0].client.name}"></td>
+            </tr>
+            <tr>
                 <th>name</th>
                 <td th:text="${proj.name}"></td>
             </tr>
