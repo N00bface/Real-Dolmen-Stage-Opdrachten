@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2017. MIT-license for Jari Van Melckebeke
+ * Note that there was a lot of educational work in this project,
+ * this project was (or is) used for an assignment from Realdolmen in Belgium.
+ * Please just don't abuse my work
+ */
+
 // 开盘，收盘，最低，最高
 define([
     ['2013/1/24', 2320.26,2320.26,2287.3,2362.94],

@@ -1,86 +1,29 @@
 <!DOCTYPE html>
 <!--
-  ~ Copyright (c) 2016. MIT-license for Jari Van Melckebeke
+  ~ Copyright (c) 2017. MIT-license for Jari Van Melckebeke
   ~ Note that there was a lot of educational work in this project,
   ~ this project was (or is) used for an assignment from Realdolmen in Belgium.
   ~ Please just don't abuse my work
   -->
 
-<html xmlns:th="http://www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
       xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Main page</title>
+    <title>Hello Spring Security</title>
     <meta charset="utf-8"/>
     <link rel="stylesheet" href="/css/main.css" th:href="@{/css/main.css}"/>
 </head>
-<body class="nav-md">
-<div class="container body">
-    <div class="main_container">
-        <th:block th:substituteby="menubar::menubar"/>
-        <div class="right_col" role="main">
-            <div class="">
-                <div class="page-title">
-                    <div class="title_left">
-                        <h3>Main page</h3>
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="x_panel">
-                            <div class="x_title">
-                                <h2>My Projects</h2>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                <table id="myprojects"
-                                       class="table table-striped table-bordered dt-responsive nowrap
-                                       dataTable no-footer dtr-inline collapsed">
-                                    <thead>
-                                    <tr>
-                                        <th>name</th>
-                                        <th>start date</th>
-                                        <th>deadline</th>
-                                        <th>score on project</th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr th:each="project : ${userprojects}">
-                                        <td th:text="${project.name}"></td>
-                                        <td th:text="${project.dateStarted}"></td>
-                                        <td th:text="${project.dateFinished}"></td>
-                                        <td class="score" th:text="${project.scoreFromClient} +' % '"></td>
-                                        <!-- todo: add javascript for color gratient -->
-                                        <td><a th:href="@{/user/viewProject/__${project.id}__}" class="button">view</a>
-                                        </td>
-                                        <td><a th:href="@{/user/create/edit/__${project.id}__}" class="button">edit</a>
-                                            <button th:href="@{/user/evaluate/__${project.id}__}"
-                                                    class="btn btn-default">evaluate
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<body>
+<div th:fragment="logout" class="menubar-user-icon" sec:authorize="isAuthenticated()">
+    <!-- todo: maybe add some user settings etc. -->
+    <form class="logout" action="#" th:action="@{/log_out}" method="post">
+        <input type="submit" value="Logout"/>
+    </form>
 </div>
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<script th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
-<script th:src="@{/vendors/datatables.net/js/jquery.dataTables.js}"></script>
-<script th:src="@{/vendors/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
-<script th:src="@{/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js}"></script>
-<script th:src="@{/vendors/datatables.net-buttons/js/dataTables.buttons.min.js}"></script>
-<script th:src="@{/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js}"></script>
-<script th:src="@{/js/custom.js}">
-    $("#myprojects").DataTable();
-</script>
+<h1>Hello Guest</h1>
+<p>This is an unsecured page, but you can access the secured pages after authenticating.</p>
+<ul>
+    <li>Go to the <a href="/user/index" th:href="@{/user/index}">secured pages</a></li>
+</ul>
 </body>
 </html>

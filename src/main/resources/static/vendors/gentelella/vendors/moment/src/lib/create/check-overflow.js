@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2017. MIT-license for Jari Van Melckebeke
+ * Note that there was a lot of educational work in this project,
+ * this project was (or is) used for an assignment from Realdolmen in Belgium.
+ * Please just don't abuse my work
+ */
+
 import { daysInMonth } from '../units/month';
 import { YEAR, MONTH, DATE, HOUR, MINUTE, SECOND, MILLISECOND, WEEK, WEEKDAY } from '../units/constants';
 import getParsingFlags from '../create/parsing-flags';

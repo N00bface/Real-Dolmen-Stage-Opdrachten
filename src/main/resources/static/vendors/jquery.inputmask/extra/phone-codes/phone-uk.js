@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2017. MIT-license for Jari Van Melckebeke
+ * Note that there was a lot of educational work in this project,
+ * this project was (or is) used for an assignment from Realdolmen in Belgium.
+ * Please just don't abuse my work
+ */
+
 [
     { "mask": "+44(113)-###-####", "cc": "UK", "cd": "United Kingdom", "city": "Leeds" },
     { "mask": "+44(114)-###-####", "cc": "UK", "cd": "United Kingdom", "city": "Sheffield" },

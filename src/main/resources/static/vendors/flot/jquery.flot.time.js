@@ -1,12 +1,9 @@
-/* Pretty handling of time axes.
-
-Copyright (c) 2007-2014 IOLA and Ole Laursen.
-Licensed under the MIT license.
-
-Set axis.mode to "time" to enable. See the section "Time series data" in
-API.txt for details.
-
-*/
+/*
+ * Copyright (c) 2017. MIT-license for Jari Van Melckebeke
+ * Note that there was a lot of educational work in this project,
+ * this project was (or is) used for an assignment from Realdolmen in Belgium.
+ * Please just don't abuse my work
+ */
 
 (function($) {
 

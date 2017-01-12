@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2017. MIT-license for Jari Van Melckebeke
+ * Note that there was a lot of educational work in this project,
+ * this project was (or is) used for an assignment from Realdolmen in Belgium.
+ * Please just don't abuse my work
+ */
+
 requirejs.config({
     "paths": {
       "jquery": "https://code.jquery.com/jquery-1.11.3.min",

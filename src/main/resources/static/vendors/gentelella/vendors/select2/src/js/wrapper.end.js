@@ -1,4 +1,9 @@
-  // Autoload the jQuery bindings
+  /*
+ * Copyright (c) 2017. MIT-license for Jari Van Melckebeke
+ * Note that there was a lot of educational work in this project,
+ * this project was (or is) used for an assignment from Realdolmen in Belgium.
+ * Please just don't abuse my work
+ */  // Autoload the jQuery bindings
   // We know that all of the modules exist above this, so we're safe
   var select2 = S2.require('jquery.select2');
 

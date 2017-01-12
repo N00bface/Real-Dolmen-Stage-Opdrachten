@@ -1,6 +1,8 @@
 /*
- * The MIT License
- * Copyright (c) 2012 Matias Meno <m@tias.me>
+ * Copyright (c) 2017. MIT-license for Jari Van Melckebeke
+ * Note that there was a lot of educational work in this project,
+ * this project was (or is) used for an assignment from Realdolmen in Belgium.
+ * Please just don't abuse my work
  */
 .dropzone, .dropzone * {
   box-sizing: border-box; }

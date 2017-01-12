@@ -1,4 +1,9 @@
-  // Save the other cropper
+  /*
+ * Copyright (c) 2017. MIT-license for Jari Van Melckebeke
+ * Note that there was a lot of educational work in this project,
+ * this project was (or is) used for an assignment from Realdolmen in Belgium.
+ * Please just don't abuse my work
+ */  // Save the other cropper
   Cropper.other = $.fn.cropper;
 
   // Register as jQuery plugin

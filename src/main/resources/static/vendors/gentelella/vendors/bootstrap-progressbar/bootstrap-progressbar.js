@@ -1,11 +1,8 @@
-/*!
- * bootstrap-progressbar v0.9.0 by @minddust
- * Copyright (c) 2012-2015 Stephan Groß
- *
- * http://www.minddust.com/project/bootstrap-progressbar/
- *
- * Licensed under the MIT license:
- * http://www.opensource.org/licenses/MIT
+/*
+ * Copyright (c) 2017. MIT-license for Jari Van Melckebeke
+ * Note that there was a lot of educational work in this project,
+ * this project was (or is) used for an assignment from Realdolmen in Belgium.
+ * Please just don't abuse my work
  */
 (function($) {
 

@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2017. MIT-license for Jari Van Melckebeke
+ * Note that there was a lot of educational work in this project,
+ * this project was (or is) used for an assignment from Realdolmen in Belgium.
+ * Please just don't abuse my work
+ */
+
 //! moment.js locale configuration
 //! locale : talossan (tzl)
 //! author : Robin van der Vliet : https://github.com/robin0van0der0v with the help of Iustì Canun

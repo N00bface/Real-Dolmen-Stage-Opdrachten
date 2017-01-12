@@ -1,18 +1,9 @@
 /*
-
-	jQuery Tags Input Plugin 1.3.3
-
-	Copyright (c) 2011 XOXCO, Inc
-
-	Documentation for this plugin lives here:
-	http://xoxco.com/clickable/jquery-tags-input
-
-	Licensed under the MIT license:
-	http://www.opensource.org/licenses/mit-license.php
-
-	ben@xoxco.com
-
-*/
+ * Copyright (c) 2017. MIT-license for Jari Van Melckebeke
+ * Note that there was a lot of educational work in this project,
+ * this project was (or is) used for an assignment from Realdolmen in Belgium.
+ * Please just don't abuse my work
+ */
 
 (function($) {
 

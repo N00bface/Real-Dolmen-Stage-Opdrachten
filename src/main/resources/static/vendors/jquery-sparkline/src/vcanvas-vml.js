@@ -1,4 +1,11 @@
-    VCanvas_vml = createClass(VCanvas_base, {
+    /*
+ * Copyright (c) 2017. MIT-license for Jari Van Melckebeke
+ * Note that there was a lot of educational work in this project,
+ * this project was (or is) used for an assignment from Realdolmen in Belgium.
+ * Please just don't abuse my work
+ */
+
+VCanvas_vml = createClass(VCanvas_base, {
         init: function (width, height, target) {
             var groupel;
             VCanvas_vml._super.init.call(this, width, height, target);

@@ -1,10 +1,8 @@
-/** 
- * @overview datejs
- * @version 1.0.0-rc3
- * @author Gregory Wild-Smith <gregory@wild-smith.com>
- * @copyright 2014 Gregory Wild-Smith
- * @license MIT
- * @homepage https://github.com/abritinthebay/datejs
+/*
+ * Copyright (c) 2017. MIT-license for Jari Van Melckebeke
+ * Note that there was a lot of educational work in this project,
+ * this project was (or is) used for an assignment from Realdolmen in Belgium.
+ * Please just don't abuse my work
  */(function () {
 	var $D = Date;
 	var lang = Date.CultureStrings ? Date.CultureStrings.lang : null;

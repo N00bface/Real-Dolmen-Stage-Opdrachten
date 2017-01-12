@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2017. MIT-license for Jari Van Melckebeke
+ * Note that there was a lot of educational work in this project,
+ * this project was (or is) used for an assignment from Realdolmen in Belgium.
+ * Please just don't abuse my work
+ */
+
 define(function (require) {
 
     var AxisBuilder = require('./AxisBuilder');
@@ -10,7 +17,7 @@ define(function (require) {
         'axisLine', 'axisLabel', 'axisTick', 'axisName'
     ];
 
-    var selfBuilderAttr = 'splitLine'; 
+    var selfBuilderAttr = 'splitLine';
 
     var AxisView = require('../../echarts').extendComponentView({
 
@@ -121,11 +128,11 @@ define(function (require) {
         };
 
         layout.position = [
-            orient === 'vertical' 
-                ? positionMap.vertical[axisPosition] 
+            orient === 'vertical'
+                ? positionMap.vertical[axisPosition]
                 : rectBound[0],
-            orient === 'horizontal' 
-                ? positionMap.horizontal[axisPosition] 
+            orient === 'horizontal'
+                ? positionMap.horizontal[axisPosition]
                 : rectBound[3]
         ];
 
@@ -134,8 +141,8 @@ define(function (require) {
 
         var directionMap = {top: -1, bottom: 1, right: 1, left: -1};
 
-        layout.labelDirection = layout.tickDirection  
-            = layout.nameDirection 
+        layout.labelDirection = layout.tickDirection
+            = layout.nameDirection
             = directionMap[axisPosition];
 
         if (axisModel.getModel('axisTick').get('inside')) {
@@ -157,5 +164,5 @@ define(function (require) {
     }
 
     return AxisView;
-    
+
 });

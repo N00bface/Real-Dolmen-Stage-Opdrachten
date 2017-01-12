@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2017. MIT-license for Jari Van Melckebeke
+ * Note that there was a lot of educational work in this project,
+ * this project was (or is) used for an assignment from Realdolmen in Belgium.
+ * Please just don't abuse my work
+ */
+
 // All these options could be overriden and specified directly in DOM using
 // `data-parsley-` default DOM-API
 // eg: `inputs` can be set in DOM using `data-parsley-inputs="input, textarea"`

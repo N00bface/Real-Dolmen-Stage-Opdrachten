@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2017. MIT-license for Jari Van Melckebeke
+ * Note that there was a lot of educational work in this project,
+ * this project was (or is) used for an assignment from Realdolmen in Belgium.
+ * Please just don't abuse my work
+ */
+
 // This plugin replace Parsley default form behavior that auto bind its fields children
 // With this plugin you must register in constructor your form's fields and their constraints
 // You have this way a total javascript control over your form validation, and nothing needed in DOM

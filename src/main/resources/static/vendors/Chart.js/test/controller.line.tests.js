@@ -1,6 +1,13 @@
+/*
+ * Copyright (c) 2017. MIT-license for Jari Van Melckebeke
+ * Note that there was a lot of educational work in this project,
+ * this project was (or is) used for an assignment from Realdolmen in Belgium.
+ * Please just don't abuse my work
+ */
+
 // Test the line controller
 describe('Line controller tests', function() {
-	
+
 	beforeEach(function() {
 		window.addDefaultMatchers(jasmine);
 	});
@@ -8,7 +15,7 @@ describe('Line controller tests', function() {
 	afterEach(function() {
 		window.releaseAllCharts();
 	});
-	
+
 	it('should be constructed', function() {
 		var chart = window.acquireChart({
 			type: 'line',
@@ -130,7 +137,7 @@ describe('Line controller tests', function() {
 		spyOn(meta.data[3], 'draw');
 
 		chart.update();
-		
+
 		expect(meta.dataset.draw.calls.count()).toBe(0);
 		expect(meta.data[0].draw.calls.count()).toBe(1);
 		expect(meta.data[1].draw.calls.count()).toBe(1);
@@ -168,17 +175,17 @@ describe('Line controller tests', function() {
 				}
 			},
 		});
-		
+
 		var meta = chart.getDatasetMeta(0);
 		expect(meta.data.length).toBe(4);
-		
+
 		chart.data.datasets[0].data = [1, 2]; // remove 2 items
 		chart.data.datasets[0].borderWidth = 1;
 		chart.update();
 
 		expect(meta.data.length).toBe(2);
-		
-		
+
+
 		[	{ x:  44, y: 484 },
 			{ x: 193, y:  32 }
 		].forEach(function(expected, i) {
@@ -193,7 +200,7 @@ describe('Line controller tests', function() {
 				borderColor: 'blue',
 			}));
 		});
-		
+
 		chart.data.datasets[0].data = [1, 2, 3]; // add 1 items
 		chart.update();
 
@@ -221,7 +228,7 @@ describe('Line controller tests', function() {
 				}
 			}
 		});
-		
+
 		var meta0 = chart.getDatasetMeta(0);
 
 		[	{ x:  38, y: 161 },
@@ -243,7 +250,7 @@ describe('Line controller tests', function() {
 				expect(meta1.data[i]._model.x).toBeCloseToPixel(values.x);
 				expect(meta1.data[i]._model.y).toBeCloseToPixel(values.y);
 		});
-		
+
 	});
 
 	it('should find the correct scale zero when the data is all positive', function() {
@@ -257,9 +264,9 @@ describe('Line controller tests', function() {
 				labels: ['label1', 'label2', 'label3', 'label4']
 			},
 		});
-		
+
 		var meta = chart.getDatasetMeta(0);
-		
+
 		expect(meta.dataset._model).toEqual(jasmine.objectContaining({
 			scaleTop: 32,
 			scaleBottom: 484,
@@ -278,9 +285,9 @@ describe('Line controller tests', function() {
 				labels: ['label1', 'label2', 'label3', 'label4']
 			},
 		});
-		
+
 		var meta = chart.getDatasetMeta(0);
-		
+
 		expect(meta.dataset._model).toEqual(jasmine.objectContaining({
 			scaleTop: 32,
 			scaleBottom: 484,
@@ -295,7 +302,7 @@ describe('Line controller tests', function() {
 				datasets: [{
 					data: [0, 0],
 					label: 'dataset1',
-	
+
 					// line styles
 					backgroundColor: 'rgb(98, 98, 98)',
 					borderColor: 'rgb(8, 8, 8)',
@@ -323,9 +330,9 @@ describe('Line controller tests', function() {
 				labels: ['label1', 'label2', 'label3', 'label4']
 			}
 		});
-		
+
 		var meta = chart.getDatasetMeta(0);
-		
+
 		chart.data.datasets[0].data = [1, 2]; // remove 2 items
 		chart.update();
 		expect(meta.data.length).toBe(2);
@@ -366,7 +373,7 @@ describe('Line controller tests', function() {
 				}
 			}
 		});
-		
+
 		var meta = chart.getDatasetMeta(0);
 		var point = meta.data[0];
 

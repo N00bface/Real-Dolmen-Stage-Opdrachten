@@ -1,11 +1,9 @@
-// ┌───────────────────────────────────────────────────────────────────────────────────────────────────────┐ \\
-// │ Raphaël 2.2.0 - JavaScript Vector Library                                                             │ \\
-// ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2008-2016 Dmitry Baranovskiy (http://raphaeljs.com)                                       │ \\
-// │ Copyright © 2008-2016 Sencha Labs (http://sencha.com)                                                 │ \\
-// ├───────────────────────────────────────────────────────────────────────────────────────────────────────┤ \\
-// │ Licensed under the MIT (https://github.com/DmitryBaranovskiy/raphael/blob/master/license.txt) license.│ \\
-// └───────────────────────────────────────────────────────────────────────────────────────────────────────┘ \\
+/*
+ * Copyright (c) 2017. MIT-license for Jari Van Melckebeke
+ * Note that there was a lot of educational work in this project,
+ * this project was (or is) used for an assignment from Realdolmen in Belgium.
+ * Please just don't abuse my work
+ */
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')

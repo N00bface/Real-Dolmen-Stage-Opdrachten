@@ -1,9 +1,9 @@
 /*
-Input Mask plugin binding
-http://github.com/RobinHerbots/jquery.inputmask
-Copyright (c) 2010 -  Robin Herbots
-Licensed under the MIT license (http://www.opensource.org/licenses/mit-license.php)
-*/
+ * Copyright (c) 2017. MIT-license for Jari Van Melckebeke
+ * Note that there was a lot of educational work in this project,
+ * this project was (or is) used for an assignment from Realdolmen in Belgium.
+ * Please just don't abuse my work
+ */
 (function(factory) {
 		if (typeof define === "function" && define.amd) {
 			define(["jquery", "inputmask"], factory);

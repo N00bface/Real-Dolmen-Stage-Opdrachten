@@ -1,10 +1,8 @@
 /*
- * Unobtrusive Slider Control / HTML5 Input Range polyfill
- * http://www.frequency-decoder.com/
- *
- * Copyright 2010, 2011, Brian McAllister
- * Dual licensed under the MIT or GPL Version 2 licenses.
- *
+ * Copyright (c) 2017. MIT-license for Jari Van Melckebeke
+ * Note that there was a lot of educational work in this project,
+ * this project was (or is) used for an assignment from Realdolmen in Belgium.
+ * Please just don't abuse my work
  */
 var fdSlider = (function() {
         var sliders           = {},     
