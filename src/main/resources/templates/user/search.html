@@ -18,12 +18,6 @@
 <div class="menubar">
     <div th:substituteby="menubar::menubar"></div>
 </div>
-<form th:fragment="search" method="get" action="#" th:action="@{/user/search/simpleSearch}">
-    <input type="hidden" th:value="any" name="t"/>
-    <i class="fa fa-search"></i>
-    <input class="rounded" name="q" type="text" content="search..."/>
-    <input class="hidden" type="submit" value=""/>
-</form>
 <form th:fragment="specificSearch" method="get" action="#" th:action="@{/user/search/simpleSearch}">
     <label>
         search on property: <br/>
