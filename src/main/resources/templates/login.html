@@ -12,7 +12,21 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="/css/main.css" th:href="@{/css/main.css}" />
 </head>
-<body>
+<body class="login">
+<div>
+	<div class="login_wrapper">
+		<div class="animate form login_form">
+			<section class="login_content">
+				<form>
+					<h1>Login</h1>
+					<div>
+						<input type="text" class="form-control" placeholder="Username"/>
+					</div>
+				</form>
+			</section>
+		</div>
+	</div>
+</div>
 <h1>Login page</h1>
 <p>Example user: user / password</p>
 <p th:if="${loginError}" class="error">Wrong user or password</p>
