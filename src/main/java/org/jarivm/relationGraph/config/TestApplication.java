@@ -57,7 +57,7 @@ public class TestApplication extends Neo4jConfiguration {
 		return config;
 	}
 
-	@Bean
+	@Bean("authenticationConfig")
 	public AuthenticationConfig authenticationConfig() {
 		return new AuthenticationConfig();
 	}

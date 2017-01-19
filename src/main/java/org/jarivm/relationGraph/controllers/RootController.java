@@ -24,12 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class RootController extends BaseController {
 
-	@RequestMapping(value = "/auth", name = "login")
-	public String auth(Model model) {
-		model.addAttribute("name", "jari");
-		return "access";
-	}
-
 	@RequestMapping(value = {"/index", "/", "/home"}, name = "home")
 	public String index() {
 		return "index";

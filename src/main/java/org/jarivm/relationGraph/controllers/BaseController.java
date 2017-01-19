@@ -91,7 +91,7 @@ public class BaseController {
 
 	@ModelAttribute("auth")
 	Map<String, Boolean> authMap() {
-		if (authRole == null) {
+		if (authRole == null || authRole.get("NONE")) {
 			authRole = new HashMap<>();
 			authRole.put("ADMIN", isAdmin());
 			authRole.put("CLIENT", isClient());
@@ -100,6 +100,7 @@ public class BaseController {
 			authRole.put("EMPLOYEE", isEmployee());
 			authRole.put("NONE", !isAuthenticated());
 		}
+		System.out.println(authRole);
 		return authRole;
 	}
 
@@ -128,6 +129,7 @@ public class BaseController {
 	}
 
 	private boolean isAdmin(AuthType role) {
+		System.out.println(role);
 		return (role == AuthType.ADMIN);
 	}
 

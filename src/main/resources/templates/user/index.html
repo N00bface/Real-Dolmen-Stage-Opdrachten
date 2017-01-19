@@ -60,18 +60,18 @@
                                         <!-- todo: add javascript for color gratient -->
                                         <td>
                                             <div class="btn-group">
-                                                <button type="button" th:href="@{/user/viewProject/__${project.id}__}"
-                                                        class="btn btn-info">
+                                                <a th:href="@{/user/viewProject/__${project.id}__}"
+                                                   class="btn btn-info">
                                                     view
-                                                </button>
-                                                <button type="button" th:href="@{/user/create/edit/__${project.id}__}"
-                                                        class="btn btn-primary">
+                                                </a>
+                                                <a th:href="@{/user/create/edit/__${project.id}__}"
+                                                   class="btn btn-primary">
                                                     edit
-                                                </button>
-                                                <button type="button" th:href="@{/user/evaluate/__${project.id}__}"
-                                                        class="btn btn-success">
+                                                </a>
+                                                <a th:href="@{/user/evaluate/__${project.id}__}"
+                                                   class="btn btn-success">
                                                     evaluate
-                                                </button>
+                                                </a>
                                             </div>
                                         </td>
                                     </tr>
@@ -85,7 +85,7 @@
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script th:src="@{/js/jquery-3.1.1.js}"></script>
 <script th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
 <script th:src="@{/vendors/datatables.net/js/jquery.dataTables.js}"></script>
 <script th:src="@{/vendors/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>

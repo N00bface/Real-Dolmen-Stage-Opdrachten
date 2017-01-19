@@ -24,6 +24,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Profile("CI")
 public class TestSecurityConfig extends WebSecurityConfigurerAdapter {
 
+	@Autowired
+	private AuthenticationConfig authenticationConfig;
 
 	// possible roles: ROLE_ADMIN, ROLE_EMPLOYEE, ROLE_CLIENT, ROLE_PROJECT_LEADER
 	@Autowired
@@ -37,14 +39,12 @@ public class TestSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
-				.antMatchers("/public").permitAll()
+		http
+				.authorizeRequests().antMatchers("/css/**", "/fonts/**", "/images/**", "/js/**").permitAll()
 				.anyRequest().authenticated()
 				.and()
-				.formLogin()
-				.permitAll()
-				.and()
-				.logout().permitAll();
+				.formLogin().loginPage("/login")
+				.permitAll().successHandler(authenticationConfig);
 	}
 }
 
