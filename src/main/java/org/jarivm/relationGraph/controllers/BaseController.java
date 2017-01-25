@@ -83,7 +83,7 @@ public class BaseController {
 	}
 
 	public void resetAuth() {
-		authenticationConfig.setRole();
+		authenticationConfig.resetRole();
 		authRole = null;
 		authMap();
 		logger.info("authentication resetted");

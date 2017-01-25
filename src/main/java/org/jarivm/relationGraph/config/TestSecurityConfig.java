@@ -43,8 +43,9 @@ public class TestSecurityConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests().antMatchers("/css/**", "/fonts/**", "/images/**", "/js/**").permitAll()
 				.anyRequest().authenticated()
 				.and()
-				.formLogin().loginPage("/login")
-				.permitAll().successHandler(authenticationConfig);
+				.formLogin().loginPage("/login").permitAll()
+				.successHandler(authenticationConfig).and()
+				.logout().permitAll();
 	}
 }
 

@@ -31,7 +31,9 @@ public class RootController extends BaseController {
 
 	@RequestMapping(value = "/login", name = "login")
 	public String login() {
-		return "login";
+		if (!isAuthenticated())
+			return "login";
+		return "redirect:/user/index";
 	}
 
 	@RequestMapping(value = "/log_out", name = "log out")
@@ -42,7 +44,6 @@ public class RootController extends BaseController {
 			new SecurityContextLogoutHandler().logout(request, response, auth);
 		}
 		return "redirect:/login?logout";
-
 	}
 
 	@RequestMapping("/login-error")

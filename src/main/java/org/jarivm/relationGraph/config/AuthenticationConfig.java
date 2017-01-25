@@ -41,6 +41,8 @@ public class AuthenticationConfig implements AuthenticationSuccessHandler {
 
 	public void resetRole() {
 		role = AuthType.NONE;
+		id = null;
+		name = null;
 	}
 
 	public Long getId() {

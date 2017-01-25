@@ -9,7 +9,13 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <link th:href="@{/css/main.css}" rel="stylesheet" href="../../css/main.css"/>
+    <link th:href="@{/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/fonts/css/font-awesome.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/animate.min.css}" rel="stylesheet"/>
+    <link th:href="@{/vendors/nprogress/nprogress.css}" rel="stylesheet"/>
+    <link th:href="@{/css/custom.css}" rel="stylesheet"/>
     <title>table overview</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
@@ -17,55 +23,103 @@
 <div class="menubar">
     <div th:substituteby="menubar::menubar"></div>
 </div>
-<h1>graph table</h1>
-<h2>clients</h2>
-<table>
-    <tr>
-        <th>sector</th>
-        <th>name</th>
-        <th>experience</th>
-    </tr>
-    <tr th:each="c : ${clients}">
-        <td th:text="${c.sector.name}"></td>
-        <td th:text="${c.name}"></td>
-        <td th:text="${c.experience} + ' years'"></td>
-    </tr>
-</table>
-<h2>my projects</h2>
-<div th:each="proj: ${projects}" class="card">
-    <div th:id="${proj.name}">
-        <table>
-            <tr>
-                <th>client</th>
-                <td th:text="${proj.issued[0].client.name}"></td>
-            </tr>
-            <tr>
-                <th>name</th>
-                <td th:text="${proj.name}"></td>
-            </tr>
-            <tr>
-                <th>cost</th>
-                <td th:text="${proj.cost}"></td>
-            </tr>
-            <tr>
-                <th>score</th>
-                <td th:text="${proj.scoreFromClient}"></td>
-            </tr>
-            <tr>
-                <th>version</th>
-                <td th:text="${proj.version}"></td>
-            </tr>
-            <tr>
-                <td><a th:href="@{/user/viewProject/__${proj.id}__}" class="button">view</a></td>
-            </tr>
-            <tr>
-                <td><a th:href="@{/user/create/edit/__${proj.id}__}" class="button">edit</a></td>
-            </tr>
-            <tr>
-                <td><a th:href="@{/user/evaluate/__${proj.id}__}" class="button">evaluate</a></td>
-            </tr>
-        </table>
+<div class="right_col" role="main">
+    <div>
+        <div class="page-title">
+            <div class="title_left">
+                <h3>My Projects</h3>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12">
+                <div th:if="${not (auth['CLIENT'] or auth['NONE'])}" class="x_panel">
+                    <div class="x_title">
+                        <h2>My clients</h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>sector</th>
+                                <th>name</th>
+                                <th>experience</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="c : ${clients}">
+                                <td th:text="${c.sector.name}"></td>
+                                <td th:text="${c.name}"></td>
+                                <td th:text="${c.experience} + ' years'"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div th:each="proj : ${projects}" class="x_panel">
+                    <div class="x_title">
+                        <h2 th:text="${proj.name}"></h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <ul class="stats-overview">
+                            <li>
+                                <span class="name">budget</span>
+                                <span class="value" th:text="${proj.cost}"></span>
+                            </li>
+                            <li>
+                                <span class="name">current score</span>
+                                <span th:if="${#numbers.formatDecimal(${proj.scoreFromClient},3,2) >= 60.00}"
+                                      class="value text-success"
+                                      th:text="${proj.scoreFromClient} + '%'"></span>
+                                <span th:unless="${#numbers.formatDecimal(${proj.scoreFromClient},3,2) >= 60.00}"
+                                      class="value text-failure"
+                                      th:text="${proj.scoreFromClient} + '%'"></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h2>my projects</h2>
+        <div th:each="proj: ${projects}" class="card">
+            <div th:id="${proj.name}">
+                <table>
+                    <tr>
+                        <th>client</th>
+                        <td th:text="${proj.issued[0].client.name}"></td>
+                    </tr>
+                    <tr>
+                        <th>name</th>
+                        <td th:text="${proj.name}"></td>
+                    </tr>
+                    <tr>
+                        <th>cost</th>
+                        <td th:text="${proj.cost}"></td>
+                    </tr>
+                    <tr>
+                        <th>score</th>
+                        <td th:text="${proj.scoreFromClient}"></td>
+                    </tr>
+                    <tr>
+                        <th>version</th>
+                        <td th:text="${proj.version}"></td>
+                    </tr>
+                    <tr>
+                        <td><a th:href="@{/user/viewProject/__${proj.id}__}" class="button">view</a></td>
+                    </tr>
+                    <tr>
+                        <td><a th:href="@{/user/create/edit/__${proj.id}__}" class="button">edit</a></td>
+                    </tr>
+                    <tr>
+                        <td><a th:href="@{/user/evaluate/__${proj.id}__}" class="button">evaluate</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
+
 </body>
 </html>
