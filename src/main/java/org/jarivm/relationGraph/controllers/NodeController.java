@@ -30,9 +30,7 @@ public class NodeController extends BaseController {
 
 	@RequestMapping(value = "/client", name = "create client")
 	public String createClient(Model model) {
-		if (!isAdmin()) {
-			return noAccess();
-		}
+		if (!isAdmin()) noAccess();
 		model.addAttribute("clientToken", new Client());
 		model.addAttribute("sectors", sectorRepository.findAll());
 		return "/user/create/client";
@@ -40,26 +38,21 @@ public class NodeController extends BaseController {
 
 	@RequestMapping(value = "/employee", name = "create employee")
 	public String createEmployee(Model model) {
-		if (!isProjectLeader()) {
-			return noAccess();
-		}
+		if (!isProjectLeader()) noAccess();
 		model.addAttribute("employeeToken", new Employee());
 		return "/user/create/employee";
 	}
 
 	@RequestMapping(value = "/sector", name = "create sector")
 	public String createSector(Model model) {
-		if (!isAdmin())
-			return noAccess();
+		if (!isAdmin()) noAccess();
 		model.addAttribute("sectorToken", new Sector());
 		return "/user/create/sector";
 	}
 
 	@RequestMapping(value = "/project", name = "create project")
 	public String createProject(Model model) {
-		if (!isProjectLeader()) {
-			return noAccess();
-		}
+		if (!isProjectLeader()) noAccess();
 		model.addAttribute("projectToken", new Project());
 		model.addAttribute("employees", employeeRepository.findAll());
 		model.addAttribute("clients", clientRepository.findAll());
@@ -68,9 +61,7 @@ public class NodeController extends BaseController {
 
 	@RequestMapping(value = "/createClient")
 	public String createNewClient(@RequestParam(name = "sector") Long s, Client client, BindingResult bindingResult, Model model) {
-		if (!isClient()) {
-			return "";
-		}
+		if (!isClient()) noAccess();
 		client.setSector(sectorRepository.findOne(s));
 		System.out.println(client);
 		clientRepository.save(client);
@@ -79,8 +70,7 @@ public class NodeController extends BaseController {
 
 	@RequestMapping(value = "/createEmployee")
 	public String createNewEmployee(Employee employee, BindingResult bindingResult, Model model) {
-		if (!isAdmin())
-			return noAccess();
+		if (!isAdmin()) noAccess();
 		System.out.println(employee);
 		employeeRepository.save(employee);
 		return "redirect:/user/index.html";
@@ -88,9 +78,7 @@ public class NodeController extends BaseController {
 
 	@RequestMapping(value = "/createSector")
 	public String createNewSector(Sector sector, BindingResult bindingResult, Model model) {
-		if (!isDeveloper()) {
-			return noAccess();
-		}
+		if (!isDeveloper()) noAccess();
 		System.out.println(sector);
 		sectorRepository.save(sector);
 		return "redirect:/user/index.html";
@@ -102,9 +90,7 @@ public class NodeController extends BaseController {
 								   @RequestParam(name = "client") Long client,
 								   @ModelAttribute Project project,
 								   BindingResult bindingResult, Model model) {
-		if (!isDeveloper()) {
-			return noAccess();
-		}
+		if (!isDeveloper()) noAccess();
 		Client c = clientRepository.findById(client);
 		Issued issued = new Issued(c, project);
 		List<Issued> issuedList = new ArrayList<>();
@@ -126,45 +112,49 @@ public class NodeController extends BaseController {
 	public String editEntity(@PathVariable("id") Long id, Model model) {
 		switch (getTypeOfNode(id)) {
 			case CLIENT_TYPE:
-				if (!isAuthenticated())
-					return noAccess();
+				if (!isAuthenticated()) noAccess();
 				//todo: better auth system hierarchy
 				model.addAttribute("client", clientRepository.findById(id));
 				model.addAttribute("sectors", sectorRepository.findAll());
 				return "/user/edit/client";
 			case EMPLOYEE_TYPE:
-				if (!isDeveloper())
-					return noAccess();
+				if (!isDeveloper()) noAccess();
 				Employee e = employeeRepository.findById(id);
 				model.addAttribute("employee", e);
 				return "/user/edit/employee";
 			case PROJECT_TYPE:
-				if (!isAuthenticated())
-					return noAccess();
+				if (!isAuthenticated()) noAccess();
+
 				Project p = projectRepository.findById(id);
-				model.addAttribute("project", p);
+
 				List<WorkedOn> workedOns = p.getWorkedOn();
 				workedOns.sort((t, t1) -> (t.getEmployee().getSurname().compareTo(t1.getEmployee().getSurname())));
-				model.addAttribute("workedOns", workedOns);
+
 				List<Employee> otherEmployees = (List<Employee>) employeeRepository.findAll();
 				otherEmployees.removeIf(employee -> workedOns.stream().anyMatch(w -> w.getEmployee() == employee));
+
+				model.addAttribute("project", p);
+				model.addAttribute("workedOns", workedOns);
 				model.addAttribute("otherEmployees", otherEmployees);
 				model.addAttribute("clients", clientRepository.findAll());
+
 				return "/user/edit/project";
 			case SECTOR_TYPE:
-				if (!isAdmin())
-					return noAccess();
+				if (!isAdmin()) noAccess();
+
 				model.addAttribute("sector", sectorRepository.findById(id));
+
 				return "/user/edit/sector";
 			default:
-				return notFound();
+				notFound();
+				return null;
 		}
 	}
 
 	@RequestMapping(value = "/edit/client/{id}/confirm")
 	public String confirmEditClient(@PathVariable("id") Long id, Client node, BindingResult bindingResult, Model model) {
 		if (!isClient()) {
-			return noAccess();
+			noAccess();
 		}
 		System.out.println(node);
 		node.setId(id);
@@ -175,7 +165,7 @@ public class NodeController extends BaseController {
 	@RequestMapping(value = "/edit/employee/{id}/confirm")
 	public String confirmEditEmployee(@PathVariable("id") Long id, Employee node, BindingResult bindingResult, Model model) {
 		if (!isDeveloper()) {
-			return noAccess();
+			noAccess();
 		}
 		System.out.println(node);
 		node.setId(id);
@@ -223,9 +213,7 @@ public class NodeController extends BaseController {
 
 	@RequestMapping(value = "/edit/sector/{id}/confirm")
 	public String confirmEditSector(@PathVariable("id") Long id, Sector node, BindingResult bindingResult, Model model) {
-		if (!isAdmin()) {
-			return noAccess();
-		}
+		if (!isAdmin()) noAccess();
 		System.out.println(node);
 		node.setId(id);
 		sectorRepository.save(node);

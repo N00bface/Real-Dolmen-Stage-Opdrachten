@@ -33,7 +33,7 @@ public class UserController extends BaseController {
 	public String index(Model model) {
 		ArrayList<Project> projects;
 		if (!isAuthenticated())
-			return noAccess();
+			noAccess();
 		if (isAdmin()) {
 			projects = (ArrayList<Project>) projectRepository.findAll();
 		} else if (isClient()) {
@@ -48,7 +48,7 @@ public class UserController extends BaseController {
 	@RequestMapping(value = "/tableOverview", name = "table overview")
 	public String myProjects(Model model) {
 		if (!isAuthenticated()) {
-			return noAccess();
+			noAccess();
 		}
 		ArrayList<Client> clients;
 		ArrayList<Project> projects;
@@ -78,7 +78,7 @@ public class UserController extends BaseController {
 	@RequestMapping("/viewClient/{id}")
 	public String viewClient(@PathVariable(name = "id") Long id, Model model) {
 		if (!isDeveloper())
-			return noAccess();
+			noAccess();
 		model.addAttribute("client", clientRepository.findById(id));
 		return "/view/client";
 	}
@@ -86,7 +86,7 @@ public class UserController extends BaseController {
 	@RequestMapping("/viewEmployee/{id}")
 	public String viewEmployee(@PathVariable(name = "id") Long id, Model model) {
 		if (!isDeveloper())
-			return noAccess();
+			noAccess();
 		model.addAttribute("employee", employeeRepository.findById(id));
 		return "/view/employee";
 	}
@@ -94,7 +94,7 @@ public class UserController extends BaseController {
 	@RequestMapping("/viewProject/{id}")
 	public String viewProject(@PathVariable(name = "id") Long id, Model model) {
 		if (!isDeveloper() && !(isClient() && hasRelationWithProject(id))) {
-			return noAccess();
+			noAccess();
 		}
 		model.addAttribute("project", projectRepository.findById(id));
 		return "/view/project";
@@ -103,7 +103,7 @@ public class UserController extends BaseController {
 	@RequestMapping("/viewSector/{id}")
 	public String viewSector(@PathVariable(name = "id") Long id, Model model) {
 		if (!isDeveloper())
-			return noAccess();
+			noAccess();
 		model.addAttribute("sector", sectorRepository.findById(id));
 		return "/view/sector";
 	}
@@ -128,7 +128,7 @@ public class UserController extends BaseController {
 					sectorRepository.delete(id);
 				break;
 			case INVALID:
-				return notFound();
+				notFound();
 		}
 		return "redirect:/user/index.html";
 	}
@@ -136,7 +136,7 @@ public class UserController extends BaseController {
 	@RequestMapping(value = "/evaluate/{id}")
 	public String evaluate(@PathVariable("id") Long id, Model model) {
 		if (!isDeveloper() && !(isClient() && hasRelationWithProject(id))) {
-			return noAccess();
+			noAccess();
 		}
 		Project p = projectRepository.findById(id);
 		List<WorkedOn> workedOns = p.getWorkedOn();
@@ -156,7 +156,7 @@ public class UserController extends BaseController {
 								  @RequestParam("cost") Float cost,
 								  Model model) {
 		if (!isDeveloper() && !(isClient() && hasRelationWithProject(id))) {
-			return noAccess();
+			noAccess();
 		}
 		List<WorkedOn> workedOns = new ArrayList<>();
 		for (int i = 0; i < workedOnId.size(); i++) {

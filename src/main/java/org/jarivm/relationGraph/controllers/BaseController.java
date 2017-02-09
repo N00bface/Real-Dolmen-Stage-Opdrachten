@@ -65,12 +65,6 @@ public class BaseController {
 		return employeeRepository.findProperties();
 	}
 
-	//todo: create sitemap :exclamation:
-	@ModelAttribute("endpoints")
-	public String[] getMappings() {
-		return null;
-	}
-
 	@ModelAttribute("projectKeys")
 	public String[] getProjectKeys() {
 		return projectRepository.findProperties();
@@ -82,7 +76,7 @@ public class BaseController {
 		return sectorRepository.findProperties();
 	}
 
-	public void resetAuth() {
+	void resetAuth() {
 		authenticationConfig.resetRole();
 		authRole = null;
 		authMap();
@@ -154,16 +148,16 @@ public class BaseController {
 		return (role != AuthType.NONE);
 	}
 
-	public String noAccess() {
+	void noAccess() {
 		logger.warn("no access for user " + authenticationConfig.getName());
 		throw new ForbiddenException();
 	}
 
-	public String notFound() {
+	void notFound() {
 		throw new NFException();
 	}
 
-	public boolean hasRelationWithProject(Long id) {
+	boolean hasRelationWithProject(Long id) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String name = authentication.getName();
 		switch (authenticationConfig.getRole()) {

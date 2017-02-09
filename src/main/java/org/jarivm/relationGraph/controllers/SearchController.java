@@ -32,7 +32,7 @@ public class SearchController extends BaseController {
 	@RequestMapping(value = "/simpleSearch", name = "simple search")
 	public String simpleSearch(@RequestParam(name = "q") String query, @RequestParam(name = "t") String type, Model model) {
 		if (!isDeveloper() && !isClient())
-			return noAccess();
+			noAccess();
 		if (type.equals("any")) {
 			model.addAttribute("type", "any");
 			Iterable<Client> c = clientRepository.findByAny(query);
@@ -103,7 +103,8 @@ public class SearchController extends BaseController {
 				model.addAttribute("type", "sector");
 			return "/user/searchResult";
 		}
-		return notFound();
+		notFound();
+		return null;
 	}
 
 	private boolean noResults(Iterable it) {
