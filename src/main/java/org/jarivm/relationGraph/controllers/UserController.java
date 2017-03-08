@@ -7,18 +7,21 @@
 
 package org.jarivm.relationGraph.controllers;
 
+import org.jarivm.relationGraph.MysqlDB.Account;
 import org.jarivm.relationGraph.domains.Client;
 import org.jarivm.relationGraph.domains.Employee;
 import org.jarivm.relationGraph.domains.Project;
 import org.jarivm.relationGraph.domains.WorkedOn;
+import org.kohsuke.github.GHCommit;
+import org.kohsuke.github.GHRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -46,13 +49,16 @@ public class UserController extends BaseController {
 	}
 
 	@RequestMapping(value = "/tableOverview", name = "table overview")
-	public String myProjects(Model model) {
+	public String myProjects(Model model) throws IOException {
 		if (!isAuthenticated()) {
 			noAccess();
 		}
 		ArrayList<Client> clients;
 		ArrayList<Project> projects;
+		Map<String, Iterable<Integer>> reposCommits = new HashMap<>();
+		Map<String, GHRepository> repos = new HashMap<>();
 		if (isAdmin()) {
+			repos = gitHub.getOrganization("Realdolmen365").getRepositories();
 			clients = (ArrayList<Client>) clientRepository.findAll();
 			projects = (ArrayList<Project>) projectRepository.findAll();
 		} else if (isClient()) {
@@ -60,12 +66,31 @@ public class UserController extends BaseController {
 			clients.add(clientRepository.findById(authenticationConfig.getId()));
 			System.out.println(clients);
 			projects = (ArrayList<Project>) projectRepository.findByClientName(authenticationConfig.getName());
+			Calendar cal = Calendar.getInstance();
+			for (Project project : projects) {
+				GHRepository r = gitHub.getRepository(project.getName());
+				List<Integer> months = new ArrayList<>(12);
+				Collections.fill(months, 0);
+				for (GHCommit c : r.listCommits()) {
+					cal.setTime(c.getCommitDate());
+					int i = cal.get(Calendar.MONTH);
+					months.set(i, months.get(i) + 1);
+				}
+				reposCommits.put(project.getName(), months);
+				repos.put(project.getName(), r);
+			}
 		} else {
+			Iterable<GHRepository> it = gitHub.getMyself().listRepositories();
+			for (GHRepository repo : it) {
+				repos.put(repo.getName(), repo);
+			}
 			clients = (ArrayList<Client>) clientRepository.findClientsByEmployee(authenticationConfig.getId());
 			projects = (ArrayList<Project>) projectRepository.findByEmployee(authenticationConfig.getId());
 		}
 		model.addAttribute("clients", clients);
 		model.addAttribute("projects", projects);
+		model.addAttribute("commitMap", reposCommits);
+		model.addAttribute("GHrepos", repos);
 		return "/user/tableOverview";
 	}
 
@@ -155,9 +180,7 @@ public class UserController extends BaseController {
 								  @RequestParam("workedOnId") List<Long> workedOnId,
 								  @RequestParam("cost") Float cost,
 								  Model model) {
-		if (!isDeveloper() && !(isClient() && hasRelationWithProject(id))) {
-			noAccess();
-		}
+		if (!isDeveloper() && !(isClient() && hasRelationWithProject(id))) noAccess();
 		List<WorkedOn> workedOns = new ArrayList<>();
 		for (int i = 0; i < workedOnId.size(); i++) {
 			WorkedOn w = workedOnRepository.findById(workedOnId.get(i));
@@ -170,5 +193,14 @@ public class UserController extends BaseController {
 		workedOnRepository.save(workedOns);
 		projectRepository.save(p);
 		return "redirect:/user/index.html";
+	}
+
+	@RequestMapping(value = "/settings")
+	public String settings(Model model) {
+		if (!isAuthenticated()) noAccess();
+		Account acc = accountRepository.findOne(authenticationConfig.getId());
+		model.addAttribute("image", acc.getAvatar());
+		model.addAttribute("user", acc);
+		return "/user/settings";
 	}
 }

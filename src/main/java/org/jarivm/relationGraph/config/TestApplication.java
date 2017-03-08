@@ -7,6 +7,7 @@
 
 package org.jarivm.relationGraph.config;
 
+import org.kohsuke.github.GitHub;
 import org.neo4j.ogm.session.SessionFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +18,8 @@ import org.springframework.data.neo4j.config.Neo4jConfiguration;
 import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
 import org.springframework.data.neo4j.template.Neo4jTemplate;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+
+import java.io.IOException;
 
 /**
  * @author Jari Van Melckebeke
@@ -60,5 +63,14 @@ public class TestApplication extends Neo4jConfiguration {
 	@Bean("authenticationConfig")
 	public AuthenticationConfig authenticationConfig() {
 		return new AuthenticationConfig();
+	}
+
+	@Bean
+	public GitHub gitHub() {
+		try {
+			return GitHub.connectUsingPassword("N00bface", "tanzania1");
+		} catch (IOException e) {
+			return null;
+		}
 	}
 }

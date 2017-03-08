@@ -8,6 +8,7 @@
 package org.jarivm.relationGraph.controllers;
 
 import org.apache.log4j.Logger;
+import org.jarivm.relationGraph.MysqlDB.repository.AccountRepository;
 import org.jarivm.relationGraph.config.AuthenticationConfig;
 import org.jarivm.relationGraph.constants.AuthType;
 import org.jarivm.relationGraph.constants.NodeType;
@@ -18,6 +19,7 @@ import org.jarivm.relationGraph.domains.Sector;
 import org.jarivm.relationGraph.exceptions.ForbiddenException;
 import org.jarivm.relationGraph.exceptions.NFException;
 import org.jarivm.relationGraph.repositories.*;
+import org.kohsuke.github.GitHub;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -50,31 +52,14 @@ public class BaseController {
 	public IssuedRepository issuedRepository;
 	@Autowired
 	public RequestMappingHandlerMapping requestMappingHandlerMapping;
+	@Autowired
+	public GitHub gitHub;
+	@Autowired
+	public AccountRepository accountRepository;
 	public Map<String, Boolean> authRole;
 	@Autowired
 	AuthenticationConfig authenticationConfig;
 	Logger logger = Logger.getLogger(BaseController.class.getName());
-
-	@ModelAttribute("clientKeys")
-	public String[] getClientKeys() {
-		return clientRepository.findProperties();
-	}
-
-	@ModelAttribute("employeeKeys")
-	public String[] getEmployeeKeys() {
-		return employeeRepository.findProperties();
-	}
-
-	@ModelAttribute("projectKeys")
-	public String[] getProjectKeys() {
-		return projectRepository.findProperties();
-	}
-
-
-	@ModelAttribute("sectorKeys")
-	public String[] getSectorKeys() {
-		return sectorRepository.findProperties();
-	}
 
 	void resetAuth() {
 		authenticationConfig.resetRole();
@@ -94,7 +79,6 @@ public class BaseController {
 			authRole.put("EMPLOYEE", isEmployee());
 			authRole.put("NONE", !isAuthenticated());
 		}
-		System.out.println(authRole);
 		return authRole;
 	}
 
@@ -123,7 +107,6 @@ public class BaseController {
 	}
 
 	private boolean isAdmin(AuthType role) {
-		System.out.println(role);
 		return (role == AuthType.ADMIN);
 	}
 

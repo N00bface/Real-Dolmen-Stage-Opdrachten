@@ -15,111 +15,169 @@
     <link th:href="@{/fonts/css/font-awesome.min.css}" rel="stylesheet"/>
     <link th:href="@{/css/animate.min.css}" rel="stylesheet"/>
     <link th:href="@{/vendors/nprogress/nprogress.css}" rel="stylesheet"/>
+    <link th:href="@{/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css}" rel="stylesheet"/>
     <link th:href="@{/css/custom.css}" rel="stylesheet"/>
     <title>table overview</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
-<body>
-<div class="menubar">
-    <div th:substituteby="menubar::menubar"></div>
-</div>
-<div class="right_col" role="main">
-    <div>
-        <div class="page-title">
-            <div class="title_left">
-                <h3>My Projects</h3>
-            </div>
-        </div>
-        <div class="clearfix"></div>
-        <div class="row">
-            <div class="col-md-12">
-                <div th:if="${not (auth['CLIENT'] or auth['NONE'])}" class="x_panel">
-                    <div class="x_title">
-                        <h2>My clients</h2>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>sector</th>
-                                <th>name</th>
-                                <th>experience</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="c : ${clients}">
-                                <td th:text="${c.sector.name}"></td>
-                                <td th:text="${c.name}"></td>
-                                <td th:text="${c.experience} + ' years'"></td>
-                            </tr>
-                            </tbody>
-                        </table>
+
+<body class="nav-md">
+<script th:src="@{/vendors/Chart.js/dist/Chart.bundle.min.js}"></script>
+<script th:src="@{/vendors/github/GitHub.bundle.min.js}"></script>
+<div class="container body">
+    <div class="main_container">
+        <th:block th:substituteby="menubar::menubar"/>
+        <div class="right_col" role="main">
+            <div class="">
+                <div class="page-title">
+                    <div class="title_left">
+                        <h3>Your Projects</h3>
                     </div>
                 </div>
-                <div th:each="proj : ${projects}" class="x_panel">
-                    <div class="x_title">
-                        <h2 th:text="${proj.name}"></h2>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content">
-                        <ul class="stats-overview">
-                            <li>
-                                <span class="name">budget</span>
-                                <span class="value" th:text="${proj.cost}"></span>
-                            </li>
-                            <li>
-                                <span class="name">current score</span>
-                                <span th:if="${#numbers.formatDecimal(${proj.scoreFromClient},3,2) >= 60.00}"
-                                      class="value text-success"
-                                      th:text="${proj.scoreFromClient} + '%'"></span>
-                                <span th:unless="${#numbers.formatDecimal(${proj.scoreFromClient},3,2) >= 60.00}"
-                                      class="value text-failure"
-                                      th:text="${proj.scoreFromClient} + '%'"></span>
-                            </li>
-                        </ul>
+                <div class="clearfix"></div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div th:if="${not auth['CLIENT'] and not auth['NONE']}" class="x_panel">
+                            <div class="x_title">
+                                <h2>My clients</h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>sector</th>
+                                        <th>name</th>
+                                        <th>experience</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="c : ${clients}">
+                                        <td th:text="${c.sector.name}"></td>
+                                        <td th:text="${c.name}"></td>
+                                        <td th:text="${c.experience} + ' years'"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div th:each="proj : ${projects}" class="x_panel">
+                            <div class="x_title">
+                                <h2 th:text="${proj.name}"></h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <ul class="stats-overview">
+                                    <li>
+                                        <span class="name">budget</span>
+                                        <span class="value" th:text="'€' + ${proj.cost}"></span>
+                                    </li>
+                                    <li th:with="score = ${proj.scoreFromClient}">
+                                        <div th:if="${score == null}">
+                                            <span class="name">current score</span>
+                                            <span class="value text-success">no score</span>
+                                        </div>
+                                        <div th:unless="${score == null}">
+                                            <span class="name">current score</span>
+                                            <span th:if="${#numbers.formatDecimal(score,3,2) &gt; 60.00}"
+                                                  class="value text-success" th:text="score + '%'"></span>
+                                            <span th:unless="${#numbers.formatDecimal(score,3,2) &gt; 60.00}"
+                                                  class="value text-failure" th:text="score + '%'"></span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <h2>my projects</h2>
-        <div th:each="proj: ${projects}" class="card">
-            <div th:id="${proj.name}">
-                <table>
-                    <tr>
-                        <th>client</th>
-                        <td th:text="${proj.issued[0].client.name}"></td>
-                    </tr>
-                    <tr>
-                        <th>name</th>
-                        <td th:text="${proj.name}"></td>
-                    </tr>
-                    <tr>
-                        <th>cost</th>
-                        <td th:text="${proj.cost}"></td>
-                    </tr>
-                    <tr>
-                        <th>score</th>
-                        <td th:text="${proj.scoreFromClient}"></td>
-                    </tr>
-                    <tr>
-                        <th>version</th>
-                        <td th:text="${proj.version}"></td>
-                    </tr>
-                    <tr>
-                        <td><a th:href="@{/user/viewProject/__${proj.id}__}" class="button">view</a></td>
-                    </tr>
-                    <tr>
-                        <td><a th:href="@{/user/create/edit/__${proj.id}__}" class="button">edit</a></td>
-                    </tr>
-                    <tr>
-                        <td><a th:href="@{/user/evaluate/__${proj.id}__}" class="button">evaluate</a></td>
-                    </tr>
-                </table>
+                <div class="row" th:each="proj : ${projects}">
+                    <div class="col-md-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2 th:text="${proj.name}"></h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <div class="col-md-12" th:with="pn = ${proj.name}">
+                                    <h3>current progress</h3>
+                                    <p th:text="${proj.timeleft} + ' %'"></p>
+                                    <div class="progress right">
+                                        <div class="progress-bar progress-bar-success"
+                                             th:attr="data-transitiongoal=${proj.timeleft}, aria-valuenow=${proj.timeleft}">
+                                        </div>
+                                    </div>
+                                    <h3>past Github activity</h3>
+                                    <canvas th:id="${proj.name}"></canvas>
+                                    <script th:inline="javascript" type="text/javascript"
+                                            th:with="name = ${commitMap[pn]}">
+                                        /*<![CDATA[*/
+                                        const id = /*[[${proj.name}]]*/ null;
+                                        console.log(id);
+                                        var ctx = document.getElementById(id);
+                                        function getCommitspermonth() {
+                                            return /*[[${name}]]*/ null;
+                                        }
+                                        /*]]>*/
+                                    </script>
+                                    <script language="JavaScript">
+
+                                        const chart = new Chart(ctx, {
+                                            type: 'bar',
+                                            data: {
+                                                labels: ["January", "February", "March", "April", "May",
+                                                    "June", "July", "August", "September", "October", "November",
+                                                    "December"],
+                                                datasets: [{
+                                                    label: '# of commits',
+                                                    data: getCommitspermonth(),
+                                                    backgroundColor: [
+                                                        'rgba(255, 99, 132, 0.2)',
+                                                        'rgba(54, 162, 235, 0.2)',
+                                                        'rgba(255, 206, 86, 0.2)',
+                                                        'rgba(75, 192, 192, 0.2)',
+                                                        'rgba(153, 102, 255, 0.2)',
+                                                        'rgba(255, 159, 64, 0.2)'
+                                                    ],
+                                                    borderColor: [
+                                                        'rgba(255,99,132,1)',
+                                                        'rgba(54, 162, 235, 1)',
+                                                        'rgba(255, 206, 86, 1)',
+                                                        'rgba(75, 192, 192, 1)',
+                                                        'rgba(153, 102, 255, 1)',
+                                                        'rgba(255, 159, 64, 1)'
+                                                    ],
+                                                    borderWidth: 1
+                                                }]
+                                            },
+                                            options: {
+                                                scales: {
+                                                    yAxes: [{
+                                                        ticks: {
+                                                            beginAtZero: true
+                                                        }
+                                                    }]
+                                                }
+                                            }
+                                        });
+
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
+<script th:src="@{/js/jquery-3.1.1.js}"></script>
+<script th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
+<script th:src="@{/vendors/datatables.net/js/jquery.dataTables.js}"></script>
+<script th:src="@{/vendors/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
+<script th:src="@{/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js}"></script>
+<script th:src="@{/vendors/datatables.net-buttons/js/dataTables.buttons.min.js}"></script>
+<script th:src="@{/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js}"></script>
+<script th:src="@{/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js}"></script>
+<script th:src="@{/vendors/nprogress/nprogress.js}"></script>
 </body>
 </html>

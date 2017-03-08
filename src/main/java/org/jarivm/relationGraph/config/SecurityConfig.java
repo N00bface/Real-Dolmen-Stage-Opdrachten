@@ -26,26 +26,26 @@ import javax.sql.DataSource;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	DataSource dataSource;
+	@Autowired
+	AuthenticationConfig authenticationConfig;
 
-	// possible roles: ROLE_ADMIN, ROLE_EMPLOYEE, ROLE_CLIENT, ROLE_PROJECT_LEADER
 	@Autowired
 	public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication().dataSource(dataSource)
 				.usersByUsernameQuery(
-						"select username,password, enabled from users where username=?")
+						"select username,password, enabled from useraccounts where username=?")
 				.authoritiesByUsernameQuery(
-						"select username, role from user_roles where username=?");
+						"select username, authtype from useraccounts where username=?");
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
-				.antMatchers("/public").permitAll()
+		http
+				.authorizeRequests().antMatchers("/css/**", "/fonts/**", "/images/**", "/js/**").permitAll()
 				.anyRequest().authenticated()
 				.and()
-				.formLogin()
-				.permitAll()
-				.and()
+				.formLogin().loginPage("/login").permitAll()
+				.successHandler(authenticationConfig).and()
 				.logout().permitAll();
 	}
 }

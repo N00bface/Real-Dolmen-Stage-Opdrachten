@@ -7,18 +7,25 @@
 
 package org.jarivm.relationGraph.config;
 
+import org.jarivm.relationGraph.MysqlDB.Mapper;
+import org.kohsuke.github.GitHub;
 import org.neo4j.ogm.session.SessionFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.neo4j.config.Neo4jConfiguration;
 import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
 import org.springframework.data.neo4j.template.Neo4jTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.PlatformTransactionManager;
+
+import javax.persistence.EntityManagerFactory;
+import java.io.IOException;
 
 /**
  * @author Jari Van Melckebeke
@@ -28,23 +35,13 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @WebAppConfiguration
 @EnableNeo4jRepositories(basePackages = "org.jarivm.relationGraph.repositories")
 @ComponentScan(basePackages = {"org.jarivm.relationGraph"})
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableAutoConfiguration
 @Profile("prod")
+@EnableJpaRepositories(basePackages = {"org.jarivm.relationGraph.MysqlDB.repository"})
 public class Application extends Neo4jConfiguration {
 	public static final String URL = "http://localhost:7474";
 
 	public Application() {
-	}
-
-	@Bean(name = "dataSource")
-	public DriverManagerDataSource dataSource() {
-		DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
-		driverManagerDataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		driverManagerDataSource.setUrl("jdbc:mysql://127.0.0.1:3306/springstageopdracht");
-		driverManagerDataSource.setUsername("root");
-		driverManagerDataSource.setPassword("Tanzania1");
-		return driverManagerDataSource;
 	}
 
 	@Bean
@@ -71,12 +68,31 @@ public class Application extends Neo4jConfiguration {
 	}
 
 	@Bean
+	public GitHub gitHub() {
+		try {
+			return GitHub.connectUsingPassword("N00bface", "tanzania1");
+		} catch (IOException e) {
+			return null;
+		}
+	}
+
+	@Bean
 	public AuthenticationConfig authenticationConfig() {
 		return new AuthenticationConfig();
 	}
 
-	/*@Bean
-	public EmbeddedServletContainerFactory servletContainer() {
-		return new TomcatEmbeddedServletContainerFactory();
-	}*/
+	@Bean
+	public ReloadableResourceBundleMessageSource messageSource() {
+		return new ReloadableResourceBundleMessageSource();
+	}
+
+	@Bean
+	public Mapper mapper() {
+		return new Mapper();
+	}
+
+	@Bean
+	public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+		return new JpaTransactionManager(entityManagerFactory);
+	}
 }

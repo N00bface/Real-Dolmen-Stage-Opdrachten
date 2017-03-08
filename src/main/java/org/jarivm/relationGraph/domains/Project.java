@@ -13,6 +13,7 @@ import org.neo4j.ogm.annotation.Relationship;
 import org.neo4j.ogm.annotation.typeconversion.DateString;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,7 +30,7 @@ public class Project {
 	private Long id;
 
 	private Float cost;
-	private Float scoreFromClient;
+	private Float scoreFromClient = null;
 	private String name;
 	private String version;
 	private String language;
@@ -57,14 +58,6 @@ public class Project {
 
 	public void setCost(Float cost) {
 		this.cost = cost;
-	}
-
-	public Date getDateFinished() {
-		return dateFinished;
-	}
-
-	public void setDateFinished(Date dateFinished) {
-		this.dateFinished = dateFinished;
 	}
 
 	public Date getDateStarted() {
@@ -121,6 +114,22 @@ public class Project {
 
 	public void setScoreFromClient(Float scoreFromClient) {
 		this.scoreFromClient = scoreFromClient;
+	}
+
+	public Long getTimeleft() {
+		Date d = Date.from(Instant.now());
+		Date e = getDateFinished();
+		if (e == null)
+			e = Date.from(Instant.now());
+		return (d.getTime() / e.getTime()) * 100;
+	}
+
+	public Date getDateFinished() {
+		return dateFinished;
+	}
+
+	public void setDateFinished(Date dateFinished) {
+		this.dateFinished = dateFinished;
 	}
 
 	public String getVersion() {

@@ -13,6 +13,7 @@
     <title>menubar</title>
 </head>
 <body>
+<!-- todo: fix button -->
 <th:block th:fragment="menubar">
     <div class="col-md-3 left_col">
         <div class="left_col scroll-view">
@@ -52,6 +53,11 @@
                         </li>
                     </ul>
                 </div>
+            </div>
+            <div class="sidebar-footer hidden-small">
+                <a th:href="@{/user/settings}">
+                    <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                </a>
             </div>
         </div>
     </div>
