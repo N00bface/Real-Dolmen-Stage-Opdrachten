@@ -5,9 +5,10 @@
  * Please just don't abuse my work
  */
 
-package org.jarivm.relationGraph.MysqlDB;
+package org.jarivm.relationGraph.config;
 
-import org.jarivm.relationGraph.MysqlDB.repository.AccountRepository;
+import org.jarivm.relationGraph.MySQLRepository.AccountRepository;
+import org.jarivm.relationGraph.domains.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

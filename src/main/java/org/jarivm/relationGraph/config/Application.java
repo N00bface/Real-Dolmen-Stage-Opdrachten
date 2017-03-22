@@ -7,7 +7,6 @@
 
 package org.jarivm.relationGraph.config;
 
-import org.jarivm.relationGraph.MysqlDB.Mapper;
 import org.kohsuke.github.GitHub;
 import org.neo4j.ogm.session.SessionFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -37,7 +36,7 @@ import java.io.IOException;
 @ComponentScan(basePackages = {"org.jarivm.relationGraph"})
 @EnableAutoConfiguration
 @Profile("prod")
-@EnableJpaRepositories(basePackages = {"org.jarivm.relationGraph.MysqlDB.repository"})
+@EnableJpaRepositories(basePackages = {"org.jarivm.relationGraph.MySQLRepository"})
 public class Application extends Neo4jConfiguration {
 	public static final String URL = "http://localhost:7474";
 

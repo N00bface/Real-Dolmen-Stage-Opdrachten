@@ -7,7 +7,7 @@
 
 package org.jarivm.relationGraph.controllers;
 
-import org.jarivm.relationGraph.MysqlDB.Account;
+import org.jarivm.relationGraph.domains.Account;
 import org.jarivm.relationGraph.domains.Client;
 import org.jarivm.relationGraph.domains.Employee;
 import org.jarivm.relationGraph.domains.Project;

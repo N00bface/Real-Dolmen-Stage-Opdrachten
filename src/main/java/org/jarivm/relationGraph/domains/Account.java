@@ -5,7 +5,7 @@
  * Please just don't abuse my work
  */
 
-package org.jarivm.relationGraph.MysqlDB;
+package org.jarivm.relationGraph.domains;
 
 import org.apache.log4j.Logger;
 import org.jarivm.relationGraph.constants.AuthType;
@@ -41,6 +41,7 @@ public class Account {
 	private String name;
 	@Column(name = "surname")
 	private String surname;
+
 	@Transient
 	Logger logger = Logger.getLogger(Account.class);
 

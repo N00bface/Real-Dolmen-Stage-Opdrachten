@@ -9,8 +9,8 @@ package org.jarivm.relationGraph.controllers;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-import org.jarivm.relationGraph.MysqlDB.Account;
-import org.jarivm.relationGraph.MysqlDB.Mapper;
+import org.jarivm.relationGraph.config.Mapper;
+import org.jarivm.relationGraph.domains.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -46,6 +46,7 @@ public class SettingsController extends BaseController {
 	@Transactional
 	public void submit(Account account) {
 		mapper.overwriteAccount(account, account.getId());
+		logger.info("record with id: " + account.getId() + " has been updated");
 		accountRepository.save(account);
 	}
 
@@ -53,7 +54,7 @@ public class SettingsController extends BaseController {
 	public String changeAvatar(@RequestParam("id2") Long id, @RequestParam("image") MultipartFile image, Model model) {
 		Account acc = accountRepository.findOne(id);
 		try {
-			acc.setAvatar(IOUtils.toByteArray(image.getInputStream()));
+			acc.setAvatar(editData(image));
 		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
 		}
@@ -61,13 +62,26 @@ public class SettingsController extends BaseController {
 		return "redirect:/user/settings";
 	}
 
+	private byte[] editData(MultipartFile image) throws IOException {
+		switch (image.getContentType()) {
+			case "image/png":
+				byte[] content = IOUtils.toByteArray(image.getInputStream());
+				break;
+			case "image/jpeg":
+				break;
+			default:
+				throw new IOException("not a valid type");
+		}
+
+	}
+
 	@RequestMapping(value = "/avatar/{id}", method = RequestMethod.GET)
 	public ResponseEntity<byte[]> getAvatar(@PathVariable final Long id) {
-		byte[] bytes = accountRepository.findOne(id).getAvatar(); // Generate the image based on the id
+		byte[] bytes = accountRepository.findOne(id).getAvatar();
 		if (bytes == null) bytes = new byte[]{};
+
 		final HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.IMAGE_PNG);
-
 		return new ResponseEntity<>(bytes, headers, HttpStatus.CREATED);
 	}
 }

@@ -8,7 +8,7 @@
 package org.jarivm.relationGraph.controllers;
 
 import org.apache.log4j.Logger;
-import org.jarivm.relationGraph.MysqlDB.repository.AccountRepository;
+import org.jarivm.relationGraph.MySQLRepository.AccountRepository;
 import org.jarivm.relationGraph.config.AuthenticationConfig;
 import org.jarivm.relationGraph.constants.AuthType;
 import org.jarivm.relationGraph.constants.NodeType;
