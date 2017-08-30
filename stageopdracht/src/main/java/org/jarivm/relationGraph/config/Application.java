@@ -13,7 +13,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.neo4j.config.Neo4jConfiguration;
@@ -35,63 +34,58 @@ import java.io.IOException;
 @EnableNeo4jRepositories(basePackages = "org.jarivm.relationGraph.repositories")
 @ComponentScan(basePackages = {"org.jarivm.relationGraph"})
 @EnableAutoConfiguration
-@Profile("prod")
 @EnableJpaRepositories(basePackages = {"org.jarivm.relationGraph.MySQLRepository"})
 public class Application extends Neo4jConfiguration {
-	public static final String URL = "http://localhost:7474";
+    public static final String URL = "http://" + System.getenv("DB_NEO4J_HOST") + ":7474";
 
-	public Application() {
-	}
+    public Application() {
+    }
 
-	@Bean
-	@Override
-	public Neo4jTemplate neo4jTemplate() throws Exception {
-		return new Neo4jTemplate(getSession());
-	}
+    @Bean
+    @Override
+    public Neo4jTemplate neo4jTemplate() throws Exception {
+        return new Neo4jTemplate(getSession());
+    }
 
-	@Bean
-	@Override
-	public SessionFactory getSessionFactory() {
-		return new SessionFactory(getConfiguration(), "org.jarivm.relationGraph.domains", "org.jarivm.relationGraph.repositories");
-	}
+    @Bean
+    @Override
+    public SessionFactory getSessionFactory() {
+        return new SessionFactory(getConfiguration(), "org.jarivm.relationGraph.domains", "org.jarivm.relationGraph.repositories");
+    }
 
-	@Bean
-	public org.neo4j.ogm.config.Configuration getConfiguration() {
-		org.neo4j.ogm.config.Configuration config = new org.neo4j.ogm.config.Configuration();
-		config
-				.driverConfiguration()
-				.setDriverClassName("org.neo4j.ogm.drivers.http.driver.HttpDriver")
-				.setURI(URL)
-				.setCredentials("neo4j", "tanzania");
-		return config;
-	}
+    @Bean
+    public org.neo4j.ogm.config.Configuration getConfiguration() {
+        org.neo4j.ogm.config.Configuration config = new org.neo4j.ogm.config.Configuration();
+        config
+                .driverConfiguration()
+                .setDriverClassName("org.neo4j.ogm.drivers.http.driver.HttpDriver")
+                .setURI(URL)
+                .setCredentials(System.getenv("neo4j_user"), System.getenv("neo4j_pass"));
+        return config;
+    }
 
-	@Bean
-	public GitHub gitHub() {
-		try {
-			return GitHub.connectUsingPassword("N00bface", "tanzania1");
-		} catch (IOException e) {
-			return null;
-		}
-	}
+    @Bean
+    public GitHub gitHub() throws IOException {
+        return GitHub.connectAnonymously();
+    }
 
-	@Bean
-	public AuthenticationConfig authenticationConfig() {
-		return new AuthenticationConfig();
-	}
+    @Bean
+    public AuthenticationConfig authenticationConfig() {
+        return new AuthenticationConfig();
+    }
 
-	@Bean
-	public ReloadableResourceBundleMessageSource messageSource() {
-		return new ReloadableResourceBundleMessageSource();
-	}
+    @Bean
+    public ReloadableResourceBundleMessageSource messageSource() {
+        return new ReloadableResourceBundleMessageSource();
+    }
 
-	@Bean
-	public Mapper mapper() {
-		return new Mapper();
-	}
+    @Bean
+    public Mapper mapper() {
+        return new Mapper();
+    }
 
-	@Bean
-	public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
-		return new JpaTransactionManager(entityManagerFactory);
-	}
+    @Bean
+    public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+        return new JpaTransactionManager(entityManagerFactory);
+    }
 }

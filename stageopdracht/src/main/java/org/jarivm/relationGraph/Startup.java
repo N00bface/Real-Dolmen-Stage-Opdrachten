@@ -16,7 +16,6 @@ import org.springframework.test.context.ActiveProfiles;
  * @since 02.10.16
  */
 @SpringBootApplication
-@ActiveProfiles("prod")
 public class Startup {
 
 	public static void main(String[] args) {

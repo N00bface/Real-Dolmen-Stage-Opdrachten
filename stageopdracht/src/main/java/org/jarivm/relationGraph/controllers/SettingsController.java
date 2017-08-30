@@ -7,7 +7,6 @@
 
 package org.jarivm.relationGraph.controllers;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.jarivm.relationGraph.config.Mapper;
 import org.jarivm.relationGraph.domains.Account;
@@ -23,7 +22,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 
 /**
@@ -63,16 +67,14 @@ public class SettingsController extends BaseController {
 	}
 
 	private byte[] editData(MultipartFile image) throws IOException {
-		switch (image.getContentType()) {
-			case "image/png":
-				byte[] content = IOUtils.toByteArray(image.getInputStream());
-				break;
-			case "image/jpeg":
-				break;
-			default:
-				throw new IOException("not a valid type");
-		}
+		BufferedImage bf = ImageIO.read(image.getInputStream());
+		BufferedImage n = new BufferedImage(bf.getWidth(), bf.getHeight(), BufferedImage.TYPE_INT_RGB);
 
+		n.createGraphics().drawImage(bf, 0, 0, Color.WHITE, null);
+		ByteArrayOutputStream i = new ByteArrayOutputStream();
+
+		ImageIO.write(n, "jpg", i);
+		return i.toByteArray();
 	}
 
 	@RequestMapping(value = "/avatar/{id}", method = RequestMethod.GET)
